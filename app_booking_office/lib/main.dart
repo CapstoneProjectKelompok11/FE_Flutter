@@ -1,9 +1,13 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
-import 'package:app_booking_office/screen/auth/register_screen.dart';
+import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => AuthViewModel())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

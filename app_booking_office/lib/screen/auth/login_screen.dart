@@ -1,4 +1,5 @@
 import 'package:app_booking_office/screen/auth/register_screen.dart';
+import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -39,7 +40,12 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text('Login')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => const HomeScreen()));
+                },
+                child: const Text('Login')),
             const SizedBox(
               height: 5,
             ),
@@ -49,10 +55,8 @@ class LoginScreen extends StatelessWidget {
                 const Text('Dont have an account? '),
                 TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const RegisterScreen()));
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (_) => RegisterScreen()));
                     },
                     child: const Text('Register Now'))
               ],

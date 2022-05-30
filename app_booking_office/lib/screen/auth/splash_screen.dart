@@ -10,6 +10,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  //when fisrt app launching it will running function check login to check is there data user login in local storage 
   @override
   void initState() {
     super.initState();

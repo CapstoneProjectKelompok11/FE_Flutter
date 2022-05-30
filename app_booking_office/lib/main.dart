@@ -1,4 +1,4 @@
-import 'package:app_booking_office/screen/auth/login_screen.dart';
+import 'package:app_booking_office/screen/auth/splash_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }

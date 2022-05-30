@@ -1,12 +1,39 @@
 import 'package:app_booking_office/screen/auth/register_screen.dart';
+import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  Future<void> initDatausers() async {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (timeStamp) async {
+        var authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+        await authViewModel.getUser();
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initDatausers();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -23,6 +50,7 @@ class LoginScreen extends StatelessWidget {
               height: 30,
             ),
             TextFormField(
+              controller: emailController,
               decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(
@@ -32,6 +60,7 @@ class LoginScreen extends StatelessWidget {
               height: 10,
             ),
             TextFormField(
+              controller: passwordController,
               decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(
@@ -42,8 +71,8 @@ class LoginScreen extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const HomeScreen()));
+                  authViewModel.login(
+                      emailController.text, passwordController.text, context);
                 },
                 child: const Text('Login')),
             const SizedBox(
@@ -55,8 +84,10 @@ class LoginScreen extends StatelessWidget {
                 const Text('Dont have an account? '),
                 TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => RegisterScreen()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const RegisterScreen()));
                     },
                     child: const Text('Register Now'))
               ],

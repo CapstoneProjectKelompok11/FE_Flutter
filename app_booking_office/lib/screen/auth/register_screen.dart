@@ -1,11 +1,12 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -18,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   late AuthViewModel authProvider;
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -33,18 +35,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthViewModel>(context);
     return Scaffold(
-      appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()));
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.black,
-              ))),
       backgroundColor: Colors.grey[200],
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -133,17 +123,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         labelText: 'Email',
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
+      validator: (email) {
+        if (email != null && !EmailValidator.validate(email)) {
+          return "Enter valid email!";
+        }
+      },
     );
   }
 
   Widget textFormFieldPassword() {
     return TextFormField(
-      controller: passwordController,
-      decoration: InputDecoration(
-        labelText: 'Password',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    );
+        controller: passwordController,
+        decoration: InputDecoration(
+          labelText: 'Password',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        validator: (password) {
+          if (password != null && password.length < 8) {
+            return "Enter at least 8 characters";
+          }
+        });
   }
 
   Widget elevatedButtonRegister() {
@@ -156,6 +155,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               phone: phoneController.text,
               email: emailController.text,
               password: passwordController.text));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => const LoginScreen()));
         },
         child: const Text('Register'));
   }

@@ -1,6 +1,6 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/register_screen.dart';
-import 'package:app_booking_office/screen/auth/verivication_succesful_screen.dart';
+import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -72,6 +72,9 @@ class _OtpScreenState extends State<OtpScreen> {
         Text(
           'OTP Authentication',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 5,
         ),
         Text('An authentication code has been send to yourmail@gmail.com')
       ],

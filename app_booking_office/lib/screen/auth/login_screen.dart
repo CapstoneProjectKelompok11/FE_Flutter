@@ -15,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   late AuthViewModel authViewModel;
   bool _isChecked = false;
+  bool _isVisible = true;
 
   Future<void> initDatausers() async {
     WidgetsBinding.instance!.addPostFrameCallback(
@@ -38,44 +39,48 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.grey[200],
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Sign in to continue',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        padding: const EdgeInsets.all(30),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Sign in to continue',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                textFormFieldEmail(),
+                const SizedBox(
+                  height: 10,
+                ),
+                textFormFieldPassword(),
+                const SizedBox(
+                  height: 5,
+                ),
+                checkBoxRememberMe(),
+                const SizedBox(
+                  height: 15,
+                ),
+                elevatedButtonLogin(),
+                const SizedBox(
+                  height: 5,
+                ),
+                signUpTextButton(),
+                const SizedBox(
+                  height: 25,
+                ),
+                textOrLoginWith(),
+                const SizedBox(
+                  height: 20,
+                ),
+                //button login with google mail
+                buttonLoginGoogle(),
+              ],
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            textFormFieldEmail(),
-            const SizedBox(
-              height: 10,
-            ),
-            textFormFieldPassword(),
-            const SizedBox(
-              height: 5,
-            ),
-            checkBoxRememberMe(),
-            const SizedBox(
-              height: 15,
-            ),
-            elevatedButtonLogin(),
-            const SizedBox(
-              height: 5,
-            ),
-            signUpTextButton(),
-            const SizedBox(
-              height: 25,
-            ),
-            textOrLoginWith(),
-            const SizedBox(
-              height: 15,
-            ),
-            //button login with google mail
-            buttonLoginGoogle(),
-          ],
+          ),
         ),
       )),
     );
@@ -108,6 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
         TextFormField(
           controller: passwordController,
           decoration: InputDecoration(
+              suffixIcon: InkWell(
+                  onTap: () {
+                    setState(() {
+                      _isVisible = !_isVisible;
+                    });
+                  },
+                  child: _isVisible
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
         ),
@@ -144,15 +158,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget checkBoxRememberMe() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Checkbox(value: _isChecked, onChanged: (bool? value) {}),
-        const SizedBox(
-          width: 5,
-        ),
-        const Text('Remember Me'),
-        const SizedBox(
-          width: 80,
+        Row(
+          children: [
+            Checkbox(
+                value: _isChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isChecked = value!;
+                  });
+                }),
+            const SizedBox(
+              width: 2,
+            ),
+            const Text('Remember Me'),
+          ],
         ),
         TextButton(onPressed: () {}, child: const Text('Forgot password?'))
       ],

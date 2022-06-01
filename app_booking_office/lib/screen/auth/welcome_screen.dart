@@ -21,10 +21,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               logoApp(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
               textWelcome(),
               const SizedBox(
-                height: 25,
+                height: 30,
               ),
               elevatedButtonSignIn(),
               const SizedBox(

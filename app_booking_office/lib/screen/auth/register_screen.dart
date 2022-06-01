@@ -21,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   late AuthViewModel authProvider;
   final formKey = GlobalKey<FormState>();
+  bool _isVisible = false;
 
   @override
   void dispose() {
@@ -40,63 +41,66 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buttonBack(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Center(
-                  child: Text(
-                    'Getting started',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buttonBack(),
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Center(child: Text('Create account to continue')),
-                const SizedBox(
-                  height: 15,
-                ),
-                buttonGoogleSignIn(),
-                const SizedBox(
-                  height: 15,
-                ),
-                //ini adalah form untuk pengisian firstName
-                textFormFieldFirstName(),
-                const SizedBox(
-                  height: 10,
-                ),
-                //ini adalah form untuk pengisian lastName
-                textFormFieldLastName(),
-                const SizedBox(
-                  height: 10,
-                ),
-                //ini adalah form untuk pengisian phone
-                textFormFieldPhone(),
-                const SizedBox(
-                  height: 10,
-                ),
-                //ini adalah form pengisian untuk email
-                textFormFieldEmail(),
-                const SizedBox(
-                  height: 10,
-                ),
-                //ini adalah form untuk pengisian password
-                textFormFieldPassword(),
-                const SizedBox(
-                  height: 25,
-                ),
-                //ini adalah tombol untuk menekan register
-                elevatedButtonRegister(),
-                const SizedBox(
-                  height: 10,
-                ),
-                textButton()
-              ],
+                  const Center(
+                    child: Text(
+                      'Getting started',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Center(child: Text('Create account to continue')),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  buttonGoogleSignIn(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  //ini adalah form untuk pengisian firstName
+                  textFormFieldFirstName(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //ini adalah form untuk pengisian lastName
+                  textFormFieldLastName(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //ini adalah form untuk pengisian phone
+                  textFormFieldPhone(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //ini adalah form pengisian untuk email
+                  textFormFieldEmail(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //ini adalah form untuk pengisian password
+                  textFormFieldPassword(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  //ini adalah tombol untuk menekan register
+                  elevatedButtonRegister(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  textButton()
+                ],
+              ),
             ),
           ),
         ),
@@ -192,7 +196,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         TextFormField(
             controller: passwordController,
             decoration: InputDecoration(
-              suffixIcon: Icon(Icons.visibility_off),
+              suffixIcon: InkWell(
+                  onTap: () {
+                    setState(() {
+                      _isVisible = !_isVisible;
+                    });
+                  },
+                  child: _isVisible
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             ),

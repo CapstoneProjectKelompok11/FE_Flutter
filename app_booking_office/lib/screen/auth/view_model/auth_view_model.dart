@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
+import 'package:app_booking_office/screen/auth/welcome_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -116,12 +117,12 @@ class AuthViewModel extends ChangeNotifier {
           () => Navigator.push(
               context, MaterialPageRoute(builder: (_) => const HomeScreen())));
     }
-    //when not found data email and password in local storage it will navigate to login screen 
+    //when not found data email and password in local storage it will navigate to login screen
     else {
       Timer(
           const Duration(seconds: 2),
-          () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const LoginScreen())));
+          () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const WelcomeScreen())));
     }
     notifyListeners();
   }

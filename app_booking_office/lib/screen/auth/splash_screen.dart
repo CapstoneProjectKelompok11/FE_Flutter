@@ -10,10 +10,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  //when fisrt app launching it will running function check login to check is there data user login in local storage 
+  //when fisrt app launching it will running function check login to check is there data user login in local storage
   @override
   void initState() {
     super.initState();
+    checkLogin();
+  }
+
+  void checkLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       var checkLogin = Provider.of<AuthViewModel>(context, listen: false);
       await checkLogin.checkLogin(context);
@@ -24,11 +28,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      body: const Center(
-        child: Icon(
-          Icons.local_post_office,
-          size: 100,
-          color: Colors.teal,
+      body: Center(
+        child: Container(
+          width: 200,
+          height: 200,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    'https://developers.google.com/learn/images/flutter/flutter_logo.jpg'),
+                fit: BoxFit.cover),
+          ),
         ),
       ),
     );

@@ -14,6 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late AuthViewModel authViewModel;
+  bool _isChecked = false;
 
   Future<void> initDatausers() async {
     WidgetsBinding.instance!.addPostFrameCallback(
@@ -42,8 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Login',
-              style: TextStyle(fontSize: 30),
+              'Sign in to continue',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 30,
@@ -54,13 +55,26 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             textFormFieldPassword(),
             const SizedBox(
+              height: 5,
+            ),
+            checkBoxRememberMe(),
+            const SizedBox(
               height: 15,
             ),
             elevatedButtonLogin(),
             const SizedBox(
               height: 5,
             ),
-            bottomSection(),
+            signUpTextButton(),
+            const SizedBox(
+              height: 25,
+            ),
+            textOrLoginWith(),
+            const SizedBox(
+              height: 15,
+            ),
+            //button login with google mail
+            buttonLoginGoogle(),
           ],
         ),
       )),
@@ -68,44 +82,117 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget textFormFieldEmail() {
-    return TextFormField(
-      controller: emailController,
-      decoration: InputDecoration(
-          labelText: 'Email',
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Email'),
+        const SizedBox(
+          height: 10,
+        ),
+        TextFormField(
+          controller: emailController,
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+        ),
+      ],
     );
   }
 
   Widget textFormFieldPassword() {
-    return TextFormField(
-      controller: passwordController,
-      decoration: InputDecoration(
-          labelText: 'Password',
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Passoword'),
+        const SizedBox(height: 10),
+        TextFormField(
+          controller: passwordController,
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+        ),
+      ],
     );
   }
 
   Widget elevatedButtonLogin() {
-    return ElevatedButton(
-        onPressed: () {
-          authViewModel.login(
-              emailController.text, passwordController.text, context);
-        },
-        child: const Text('Login'));
+    return SizedBox(
+      width: MediaQuery.of(context).size.height,
+      child: ElevatedButton(
+          onPressed: () {
+            authViewModel.login(
+                emailController.text, passwordController.text, context);
+          },
+          child: const Text('Sign in')),
+    );
   }
 
-  Widget bottomSection() {
+  Widget signUpTextButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Dont have an account? '),
+        const Text('Does\'t have account? '),
         TextButton(
             onPressed: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (_) => const RegisterScreen()));
             },
-            child: const Text('Register Now'))
+            child: const Text('Sign up'))
       ],
+    );
+  }
+
+  Widget checkBoxRememberMe() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Checkbox(value: _isChecked, onChanged: (bool? value) {}),
+        const SizedBox(
+          width: 5,
+        ),
+        const Text('Remember Me'),
+        const SizedBox(
+          width: 80,
+        ),
+        TextButton(onPressed: () {}, child: const Text('Forgot password?'))
+      ],
+    );
+  }
+
+  Widget textOrLoginWith() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 2,
+            decoration: BoxDecoration(color: Colors.grey[300]),
+          ),
+        ),
+        const SizedBox(
+          width: 2,
+        ),
+        const Text(
+          'Or Sign in with',
+          style: TextStyle(fontSize: 12),
+        ),
+        const SizedBox(
+          width: 2,
+        ),
+        Expanded(
+          child: Container(
+            height: 2,
+            decoration: BoxDecoration(color: Colors.grey[300]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buttonLoginGoogle() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: ElevatedButton(
+          onPressed: () {}, child: const Text('Sign in with google')),
     );
   }
 }

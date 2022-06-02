@@ -22,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   late AuthViewModel authProvider;
   final formKey = GlobalKey<FormState>();
-  bool _isVisible = false;
+  bool _isVisible = true;
 
   @override
   void dispose() {

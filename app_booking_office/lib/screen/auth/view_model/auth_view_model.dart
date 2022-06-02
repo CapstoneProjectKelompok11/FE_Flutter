@@ -92,7 +92,7 @@ class AuthViewModel extends ChangeNotifier {
           response.statusCode == 202 ||
           response.statusCode == 203) {
         debugPrint('Logging in');
-        //saving data to local storage
+        //if checkbox is checked it will saving data to local storage
         isChecked ? userPreferences(email, password) : null;
         //Succes state
         Navigator.pushReplacement(

@@ -14,7 +14,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late AuthViewModel authViewModel;
-  bool _isChecked = false;
   bool _isVisible = true;
 
   Future<void> initDatausers() async {

@@ -112,6 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(height: 10),
         TextFormField(
           controller: passwordController,
+          obscureText: _isVisible,
+          autocorrect: false,
+          enableSuggestions: false,
           decoration: InputDecoration(
               suffixIcon: InkWell(
                   onTap: () {
@@ -163,10 +166,10 @@ class _LoginScreenState extends State<LoginScreen> {
         Row(
           children: [
             Checkbox(
-                value: _isChecked,
+                value: authViewModel.isChecked,
                 onChanged: (bool? value) {
                   setState(() {
-                    _isChecked = value!;
+                    value = authViewModel.isChecked = !authViewModel.isChecked;
                   });
                 }),
             const SizedBox(

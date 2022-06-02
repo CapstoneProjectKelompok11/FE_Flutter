@@ -1,6 +1,7 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/otp_authentication_screen.dart';
+import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -195,6 +196,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         TextFormField(
             controller: passwordController,
+            obscureText: _isVisible,
+            autocorrect: false,
+            enableSuggestions: false,
             decoration: InputDecoration(
               suffixIcon: InkWell(
                   onTap: () {
@@ -203,8 +207,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     });
                   },
                   child: _isVisible
-                      ? const Icon(Icons.visibility)
-                      : const Icon(Icons.visibility_off)),
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             ),
@@ -229,8 +233,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 phone: phoneController.text,
                 email: emailController.text,
                 password: passwordController.text));
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => const OtpScreen()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (_) => const SuccesfulScreen()));
           },
           child: const Text('Sign up')),
     );

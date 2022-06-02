@@ -11,12 +11,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthViewModel extends ChangeNotifier {
   List<Auth> _dataUsers = [];
   List<Auth> get dataUsers => _dataUsers;
+  bool isChecked = false;
   //user registation
   Future<void> register(Auth auth) async {
     try {
       var dataUsers = {
-        'first_name': auth.firstName,
-        'last_name': auth.lastName,
+        'firstName': auth.firstName,
+        'lastName': auth.lastName,
         'phone': auth.phone,
         'email': auth.email,
         'password': auth.password,
@@ -24,7 +25,7 @@ class AuthViewModel extends ChangeNotifier {
       var dataMap = jsonEncode(dataUsers);
       //sending data to API
       Response response = await Dio().post(
-          'https://62909ea1665ea71fe136c605.mockapi.io/users/',
+          'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/register',
           data: dataMap);
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
@@ -83,15 +84,16 @@ class AuthViewModel extends ChangeNotifier {
     try {
       var dataLogin = {'email': email, 'password': password};
       var dataMap = jsonEncode(dataLogin);
-      Response response =
-          await Dio().post('https://reqres.in/api/login', data: dataMap);
+      Response response = await Dio().post(
+          'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/login',
+          data: dataMap);
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202 ||
           response.statusCode == 203) {
         debugPrint('Logging in');
         //saving data to local storage
-        userPreferences(email, password);
+        isChecked ? '' : userPreferences(email, password);
         //Succes state
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const HomeScreen()));
@@ -105,6 +107,7 @@ class AuthViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint(e.toString());
     }
+    notifyListeners();
   }
 
   Future<void> checkLogin(BuildContext context) async {

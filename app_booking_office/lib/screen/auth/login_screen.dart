@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 value: authViewModel.isChecked,
                 onChanged: (bool? value) {
                   setState(() {
-                    value = authViewModel.isChecked = !authViewModel.isChecked;
+                    authViewModel.isChecked = value!;
                   });
                 }),
             const SizedBox(

@@ -93,7 +93,7 @@ class AuthViewModel extends ChangeNotifier {
           response.statusCode == 203) {
         debugPrint('Logging in');
         //saving data to local storage
-        isChecked ? '' : userPreferences(email, password);
+        isChecked ? userPreferences(email, password) : null;
         //Succes state
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const HomeScreen()));

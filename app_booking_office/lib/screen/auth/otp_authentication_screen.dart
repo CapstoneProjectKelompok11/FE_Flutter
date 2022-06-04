@@ -47,21 +47,15 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   Widget buttonBack() {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-          color: Colors.grey[300], borderRadius: BorderRadius.circular(8)),
-      child: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const RegisterScreen()));
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-            size: 20,
-          )),
+    return InkWell(
+      onTap: () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      },
+      child: const Icon(
+        Icons.arrow_back,
+        size: 30,
+      ),
     );
   }
 
@@ -93,9 +87,20 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   Widget elevatedButtonSubmit() {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          gradient: const LinearGradient(colors: [
+            Color.fromRGBO(77, 137, 255, 18.5),
+            Colors.blueAccent,
+            Color(0xFF4D89FF)
+          ])),
       child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent),
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (_) => const SuccesfulScreen()));

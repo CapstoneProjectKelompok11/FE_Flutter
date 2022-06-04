@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(30),
@@ -44,6 +44,16 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Center(
+                  child: SizedBox(
+                      width: 65,
+                      height: 65,
+                      child: ClipRect(
+                          child: Image.asset('assets/image/logo2.png'))),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 const Text(
                   'Sign in to continue',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -96,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
         TextFormField(
           controller: emailController,
           decoration: InputDecoration(
+              suffixIcon: const Icon(Icons.alternate_email),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
         ),
@@ -132,9 +143,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget elevatedButtonLogin() {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.height,
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          gradient: const LinearGradient(colors: [
+            Color.fromRGBO(77, 137, 255, 18.5),
+            Colors.blueAccent,
+            Color(0xFF4D89FF)
+          ])),
       child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent),
           onPressed: () {
             authViewModel.login(
                 emailController.text, passwordController.text, context);
@@ -147,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Does\'t have account? '),
+        const Text('Does\'t have account?'),
         TextButton(
             onPressed: () {
               Navigator.pushReplacement(context,
@@ -177,7 +199,12 @@ class _LoginScreenState extends State<LoginScreen> {
             const Text('Remember Me'),
           ],
         ),
-        TextButton(onPressed: () {}, child: const Text('Forgot password?'))
+        TextButton(
+            onPressed: () {},
+            child: const Text(
+              'Forgot password?',
+              style: TextStyle(color: Colors.black),
+            ))
       ],
     );
   }
@@ -212,10 +239,35 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget buttonLoginGoogle() {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+              side: const BorderSide(color: Colors.black)),
+          color: Colors.white),
       child: ElevatedButton(
-          onPressed: () {}, child: const Text('Sign in with google')),
+          style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent),
+          onPressed: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Image.asset('assets/image/icon_google.png')),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text(
+                'Google',
+                style: TextStyle(color: Colors.black),
+              )
+            ],
+          )),
     );
   }
 }

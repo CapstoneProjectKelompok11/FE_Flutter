@@ -38,70 +38,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthViewModel>(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buttonBack(),
-                  const SizedBox(
-                    height: 20,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buttonBack(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Center(
+                  child: Text(
+                    'Getting started',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                  const Center(
-                    child: Text(
-                      'Getting started',
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Center(child: Text('Create account to continue')),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  buttonGoogleSignIn(),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  //ini adalah form untuk pengisian firstName
-                  textFormFieldFirstName(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //ini adalah form untuk pengisian lastName
-                  textFormFieldLastName(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //ini adalah form untuk pengisian phone
-                  textFormFieldPhone(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //ini adalah form pengisian untuk email
-                  textFormFieldEmail(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //ini adalah form untuk pengisian password
-                  textFormFieldPassword(),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  //ini adalah tombol untuk menekan register
-                  elevatedButtonRegister(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  textButton()
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Center(child: Text('Create account to continue')),
+                const SizedBox(
+                  height: 20,
+                ),
+                buttonGoogleSignIn(),
+                const SizedBox(
+                  height: 15,
+                ),
+                //ini adalah form untuk pengisian firstName
+                textFormFieldFirstName(),
+                const SizedBox(
+                  height: 10,
+                ),
+                //ini adalah form untuk pengisian lastName
+                textFormFieldLastName(),
+                const SizedBox(
+                  height: 10,
+                ),
+                //ini adalah form untuk pengisian phone
+                textFormFieldPhone(),
+                const SizedBox(
+                  height: 10,
+                ),
+                //ini adalah form pengisian untuk email
+                textFormFieldEmail(),
+                const SizedBox(
+                  height: 10,
+                ),
+                //ini adalah form untuk pengisian password
+                textFormFieldPassword(),
+                const SizedBox(
+                  height: 25,
+                ),
+                //ini adalah tombol untuk menekan register
+                elevatedButtonRegister(),
+                const SizedBox(
+                  height: 10,
+                ),
+                textButton()
+              ],
             ),
           ),
         ),
@@ -222,9 +219,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget elevatedButtonRegister() {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          gradient: const LinearGradient(colors: [
+            Color.fromRGBO(77, 137, 255, 18.5),
+            Colors.blueAccent,
+            Color(0xFF4D89FF)
+          ])),
       child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent),
           onPressed: () {
             //ini untuk menjalankan fungsi register dan mengirimkan data kepada model yang telah dibuat pada folder model
             authProvider.register(Auth(
@@ -256,29 +264,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget buttonBack() {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-          color: Colors.grey[300], borderRadius: BorderRadius.circular(8)),
-      child: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()));
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-            size: 20,
-          )),
+    return InkWell(
+      onTap: () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      },
+      child: const Icon(
+        Icons.arrow_back,
+        size: 30,
+      ),
     );
   }
 
   Widget buttonGoogleSignIn() {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+              side: const BorderSide(color: Colors.black)),
+          color: Colors.white),
       child: ElevatedButton(
-          onPressed: () {}, child: const Text('Sign in with google')),
+          style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent),
+          onPressed: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Image.asset('assets/image/icon_google.png')),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text(
+                'Google',
+                style: TextStyle(color: Colors.black),
+              )
+            ],
+          )),
     );
   }
 }

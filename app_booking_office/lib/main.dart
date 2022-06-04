@@ -1,4 +1,4 @@
-import 'package:app_booking_office/screen/auth/splash_screen.dart';
+import 'package:app_booking_office/screen/auth/loading_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'App Booking Office',
       theme: ThemeData(
+        fontFamily: 'PublicSans',
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: const LoadingScreen(),
     );
   }
 }

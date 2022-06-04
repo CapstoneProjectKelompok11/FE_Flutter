@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
-import 'package:app_booking_office/screen/auth/welcome_screen.dart';
+import 'package:app_booking_office/screen/auth/splash_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +125,7 @@ class AuthViewModel extends ChangeNotifier {
       Timer(
           const Duration(seconds: 2),
           () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const WelcomeScreen())));
+              MaterialPageRoute(builder: (_) => const SplashScreen())));
     }
     notifyListeners();
   }

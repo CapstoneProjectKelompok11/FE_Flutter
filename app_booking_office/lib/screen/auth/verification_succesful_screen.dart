@@ -1,5 +1,4 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
-import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SuccesfulScreen extends StatelessWidget {

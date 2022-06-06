@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:app_booking_office/property/login_error_screen.dart';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/splash_screen.dart';
@@ -8,12 +9,23 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum AuthViewState { none, loading, error }
+
 class AuthViewModel extends ChangeNotifier {
   List<Auth> _dataUsers = [];
   List<Auth> get dataUsers => _dataUsers;
   bool isChecked = false;
+  AuthViewState _states = AuthViewState.none;
+  AuthViewState get states => _states;
+
+  changeState(AuthViewState state) {
+    _states = state;
+    notifyListeners();
+  }
+
   //user registation
   Future<void> register(Auth auth) async {
+    changeState(AuthViewState.loading);
     try {
       var dataUsers = {
         'firstName': auth.firstName,
@@ -36,8 +48,9 @@ class AuthViewModel extends ChangeNotifier {
       } else {
         debugPrint('failed');
       }
+      changeState(AuthViewState.none);
     } catch (e) {
-      debugPrint(e.toString());
+      changeState(AuthViewState.error);
     }
 
     notifyListeners();
@@ -45,16 +58,29 @@ class AuthViewModel extends ChangeNotifier {
 
   //saving userdata in local storage
   Future<void> userPreferences(String email, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('email', email);
-    prefs.setString('password', password);
-    notifyListeners();
+    changeState(AuthViewState.loading);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', email);
+      prefs.setString('password', password);
+      notifyListeners();
+      changeState(AuthViewState.none);
+    } catch (e) {
+      changeState(AuthViewState.error);
+    }
   }
 
   //delete userdata in local storage
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    changeState(AuthViewState.loading);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      notifyListeners();
+      changeState(AuthViewState.none);
+    } catch (e) {
+      changeState(AuthViewState.error);
+    }
   }
 
   Future<List<Auth>> getUser() async {
@@ -81,6 +107,7 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> login(
       String email, String password, BuildContext context) async {
+    changeState(AuthViewState.loading);
     try {
       var dataLogin = {'email': email, 'password': password};
       var dataMap = jsonEncode(dataLogin);
@@ -98,35 +125,38 @@ class AuthViewModel extends ChangeNotifier {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       }
-      //Failed state
-      else {
-        debugPrint('Login failed');
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const LoginScreen()));
-      }
+      changeState(AuthViewState.none);
     } catch (e) {
-      debugPrint(e.toString());
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const LoginErrorScreen()));
+      changeState(AuthViewState.error);
     }
     notifyListeners();
   }
 
   Future<void> checkLogin(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //checking in local storage is there email and password, while true it wil navigate to home screen
-    if (prefs.getString('email') != null &&
-        prefs.getString('password') != null) {
-      Timer(
-          const Duration(seconds: 2),
-          () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const HomeScreen())));
+    changeState(AuthViewState.loading);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      //checking in local storage is there email and password, while true it wil navigate to home screen
+      if (prefs.getString('email') != null &&
+          prefs.getString('password') != null) {
+        Timer(
+            const Duration(seconds: 2),
+            () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const HomeScreen())));
+      }
+      //when not found data email and password in local storage it will navigate to login screen
+      else {
+        Timer(
+            const Duration(seconds: 2),
+            () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const SplashScreen())));
+      }
+      notifyListeners();
+      changeState(AuthViewState.none);
+    } catch (e) {
+      changeState(AuthViewState.error);
     }
-    //when not found data email and password in local storage it will navigate to login screen
-    else {
-      Timer(
-          const Duration(seconds: 2),
-          () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const SplashScreen())));
-    }
-    notifyListeners();
   }
 }

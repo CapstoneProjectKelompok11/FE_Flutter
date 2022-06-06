@@ -17,10 +17,11 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> items = ['Jawa Barat', 'Jawa Timur', 'Jawa Tengah', 'Jakarta'];
   String selectedItem = 'Jakarta';
   int activeIndex = 0;
+  late AuthViewModel authViewModel;
 
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthViewModel>(context);
+    authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -131,7 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            authViewModel.logout();
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()));
+          },
           child: Text(
             'More',
             style: TextStyle(color: Colors.grey[300]),

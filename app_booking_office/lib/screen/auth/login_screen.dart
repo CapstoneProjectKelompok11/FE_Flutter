@@ -1,5 +1,7 @@
+import 'package:app_booking_office/property/login_error_screen.dart';
 import 'package:app_booking_office/screen/auth/register_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   late AuthViewModel authViewModel;
   bool _isVisible = true;
+  final formKey = GlobalKey<FormState>();
 
   Future<void> initDatausers() async {
     WidgetsBinding.instance!.addPostFrameCallback(
@@ -34,6 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     authViewModel = Provider.of<AuthViewModel>(context);
+    // final isError = authViewModel.states == AuthViewState.error;
+    // if (isError) {
+    //   return const Center(child: AlertDialogErrorLogin());
+    // }
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -41,53 +48,57 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(30),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: SizedBox(
-                      width: 65,
-                      height: 65,
-                      child: ClipRect(
-                          child: Image.asset('assets/image/logo2.png'))),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Sign in to continue',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                textFormFieldEmail(),
-                const SizedBox(
-                  height: 10,
-                ),
-                textFormFieldPassword(),
-                const SizedBox(
-                  height: 5,
-                ),
-                checkBoxRememberMe(),
-                const SizedBox(
-                  height: 15,
-                ),
-                elevatedButtonLogin(),
-                const SizedBox(
-                  height: 5,
-                ),
-                signUpTextButton(),
-                const SizedBox(
-                  height: 25,
-                ),
-                textOrLoginWith(),
-                const SizedBox(
-                  height: 20,
-                ),
-                //button login with google mail
-                buttonLoginGoogle(),
-              ],
+            child: Form(
+              key: formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: SizedBox(
+                        width: 65,
+                        height: 65,
+                        child: ClipRect(
+                            child: Image.asset('assets/image/logo2.png'))),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    'Sign in to continue',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  textFormFieldEmail(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  textFormFieldPassword(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  checkBoxRememberMe(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  elevatedButtonLogin(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  signUpTextButton(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  textOrLoginWith(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  //button login with google mail
+                  buttonLoginGoogle(),
+                ],
+              ),
             ),
           ),
         ),
@@ -109,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
               suffixIcon: const Icon(Icons.alternate_email),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+          validator: (email) {},
         ),
       ],
     );
@@ -137,6 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       : const Icon(Icons.visibility)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+          validator: (password) {},
         ),
       ],
     );
@@ -158,6 +171,8 @@ class _LoginScreenState extends State<LoginScreen> {
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
           onPressed: () {
+            if (!formKey.currentState!.validate()) return;
+            formKey.currentState!.save();
             authViewModel.login(
                 emailController.text, passwordController.text, context);
           },

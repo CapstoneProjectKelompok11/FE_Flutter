@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/property/login_error_screen.dart';
+import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/splash_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
@@ -71,11 +72,13 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   //delete userdata in local storage
-  Future<void> logout() async {
+  Future<void> logout(BuildContext context) async {
     changeState(AuthViewState.loading);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.clear();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const LoginScreen()));
       notifyListeners();
       changeState(AuthViewState.none);
     } catch (e) {
@@ -123,7 +126,7 @@ class AuthViewModel extends ChangeNotifier {
         isChecked ? userPreferences(email, password) : null;
         //Succes state
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+            context, MaterialPageRoute(builder: (_) => const BottomNavBar()));
       }
       changeState(AuthViewState.none);
     } catch (e) {

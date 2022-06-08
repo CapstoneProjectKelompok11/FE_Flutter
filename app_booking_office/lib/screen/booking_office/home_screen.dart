@@ -1,4 +1,5 @@
 import 'package:app_booking_office/model/book_office_model.dart';
+import 'package:app_booking_office/screen/booking_office/search_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,16 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: const Color(0xFFF4F4F4),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.settings_outlined,
-                  color: Colors.black,
-                  size: 25,
+                InkWell(
+                  onTap: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) => SearchScreen()));
+                  },
+                  child: const Icon(
+                    Icons.settings_outlined,
+                    color: Colors.black,
+                    size: 25,
+                  ),
                 ),
                 dropDownButtonLocation(),
                 const SizedBox(
@@ -124,13 +131,18 @@ class _HomeScreenState extends State<HomeScreen> {
         horizontal: 19,
       ),
       child: TextFormField(
+        onTap: () {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => SearchScreen()));
+        },
+        readOnly: true,
         controller: searchController,
         decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.black, width: 2),
                 borderRadius: BorderRadius.circular(8)),
             enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey, width: 2),
+                borderSide: const BorderSide(color: Colors.black, width: 2),
                 borderRadius: BorderRadius.circular(8)),
             hintText: 'Find location, or name a place',
             suffixIcon: const Icon(
@@ -160,6 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           height: 200,
           child: ListView.builder(
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: image.length,
             itemBuilder: (context, index) {
@@ -227,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   Icons.groups_rounded,
                                   color: Colors.black,
-                                  size: 20,
+                                  size: 15,
                                 ),
                                 Text('200')
                               ],
@@ -247,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   Icons.man,
                                   color: Colors.black,
-                                  size: 20,
+                                  size: 15,
                                 ),
                                 Text('10')
                               ],
@@ -266,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   Icons.stairs,
                                   color: Colors.black,
-                                  size: 20,
+                                  size: 15,
                                 ),
                                 Text('8')
                               ],
@@ -287,8 +300,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget cardBottomSection() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: ListView.builder(
+          shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: image.length,
           itemBuilder: (context, index) {
@@ -302,8 +316,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Container(
-                      width: 100,
-                      height: 100,
+                      width: 110,
+                      height: 110,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
@@ -424,7 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Icon(
                                     Icons.groups_rounded,
                                     color: Colors.black,
-                                    size: 20,
+                                    size: 15,
                                   ),
                                   Text('200')
                                 ],
@@ -445,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Icon(
                                     Icons.man,
                                     color: Colors.black,
-                                    size: 20,
+                                    size: 15,
                                   ),
                                   Text('10')
                                 ],
@@ -465,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Icon(
                                     Icons.stairs,
                                     color: Colors.black,
-                                    size: 20,
+                                    size: 15,
                                   ),
                                   Text('8')
                                 ],

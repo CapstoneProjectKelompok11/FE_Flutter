@@ -146,7 +146,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       : const Icon(Icons.visibility)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-         
         ),
       ],
     );

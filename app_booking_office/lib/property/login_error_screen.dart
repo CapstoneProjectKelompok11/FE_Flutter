@@ -41,7 +41,7 @@ class _LoginErrorScreenState extends State<LoginErrorScreen> {
               const SizedBox(
                 height: 20,
               ),
-              buttonContinue(context)
+              buttonRetry(context)
             ]),
           ),
         ),
@@ -49,7 +49,7 @@ class _LoginErrorScreenState extends State<LoginErrorScreen> {
     );
   }
 
-  Widget buttonContinue(BuildContext context) {
+  Widget buttonRetry(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: ShapeDecoration(

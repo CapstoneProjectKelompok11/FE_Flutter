@@ -123,7 +123,7 @@ class AuthViewModel extends ChangeNotifier {
         isChecked ? userPreferences(email, password) : null;
         //Succes state
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+            context, MaterialPageRoute(builder: (_) =>  HomeScreen()));
       }
       changeState(AuthViewState.none);
     } catch (e) {
@@ -144,7 +144,7 @@ class AuthViewModel extends ChangeNotifier {
         Timer(
             const Duration(seconds: 2),
             () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomeScreen())));
+                MaterialPageRoute(builder: (_) =>  HomeScreen())));
       }
       //when not found data email and password in local storage it will navigate to login screen
       else {

@@ -1,61 +1,126 @@
 import 'package:app_booking_office/model/book_office_model.dart';
-import 'package:app_booking_office/screen/auth/login_screen.dart';
-import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> items = ['Jawa Barat', 'Jawa Timur', 'Jawa Tengah', 'Jakarta'];
-  String selectedItem = 'Jakarta';
-  int activeIndex = 0;
-  late AuthViewModel authViewModel;
-
+  List<String> items = [
+    'Jakarta, Indonesia',
+    'Bandung, Indonesia',
+    'Surabaya, Indonesia',
+    'Medan, Indonesia',
+    'Bali, Indonesia'
+  ];
+  String selectedItem = 'Jakarta, Indonesia';
   @override
   Widget build(BuildContext context) {
-    authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(18),
           child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                textFormFieldSearch(),
-                const SizedBox(
-                  height: 20,
+                const Icon(
+                  Icons.settings_outlined,
+                  color: Colors.black,
+                  size: 25,
                 ),
-                const Text('Top Place in\nJakarta',
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                const SizedBox(
-                  height: 25,
-                ),
-                dropDownButton(),
-                const SizedBox(
-                  height: 5,
-                ),
-                caroeselTopList(),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text(
-                  'Recommended',
-                  style: TextStyle(color: Colors.black),
-                ),
+                dropDownButtonLocation(),
                 const SizedBox(
                   height: 10,
                 ),
-                gridViewBottomSection()
+                textFormFieldSearch(),
+                const SizedBox(
+                  height: 8,
+                ),
+                cardTopPlaces(),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Recommendation',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Komplek 1'),
+                        TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'View More',
+                              style: TextStyle(color: Colors.black),
+                            ))
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: image.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          image: DecorationImage(
+                                              image: NetworkImage(image[index]),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: const [
+                                            Text(
+                                              '\$1993',
+                                              style: TextStyle(
+                                                  color: Color(0xFF4D89FF),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text('/Month')
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    )
+                  ],
+                )
               ],
             ),
           ),
@@ -64,149 +129,196 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget textFormFieldSearch() {
+  Widget dropDownButtonLocation() {
     return Center(
+      child: DropdownButton(
+          underline: const SizedBox(),
+          alignment: AlignmentDirectional.centerStart,
+          value: selectedItem,
+          items: items
+              .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        child: Icon(
+                          Icons.location_on,
+                          color: Color(0xFF4D89FF),
+                          size: 15,
+                        ),
+                      ),
+                      Text(
+                        item,
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 14),
+                      )
+                    ],
+                  )))
+              .toList(),
+          onChanged: (item) {
+            setState(() {
+              selectedItem = item.toString();
+            });
+          }),
+    );
+  }
+
+  Widget textFormFieldSearch() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 19,
+      ),
       child: TextFormField(
         decoration: InputDecoration(
-            suffixIcon: const Icon(Icons.search),
-            hintText: 'find location or name a place',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5))),
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.black, width: 2),
+                borderRadius: BorderRadius.circular(8)),
+            hintText: 'Find location, or name a place',
+            suffixIcon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            )),
       ),
     );
   }
 
-  Widget dropDownButton() {
-    return Container(
-      decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          gradient: const LinearGradient(colors: [
-            Color.fromRGBO(77, 137, 255, 18.5),
-            Colors.blueAccent,
-            Color(0xFF4D89FF)
-          ])),
-      child: SizedBox(
-        width: 120,
-        height: 30,
-        child: DropdownButton(
-            dropdownColor: const Color(0xFF4D89FF),
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.white,
-            ),
-            alignment: AlignmentDirectional.centerStart,
-            elevation: 0,
-            underline: const SizedBox(),
-            value: selectedItem,
-            items: items
-                .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
-                          child: Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 15,
-                          ),
-                        ),
-                        Text(
-                          item,
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.white),
-                        ),
-                      ],
-                    )))
-                .toList(),
-            onChanged: (item) {
-              setState(() {
-                selectedItem = item.toString();
-              });
-            }),
-      ),
-    );
-  }
-
-  Widget caroeselTopList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        InkWell(
-          onTap: () {
-            authViewModel.logout();
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()));
-          },
-          child: Text(
-            'More',
-            style: TextStyle(color: Colors.grey[300]),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-            child: CarouselSlider.builder(
-          options: CarouselOptions(
-              onPageChanged: (index, reason) {
-                setState(() {
-                  activeIndex = index;
-                });
-              },
-              height: 150,
-              autoPlay: true,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-              enlargeCenterPage: true),
-          itemCount: image.length,
-          itemBuilder: (context, index, realIndex) {
-            return Container(
-              margin: const EdgeInsets.only(right: 20),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                      image: NetworkImage(image[index]), fit: BoxFit.cover)),
-            );
-          },
-        )),
-        const SizedBox(
-          height: 10,
-        ),
-        buildIndicator(),
-      ],
-    );
-  }
-
-  Widget buildIndicator() {
-    return Center(
-      child: AnimatedSmoothIndicator(
-          activeIndex: activeIndex,
-          count: image.length,
-          effect: const WormEffect(
-            dotWidth: 10,
-            dotHeight: 10,
-          )),
-    );
-  }
-
-  Widget gridViewBottomSection() {
+  Widget cardTopPlaces() {
     return Column(
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Top Places',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'View More',
+                  style: TextStyle(color: Colors.black),
+                ))
+          ],
+        ),
         SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1 / 1),
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
             itemCount: image.length,
             itemBuilder: (context, index) {
               return Container(
+                margin: const EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                        image: NetworkImage(image[index]), fit: BoxFit.cover)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 160,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                                image: NetworkImage(image[index]),
+                                fit: BoxFit.cover)),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      const Text(
+                        'SCBD',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: const [
+                          Icon(
+                            Icons.location_on,
+                            color: Color(0xFF4D89FF),
+                            size: 15,
+                          ),
+                          Text(
+                            'Senayan, Jakarta',
+                            style: TextStyle(color: Colors.black, fontSize: 10),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 5),
+                            width: 60,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey[200],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Icon(
+                                  Icons.groups_rounded,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                                Text('200')
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 5),
+                            width: 40,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey[200],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Icon(
+                                  Icons.man,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                                Text('10')
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 50,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey[200],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Icon(
+                                  Icons.stairs,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                                Text('8')
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               );
             },
           ),

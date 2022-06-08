@@ -1,6 +1,5 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
-import 'package:app_booking_office/screen/auth/otp_authentication_screen.dart';
 import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:email_validator/email_validator.dart';
@@ -181,6 +180,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           validator: (email) {
             if (email != null && !EmailValidator.validate(email)) {
               return "Enter valid email!";
+            } else {
+              return null;
             }
           },
         )
@@ -217,6 +218,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             validator: (password) {
               if (password != null && password.length < 8) {
                 return "Enter at least 8 characters";
+              } else {
+                return null;
               }
             })
       ],

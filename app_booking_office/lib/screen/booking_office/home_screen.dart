@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,17 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
     'Bali, Indonesia'
   ];
   String selectedItem = 'Jakarta, Indonesia';
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color(0xFFF4F4F4),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(18),
           child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(
                   Icons.settings_outlined,
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 cardTopPlaces(),
                 const SizedBox(
-                  height: 10,
+                  height: 18,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,59 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ))
                       ],
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: image.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          image: DecorationImage(
-                                              image: NetworkImage(image[index]),
-                                              fit: BoxFit.cover)),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          children: const [
-                                            Text(
-                                              '\$1993',
-                                              style: TextStyle(
-                                                  color: Color(0xFF4D89FF),
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text('/Month')
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                    )
+                    cardBottomSection(),
                   ],
                 )
               ],
@@ -132,6 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget dropDownButtonLocation() {
     return Center(
       child: DropdownButton(
+          icon: const Icon(
+            CupertinoIcons.chevron_down,
+            color: Colors.black,
+            size: 15,
+          ),
           underline: const SizedBox(),
           alignment: AlignmentDirectional.centerStart,
           value: selectedItem,
@@ -170,9 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
         horizontal: 19,
       ),
       child: TextFormField(
+        controller: searchController,
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
+            focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.black, width: 2),
+                borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey, width: 2),
                 borderRadius: BorderRadius.circular(8)),
             hintText: 'Find location, or name a place',
             suffixIcon: const Icon(
@@ -324,6 +282,204 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         )
       ],
+    );
+  }
+
+  Widget cardBottomSection() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: image.length,
+          itemBuilder: (context, index) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                              image: NetworkImage(image[index]),
+                              fit: BoxFit.cover)),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: const [
+                            Text(
+                              '\$1993',
+                              style: TextStyle(
+                                  color: Color(0xFF4D89FF),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text('/Month')
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const Text(
+                          'Senayan city',
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.location_on,
+                              color: Color(0xFF4D89FF),
+                              size: 15,
+                            ),
+                            Text(
+                              'Senayan, Jakarta',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 10),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.star,
+                              color: Color(0xFFFBCD0A),
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: Color(0xFFFBCD0A),
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: Color(0xFFFBCD0A),
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: Color(0xFFFBCD0A),
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: Color(0xFFFBCD0A),
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              '(120) Review',
+                              style: TextStyle(fontSize: 7),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              width: 60,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey[200],
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: const [
+                                  Icon(
+                                    Icons.groups_rounded,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                  Text('200')
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              width: 40,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey[200],
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: const [
+                                  Icon(
+                                    Icons.man,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                  Text('10')
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey[200],
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: const [
+                                  Icon(
+                                    Icons.stairs,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                  Text('8')
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }

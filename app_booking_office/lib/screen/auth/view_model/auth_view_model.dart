@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/property/login_error_screen.dart';
-import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/splash_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
@@ -123,7 +123,7 @@ class AuthViewModel extends ChangeNotifier {
         isChecked ? userPreferences(email, password) : null;
         //Succes state
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) =>  HomeScreen()));
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       }
       changeState(AuthViewState.none);
     } catch (e) {
@@ -144,7 +144,7 @@ class AuthViewModel extends ChangeNotifier {
         Timer(
             const Duration(seconds: 2),
             () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) =>  HomeScreen())));
+                MaterialPageRoute(builder: (_) => const BottomNavBar())));
       }
       //when not found data email and password in local storage it will navigate to login screen
       else {

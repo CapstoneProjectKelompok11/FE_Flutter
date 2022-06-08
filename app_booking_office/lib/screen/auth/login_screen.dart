@@ -1,7 +1,5 @@
-import 'package:app_booking_office/property/login_error_screen.dart';
 import 'package:app_booking_office/screen/auth/register_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -120,7 +118,6 @@ class _LoginScreenState extends State<LoginScreen> {
               suffixIcon: const Icon(Icons.alternate_email),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-          validator: (email) {},
         ),
       ],
     );
@@ -149,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       : const Icon(Icons.visibility)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-          validator: (password) {},
+         
         ),
       ],
     );

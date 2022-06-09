@@ -12,8 +12,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<String> itemsSort = ['Price', 'Asceding', 'Descending'];
-  String? selectedItem;
   bool _isFavorite = true;
   TextEditingController searchController = TextEditingController();
   @override
@@ -21,7 +19,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       body: Padding(
-        padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
         child: SafeArea(
           child: SingleChildScrollView(
             clipBehavior: Clip.antiAlias,
@@ -116,18 +114,20 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Menara Palma centre',
-                                    style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                const Expanded(
+                                  child: Text('Menara Palma centre ',
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -151,6 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                           ),
                                           Text(
                                             '200',
+                                            maxLines: 1,
                                             style: TextStyle(
                                               fontSize: 10,
                                               overflow: TextOverflow.ellipsis,
@@ -176,7 +177,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             color: Colors.black,
                                             size: 15,
                                           ),
-                                          Text('10',
+                                          Text('20',
+                                              maxLines: 1,
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 overflow: TextOverflow.ellipsis,
@@ -216,81 +218,22 @@ class _SearchScreenState extends State<SearchScreen> {
                               height: 10,
                             ),
                             Row(
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.location_on,
                                   color: Colors.blue,
                                   size: 15,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
-                                Text(
-                                  'Jl. Haji R. Rasuna Said Karet Kuningan',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
+                                location(),
                               ],
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFBCD0A),
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFBCD0A),
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFBCD0A),
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFBCD0A),
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFBCD0A),
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                  ],
-                                ),
-                                const Text(
-                                  '\$1993',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                )
-                              ],
-                            )
+                            rating(),
                           ],
                         ),
                       ],
@@ -335,7 +278,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               hintText: 'Find location, or name a place',
               prefixIcon: const Icon(
@@ -361,6 +304,87 @@ class _SearchScreenState extends State<SearchScreen> {
         'assets/icons/filter.png',
         color: Colors.black,
       )),
+    );
+  }
+
+  Widget price() {
+    return const Text(
+      '\$199388888',
+      maxLines: 1,
+      style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          overflow: TextOverflow.ellipsis),
+    );
+  }
+
+  Widget rating() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: const [
+            Icon(
+              Icons.star,
+              color: Color(0xFFFBCD0A),
+              size: 20,
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Icon(
+              Icons.star,
+              color: Color(0xFFFBCD0A),
+              size: 20,
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Icon(
+              Icons.star,
+              color: Color(0xFFFBCD0A),
+              size: 20,
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Icon(
+              Icons.star,
+              color: Color(0xFFFBCD0A),
+              size: 20,
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Icon(
+              Icons.star,
+              color: Color(0xFFFBCD0A),
+              size: 20,
+            ),
+            SizedBox(
+              width: 2,
+            ),
+          ],
+        ),
+        price(),
+      ],
+    );
+  }
+
+  Widget location() {
+    return const Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(right: 40),
+        child: Text(
+          'Jl. Haji R. Rasuna Said Karet Kuningan',
+          maxLines: 2,
+          style: TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+              overflow: TextOverflow.ellipsis),
+        ),
+      ),
     );
   }
 }

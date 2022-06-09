@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: const Color(0xFFF4F4F4),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: searchController,
         decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black, width: 2),
+                borderSide: const BorderSide(color: Colors.grey, width: 2),
                 borderRadius: BorderRadius.circular(8)),
             enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.black, width: 2),
@@ -182,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(
           height: 200,
+          width: MediaQuery.of(context).size.width,
           child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -192,123 +193,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (_) => DetailScreen()));
                 },
+                //card
                 child: Container(
+                  padding: const EdgeInsets.all(8),
+                  clipBehavior: Clip.antiAlias,
                   margin: const EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 160,
-                          height: 100,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                  image: NetworkImage(image[index]),
-                                  fit: BoxFit.cover)),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          'SCBD',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.location_on,
-                              color: Color(0xFF4D89FF),
-                              size: 15,
-                            ),
-                            Text(
-                              'Senayan, Jakarta',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 10),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              width: 60,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[200],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: const [
-                                  Icon(
-                                    Icons.groups_rounded,
-                                    color: Colors.black,
-                                    size: 15,
-                                  ),
-                                  Text('200')
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              width: 40,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[200],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: const [
-                                  Icon(
-                                    Icons.man,
-                                    color: Colors.black,
-                                    size: 15,
-                                  ),
-                                  Text('10')
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 50,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[200],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: const [
-                                  Icon(
-                                    Icons.stairs,
-                                    color: Colors.black,
-                                    size: 15,
-                                  ),
-                                  Text('8')
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      pictureCarosel(index),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      titleCarosel(),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      locationCarosel(),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      rowDetailCarosel(),
+                    ],
                   ),
                 ),
               );
@@ -341,10 +252,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        width: 110,
-                        height: 110,
+                        width: 120,
+                        height: 120,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
@@ -361,11 +273,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: const [
                               Text(
                                 '\$1993',
+                                maxLines: 1,
                                 style: TextStyle(
                                     color: Color(0xFF4D89FF),
+                                    overflow: TextOverflow.ellipsis,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text('/Month')
+                              Text(
+                                '/Month',
+                                maxLines: 1,
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
                             ],
                           ),
                           const SizedBox(
@@ -467,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.black,
                                       size: 15,
                                     ),
-                                    Text('200')
+                                    Text('200', style: TextStyle(fontSize: 10))
                                   ],
                                 ),
                               ),
@@ -488,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.black,
                                       size: 15,
                                     ),
-                                    Text('10')
+                                    Text('10', style: TextStyle(fontSize: 10))
                                   ],
                                 ),
                               ),
@@ -508,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.black,
                                       size: 15,
                                     ),
-                                    Text('8')
+                                    Text('8', style: TextStyle(fontSize: 10))
                                   ],
                                 ),
                               ),
@@ -522,6 +442,125 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }),
+    );
+  }
+
+  Widget pictureCarosel(int index) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 56.5, horizontal: 80),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          image: DecorationImage(
+              image: NetworkImage(image[index]), fit: BoxFit.cover)),
+    );
+  }
+
+  Widget titleCarosel() {
+    return Container(
+      width: 140,
+      decoration: const BoxDecoration(color: Colors.transparent),
+      child: const Text(
+        'Bandung, Jawa barat',
+        maxLines: 2,
+        style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            overflow: TextOverflow.ellipsis),
+      ),
+    );
+  }
+
+  Widget locationCarosel() {
+    return Row(
+      children: [
+        const Icon(
+          Icons.location_on,
+          color: Color(0xFF4D89FF),
+          size: 15,
+        ),
+        Container(
+          width: 140,
+          decoration: const BoxDecoration(color: Colors.transparent),
+          child: const Text(
+            'Senayan, Jakarta',
+            maxLines: 1,
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 10,
+                overflow: TextOverflow.ellipsis),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget rowDetailCarosel() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(right: 5),
+          width: 60,
+          height: 25,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey[200],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              Icon(
+                Icons.groups_rounded,
+                color: Colors.black,
+                size: 15,
+              ),
+              Text(
+                '200',
+                style: TextStyle(fontSize: 10),
+              )
+            ],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(right: 5),
+          width: 40,
+          height: 25,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey[200],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              Icon(
+                Icons.man,
+                color: Colors.black,
+                size: 15,
+              ),
+              Text('10', style: TextStyle(fontSize: 10))
+            ],
+          ),
+        ),
+        Container(
+          width: 50,
+          height: 25,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey[200],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              Icon(
+                Icons.stairs,
+                color: Colors.black,
+                size: 15,
+              ),
+              Text('8', style: TextStyle(fontSize: 10))
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

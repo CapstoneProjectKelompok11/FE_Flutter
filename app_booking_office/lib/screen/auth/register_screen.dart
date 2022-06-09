@@ -3,6 +3,7 @@ import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -280,7 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             context, MaterialPageRoute(builder: (_) => const LoginScreen()));
       },
       child: const Icon(
-        Icons.arrow_back,
+        CupertinoIcons.arrow_left,
         size: 30,
       ),
     );

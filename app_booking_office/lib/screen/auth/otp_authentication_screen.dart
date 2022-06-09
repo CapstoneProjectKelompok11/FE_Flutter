@@ -1,5 +1,6 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -52,7 +53,7 @@ class _OtpScreenState extends State<OtpScreen> {
             context, MaterialPageRoute(builder: (_) => const LoginScreen()));
       },
       child: const Icon(
-        Icons.arrow_back,
+        CupertinoIcons.arrow_left,
         size: 30,
       ),
     );

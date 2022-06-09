@@ -58,10 +58,12 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   //saving userdata in local storage
-  Future<void> userPreferences(String email, String password) async {
+  Future<void> userPreferences(
+      String email, String password, String token) async {
     changeState(AuthViewState.loading);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', token);
       prefs.setString('email', email);
       prefs.setString('password', password);
       notifyListeners();
@@ -122,14 +124,23 @@ class AuthViewModel extends ChangeNotifier {
           response.statusCode == 202 ||
           response.statusCode == 203) {
         debugPrint('Logging in');
+        //get token response
+        String token = response.data['data']['token'].toString();
         //if checkbox is checked it will saving data to local storage
-        isChecked ? userPreferences(email, password) : null;
+        isChecked
+            ? userPreferences(
+                email,
+                password,
+                token,
+              )
+            : null;
         //Succes state
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const BottomNavBar()));
       }
       changeState(AuthViewState.none);
     } catch (e) {
+      debugPrint(e.toString());
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => const LoginErrorScreen()));
       changeState(AuthViewState.error);
@@ -142,8 +153,7 @@ class AuthViewModel extends ChangeNotifier {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       //checking in local storage is there email and password, while true it wil navigate to home screen
-      if (prefs.getString('email') != null &&
-          prefs.getString('password') != null) {
+      if (prefs.getString('token') != null) {
         Timer(
             const Duration(seconds: 2),
             () => Navigator.push(context,

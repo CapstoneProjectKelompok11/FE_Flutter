@@ -14,6 +14,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   List<String> itemsSort = ['Price', 'Asceding', 'Descending'];
   String? selectedItem;
+  bool _isFavorite = true;
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 MaterialPageRoute(builder: (_) => const BottomNavBar()));
           },
           child: const Icon(
-            Icons.arrow_back,
+            CupertinoIcons.arrow_left,
             color: Colors.black,
             size: 30,
           ),
@@ -305,17 +306,28 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget buttonFavorite() {
     return IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          Icons.favorite_outline,
-          color: Colors.white,
-        ));
+        onPressed: () {
+          setState(() {
+            _isFavorite = !_isFavorite;
+          });
+        },
+        icon: _isFavorite
+            ? const Icon(
+                Icons.favorite_outline,
+                color: Colors.white,
+              )
+            : const Icon(
+                Icons.favorite,
+                color: Colors.redAccent,
+              ));
   }
 
   Widget textFormFieldSearch() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.only(
+          right: 12,
+        ),
         child: TextFormField(
           controller: searchController,
           decoration: InputDecoration(
@@ -329,6 +341,7 @@ class _SearchScreenState extends State<SearchScreen> {
               prefixIcon: const Icon(
                 Icons.search,
                 color: Colors.black,
+                size: 35,
               )),
         ),
       ),
@@ -337,14 +350,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget categorize() {
     return Container(
+      height: 58,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.black, width: 2)),
-      child: const Icon(
-        Icons.format_list_bulleted_rounded,
-      ),
+      child: ClipRect(
+          child: Image.asset(
+        'assets/icons/filter.png',
+        color: Colors.black,
+      )),
     );
   }
 }

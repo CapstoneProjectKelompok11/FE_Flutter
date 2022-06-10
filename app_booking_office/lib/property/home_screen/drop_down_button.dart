@@ -9,7 +9,7 @@ class DropDownButton extends StatefulWidget {
 }
 
 class _DropDownButtonState extends State<DropDownButton> {
-   List<String> items = [
+  List<String> items = [
     'Jakarta, Indonesia',
     'Bandung, Indonesia',
     'Surabaya, Indonesia',
@@ -44,13 +44,13 @@ class _DropDownButtonState extends State<DropDownButton> {
                           child: Icon(
                             Icons.location_on,
                             color: Color(0xFF4D89FF),
-                            size: 15,
+                            size: 12,
                           ),
                         ),
                         Text(
                           item,
                           style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
+                              color: Colors.black, fontSize: 12),
                         )
                       ],
                     )))
@@ -61,6 +61,7 @@ class _DropDownButtonState extends State<DropDownButton> {
               });
             }),
       ),
-    );;
+    );
+    ;
   }
 }

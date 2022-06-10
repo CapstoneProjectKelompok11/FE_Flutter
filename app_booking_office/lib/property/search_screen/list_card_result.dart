@@ -1,6 +1,8 @@
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/property/search_screen/button_favorite.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ListCardResult extends StatefulWidget {
   const ListCardResult({Key? key}) : super(key: key);
@@ -10,8 +12,10 @@ class ListCardResult extends StatefulWidget {
 }
 
 class _ListCardResultState extends State<ListCardResult> {
+  late BookingOfficeViewModel bookingOfficeViewModel;
   @override
   Widget build(BuildContext context) {
+    bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: ListView.builder(
@@ -44,30 +48,30 @@ class _ListCardResultState extends State<ListCardResult> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                title(),
-                                rowDetail(),
+                                title(index),
+                                rowDetail(index),
                               ],
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
                             Row(
                               children: [
                                 const Icon(
                                   Icons.location_on,
                                   color: Colors.blue,
-                                  size: 15,
+                                  size: 10,
                                 ),
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                location(),
+                                location(index),
                               ],
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
-                            rating(),
+                            rating(index),
                           ],
                         ),
                       ],
@@ -97,19 +101,19 @@ class _ListCardResultState extends State<ListCardResult> {
     );
   }
 
-  Widget price() {
-    return const Text(
-      '\$199388888',
+  Widget price(int index) {
+    return Text(
+      '\$${bookingOfficeViewModel.offices[index].price} ',
       maxLines: 1,
-      style: TextStyle(
+      style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: 13,
           overflow: TextOverflow.ellipsis),
     );
   }
 
-  Widget rating() {
+  Widget rating(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -118,7 +122,7 @@ class _ListCardResultState extends State<ListCardResult> {
             Icon(
               Icons.star,
               color: Color(0xFFFBCD0A),
-              size: 20,
+              size: 10,
             ),
             SizedBox(
               width: 2,
@@ -126,7 +130,7 @@ class _ListCardResultState extends State<ListCardResult> {
             Icon(
               Icons.star,
               color: Color(0xFFFBCD0A),
-              size: 20,
+              size: 10,
             ),
             SizedBox(
               width: 2,
@@ -134,7 +138,7 @@ class _ListCardResultState extends State<ListCardResult> {
             Icon(
               Icons.star,
               color: Color(0xFFFBCD0A),
-              size: 20,
+              size: 10,
             ),
             SizedBox(
               width: 2,
@@ -142,7 +146,7 @@ class _ListCardResultState extends State<ListCardResult> {
             Icon(
               Icons.star,
               color: Color(0xFFFBCD0A),
-              size: 20,
+              size: 10,
             ),
             SizedBox(
               width: 2,
@@ -150,123 +154,111 @@ class _ListCardResultState extends State<ListCardResult> {
             Icon(
               Icons.star,
               color: Color(0xFFFBCD0A),
-              size: 20,
+              size: 10,
             ),
             SizedBox(
               width: 2,
             ),
           ],
         ),
-        price(),
+        price(index),
       ],
     );
   }
 
-  Widget location() {
-    return const Expanded(
+  Widget location(int index) {
+    return Expanded(
       child: Padding(
-        padding: EdgeInsets.only(right: 40),
+        padding: const EdgeInsets.only(right: 40),
         child: Text(
-          'Jl. Haji R. Rasuna Said Karet Kuningan',
+          bookingOfficeViewModel.offices[index].location,
           maxLines: 2,
-          style: TextStyle(
-              color: Colors.grey,
-              fontSize: 12,
-              overflow: TextOverflow.ellipsis),
+          style: const TextStyle(
+              color: Colors.grey, fontSize: 9, overflow: TextOverflow.ellipsis),
         ),
       ),
     );
   }
 
-  Widget title() {
-    return const Expanded(
-      child: Text('Menara Palma centre ',
+  Widget title(int index) {
+    return Expanded(
+      child: Text(bookingOfficeViewModel.offices[index].name,
           maxLines: 2,
-          style: TextStyle(
+          style: const TextStyle(
             overflow: TextOverflow.ellipsis,
             color: Colors.black,
-            fontSize: 18,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
           )),
     );
   }
 
-  Widget rowDetail() {
+  Widget rowDetail(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 40,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.groups_rounded,
                 color: Colors.black,
                 size: 15,
               ),
               Text(
-                '200',
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 10,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                bookingOfficeViewModel.offices[index].capacity.toString(),
+                style: const TextStyle(fontSize: 8),
               )
             ],
           ),
         ),
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 40,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.man,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('20',
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 10,
-                    overflow: TextOverflow.ellipsis,
-                  ))
+              Text(bookingOfficeViewModel.offices[index].toilet.toString(),
+                  style: const TextStyle(
+                      fontSize: 8, overflow: TextOverflow.ellipsis))
             ],
           ),
         ),
         Container(
-          width: 40,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.stairs,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('8',
-                  style: TextStyle(
-                    fontSize: 10,
-                    overflow: TextOverflow.ellipsis,
-                  ))
+              Text(bookingOfficeViewModel.offices[index].stairs.toString(),
+                  style: const TextStyle(fontSize: 8))
             ],
           ),
         ),
@@ -277,11 +269,13 @@ class _ListCardResultState extends State<ListCardResult> {
   Widget picture(int index) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 140,
+      height: 120,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(image[index]), fit: BoxFit.cover)),
+              image:
+                  NetworkImage(bookingOfficeViewModel.offices[index].picture),
+              fit: BoxFit.cover)),
     );
   }
 }

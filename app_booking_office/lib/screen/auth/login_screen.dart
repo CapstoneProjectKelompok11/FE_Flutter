@@ -17,21 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isVisible = true;
   final formKey = GlobalKey<FormState>();
 
-  Future<void> initDatausers() async {
-    WidgetsBinding.instance!.addPostFrameCallback(
-      (timeStamp) async {
-        authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-        await authViewModel.getUser();
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initDatausers();
-  }
-
   @override
   Widget build(BuildContext context) {
     authViewModel = Provider.of<AuthViewModel>(context);
@@ -54,8 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Center(
                     child: SizedBox(
-                        width: 65,
-                        height: 65,
+                        width: 45,
+                        height: 45,
                         child: ClipRect(
                             child: Image.asset('assets/image/logo2.png'))),
                   ),
@@ -64,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const Text(
                     'Sign in to continue',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 30,
@@ -108,16 +93,29 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Email'),
+        const Text(
+          'Email',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          controller: emailController,
-          decoration: InputDecoration(
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            controller: emailController,
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(fontSize: 12),
               suffixIcon: const Icon(Icons.alternate_email),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+            ),
+          ),
         ),
       ],
     );
@@ -127,14 +125,21 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Passoword'),
+        const Text(
+          'Passoword',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(height: 10),
-        TextFormField(
-          controller: passwordController,
-          obscureText: _isVisible,
-          autocorrect: false,
-          enableSuggestions: false,
-          decoration: InputDecoration(
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            controller: passwordController,
+            obscureText: _isVisible,
+            autocorrect: false,
+            enableSuggestions: false,
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(fontSize: 12),
               suffixIcon: InkWell(
                   onTap: () {
                     setState(() {
@@ -144,8 +149,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: _isVisible
                       ? const Icon(Icons.visibility_off)
                       : const Icon(Icons.visibility)),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+            ),
+          ),
         ),
       ],
     );
@@ -180,13 +191,19 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Does\'t have account?'),
+        const Text(
+          'Does\'t have account?',
+          style: TextStyle(color: Colors.black87, fontSize: 12),
+        ),
         TextButton(
             onPressed: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (_) => const RegisterScreen()));
             },
-            child: const Text('Sign up'))
+            child: const Text(
+              'Sign up',
+              style: TextStyle(color: Color(0xFF4D89FF), fontSize: 12),
+            ))
       ],
     );
   }
@@ -207,14 +224,17 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(
               width: 2,
             ),
-            const Text('Remember Me'),
+            const Text(
+              'Remember Me',
+              style: TextStyle(fontSize: 12),
+            ),
           ],
         ),
         TextButton(
             onPressed: () {},
             child: const Text(
               'Forgot password?',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black87, fontSize: 12),
             ))
       ],
     );

@@ -5,7 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 
 class DetailScreen extends StatefulWidget {
-  DetailScreen({Key? key}) : super(key: key);
+  String? picture;
+  String? title;
+  String? price;
+  String? location;
+  String? description;
+  DetailScreen(
+      {Key? key,
+      this.picture,
+      this.title,
+      this.price,
+      this.location,
+      this.description})
+      : super(key: key);
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -18,7 +30,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +58,7 @@ class _DetailScreenState extends State<DetailScreen> {
               const Text(
                 'About',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -60,7 +72,7 @@ class _DetailScreenState extends State<DetailScreen> {
               const Text(
                 'Amenity',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -97,7 +109,7 @@ class _DetailScreenState extends State<DetailScreen> {
         const Text(
           'Details',
           style: TextStyle(
-              fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
         buttonFavorite(),
       ],
@@ -107,12 +119,14 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget picture() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 200,
+      height: 171,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        image: const DecorationImage(
-            image: NetworkImage(
-                'https://www.highstreet.co.id/UserFiles/Image/kanmo/IKP_0061.jpg'),
+        image: DecorationImage(
+            image: widget.picture != null
+                ? NetworkImage(widget.picture!)
+                : const NetworkImage(
+                    'https://image.shutterstock.com/image-vector/404-error-page-funny-design-260nw-1761026456.jpg'),
             fit: BoxFit.cover),
       ),
     );
@@ -120,26 +134,29 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget location() {
     return Row(
-      children: const [
-        Icon(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(
           Icons.location_on,
           color: Colors.blue,
-          size: 18,
+          size: 15,
         ),
-        SizedBox(
+        const SizedBox(
           width: 5,
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(right: 80),
-            child: Text(
-              '''Jl. Gunung Sahari Raya No. 78 ,Kota jakarta Pusat, DKI Jakarta''',
-              maxLines: 2,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  overflow: TextOverflow.ellipsis),
-            ),
+            padding: const EdgeInsets.only(right: 80),
+            child: widget.location != null
+                ? Text(
+                    widget.location!,
+                    maxLines: 2,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis),
+                  )
+                : const Text('null'),
           ),
         ),
       ],
@@ -147,34 +164,42 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget title() {
-    return const Text(
-      'Atria, Gedung Konica',
-      style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          overflow: TextOverflow.ellipsis),
-    );
+    return widget.title != null
+        ? Text(
+            widget.title!,
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.ellipsis),
+          )
+        : const Text('null');
   }
 
   Widget price() {
-    return const Text(
-      '\$1993/month',
-      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-    );
+    return widget.price != null
+        ? Text(
+            '\$${widget.price}/month',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          )
+        : const Text('null');
   }
 
   Widget textDEscription() {
-    return const ReadMoreText(
-      '''Gedung Konica adalah bangunan kantor tipe Grade C yang terletak di Jakarta Pusat. Dengan total luas bangunan N/A m2, bangunan kantor beralamat di Jl.Gunung Sahari Raya No 78 tersedia untuk sewa. Gedung Konica memiliki 100, Dengan total luas bangunan N/A m2, bangunan kantor beralamat di Jl.Gunung Sahari Raya No 78 tersedia untuk sewa. Gedung Konica memiliki 100''',
-      trimLines: 5,
-      textAlign: TextAlign.left,
-      trimMode: TrimMode.Line,
-      trimCollapsedText: 'Read More',
-      trimExpandedText: 'Read less',
-      lessStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-      moreStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-      style: TextStyle(fontSize: 12, color: Colors.grey),
-    );
+    return widget.description != null
+        ? ReadMoreText(
+            widget.description!,
+            trimLines: 5,
+            textAlign: TextAlign.left,
+            trimMode: TrimMode.Line,
+            trimCollapsedText: 'Read More',
+            trimExpandedText: 'Read less',
+            lessStyle: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black),
+            moreStyle: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black),
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          )
+        : const Text('null');
   }
 
   Widget rowBox() {
@@ -243,7 +268,8 @@ class _DetailScreenState extends State<DetailScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.all(8),
+        width: 32,
+        height: 32,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.black, width: 1),
             borderRadius: BorderRadius.circular(8),
@@ -252,12 +278,12 @@ class _DetailScreenState extends State<DetailScreen> {
             ? const Icon(
                 Icons.favorite_border_sharp,
                 color: Colors.black,
-                size: 20,
+                size: 18,
               )
             : const Icon(
-                Icons.favorite,
+                Icons.favorite_rounded,
                 color: Colors.redAccent,
-                size: 20,
+                size: 18,
               ),
       ),
     );

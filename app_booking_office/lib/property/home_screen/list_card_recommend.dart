@@ -1,6 +1,8 @@
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ListCardRecommend extends StatefulWidget {
   const ListCardRecommend({Key? key}) : super(key: key);
@@ -10,19 +12,32 @@ class ListCardRecommend extends StatefulWidget {
 }
 
 class _ListCardRecommendState extends State<ListCardRecommend> {
+  late BookingOfficeViewModel bookingOfficeViewModel;
   @override
   Widget build(BuildContext context) {
+    bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: image.length,
+          itemCount: bookingOfficeViewModel.offices.length,
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => DetailScreen()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => DetailScreen(
+                            picture:
+                                bookingOfficeViewModel.offices[index].picture,
+                            title: bookingOfficeViewModel.offices[index].name,
+                            price: bookingOfficeViewModel.offices[index].price
+                                .toString(),
+                            location:
+                                bookingOfficeViewModel.offices[index].location,
+                            description: bookingOfficeViewModel
+                                .offices[index].desciption)));
               },
               child: Container(
                 margin: const EdgeInsets.only(bottom: 10),
@@ -42,15 +57,15 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          price(),
+                          price(index),
                           const SizedBox(
                             height: 5,
                           ),
-                          title(),
+                          title(index),
                           const SizedBox(
                             height: 5,
                           ),
-                          location(),
+                          location(index),
                           const SizedBox(
                             height: 5,
                           ),
@@ -58,7 +73,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                           const SizedBox(
                             height: 5,
                           ),
-                          rowDetail(),
+                          rowDetail(index),
                         ],
                       )
                     ],
@@ -72,30 +87,34 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
 
   Widget picture(int index) {
     return Container(
-      width: 120,
-      height: 120,
+      width: 84,
+      height: 84,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(image[index]), fit: BoxFit.cover)),
+              image:
+                  NetworkImage(bookingOfficeViewModel.offices[index].picture),
+              fit: BoxFit.cover)),
     );
   }
 
-  Widget price() {
+  Widget price(int index) {
     return Row(
-      children: const [
+      children: [
         Text(
-          '\$1993',
+          '\$' + bookingOfficeViewModel.offices[index].price,
           maxLines: 1,
-          style: TextStyle(
+          style: const TextStyle(
+              fontSize: 12,
               color: Color(0xFF4D89FF),
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.bold),
         ),
-        Text(
+        const Text(
           '/Month',
           maxLines: 1,
           style: TextStyle(
+            fontSize: 12,
             overflow: TextOverflow.ellipsis,
           ),
         )
@@ -103,38 +122,38 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
     );
   }
 
-  Widget title() {
+  Widget title(int index) {
     return Container(
       width: 200,
       decoration: const BoxDecoration(color: Colors.transparent),
-      child: const Text(
-        'Senayan city',
+      child: Text(
+        bookingOfficeViewModel.offices[index].name,
         maxLines: 2,
-        style: TextStyle(
-            fontSize: 17,
+        style: const TextStyle(
+            fontSize: 11,
             fontWeight: FontWeight.bold,
             overflow: TextOverflow.ellipsis),
       ),
     );
   }
 
-  Widget location() {
+  Widget location(int index) {
     return Row(
       children: [
         const Icon(
           Icons.location_on,
           color: Color(0xFF4D89FF),
-          size: 15,
+          size: 10,
         ),
         Container(
           width: 180,
           decoration: const BoxDecoration(color: Colors.transparent),
-          child: const Text(
-            'Senayan, Jakarta',
+          child: Text(
+            bookingOfficeViewModel.offices[index].location,
             maxLines: 2,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: 7,
                 overflow: TextOverflow.ellipsis),
           ),
         )
@@ -148,7 +167,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
         Icon(
           Icons.star,
           color: Color(0xFFFBCD0A),
-          size: 15,
+          size: 10,
         ),
         SizedBox(
           width: 2,
@@ -156,7 +175,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
         Icon(
           Icons.star,
           color: Color(0xFFFBCD0A),
-          size: 15,
+          size: 10,
         ),
         SizedBox(
           width: 2,
@@ -164,7 +183,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
         Icon(
           Icons.star,
           color: Color(0xFFFBCD0A),
-          size: 15,
+          size: 10,
         ),
         SizedBox(
           width: 2,
@@ -172,7 +191,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
         Icon(
           Icons.star,
           color: Color(0xFFFBCD0A),
-          size: 15,
+          size: 10,
         ),
         SizedBox(
           width: 2,
@@ -180,79 +199,85 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
         Icon(
           Icons.star,
           color: Color(0xFFFBCD0A),
-          size: 15,
+          size: 10,
         ),
         SizedBox(
           width: 2,
         ),
         Text(
           '(120) Review',
-          style: TextStyle(fontSize: 7),
+          style: TextStyle(fontSize: 4),
         )
       ],
     );
   }
 
-  Widget rowDetail() {
+  Widget rowDetail(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 60,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.groups_rounded,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('200', style: TextStyle(fontSize: 10))
+              Text(
+                bookingOfficeViewModel.offices[index].capacity.toString(),
+                style: const TextStyle(fontSize: 8),
+              )
             ],
           ),
         ),
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 40,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.man,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('10', style: TextStyle(fontSize: 10))
+              Text(bookingOfficeViewModel.offices[index].toilet.toString(),
+                  style: const TextStyle(
+                      fontSize: 8, overflow: TextOverflow.ellipsis))
             ],
           ),
         ),
         Container(
-          width: 50,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.stairs,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('8', style: TextStyle(fontSize: 10))
+              Text(bookingOfficeViewModel.offices[index].stairs.toString(),
+                  style: const TextStyle(fontSize: 8))
             ],
           ),
         ),

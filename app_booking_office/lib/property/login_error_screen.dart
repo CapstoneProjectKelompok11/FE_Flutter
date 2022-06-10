@@ -12,40 +12,7 @@ class _LoginErrorScreenState extends State<LoginErrorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text(
-                'Sign in Failed',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Icon(
-                Icons.cancel_rounded,
-                size: 120,
-                color: Colors.red,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Please enter valid email or password',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              buttonRetry(context)
-            ]),
-          ),
-        ),
-      ),
+      body: AlertDialog()
     );
   }
 

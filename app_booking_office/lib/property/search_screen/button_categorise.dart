@@ -6,8 +6,10 @@ class ButtonCategorize extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 58,
-      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(left: 10),
+      height: 40,
+      width: 40,
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),

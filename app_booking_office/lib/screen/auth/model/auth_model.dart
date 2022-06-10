@@ -1,9 +1,9 @@
 class Auth {
-  String? firstName;
-  String? lastName;
-  String? phone;
-  String? email;
-  String? password;
+  String firstName;
+  String lastName;
+  String phone;
+  String email;
+  String password;
 
   Auth({
     required this.firstName,

@@ -12,24 +12,24 @@ class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: 12,
-        ),
+      child: SizedBox(
+        width: 267,
+        height: 40,
         child: TextFormField(
           controller: searchController,
           decoration: InputDecoration(
+              hintStyle: const TextStyle(fontSize: 12),
               focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               hintText: 'Find location, or name a place',
               prefixIcon: const Icon(
-                Icons.search,
+                Icons.search_rounded,
                 color: Colors.black,
-                size: 35,
+                size: 30,
               )),
         ),
       ),

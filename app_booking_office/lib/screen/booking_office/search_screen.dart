@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       body: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+        padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
         child: SafeArea(
           child: SingleChildScrollView(
             clipBehavior: Clip.antiAlias,
@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   height: 10,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     SearchField(),
                     ButtonCategorize(),

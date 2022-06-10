@@ -8,7 +8,7 @@ class TextResult extends StatelessWidget {
     return const Text(
       'Result for Jakarta',
       style: TextStyle(
-          color: Colors.black, fontWeight: FontWeight.w700, fontSize: 18),
+          color: Colors.black, fontWeight: FontWeight.w700, fontSize: 16),
     );
   }
 }

@@ -1,39 +1,62 @@
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CardCarosel extends StatefulWidget {
-  const CardCarosel({Key? key}) : super(key: key);
+  const CardCarosel({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CardCarosel> createState() => _CardCaroselState();
 }
 
 class _CardCaroselState extends State<CardCarosel> {
+  late BookingOfficeViewModel bookingOfficeViewModel;
+
   @override
   Widget build(BuildContext context) {
+    bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Top Places',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            buttonViewMore(),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Top Places',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              buttonViewMore(),
+            ],
+          ),
         ),
         SizedBox(
-          height: 200,
+          height: 160,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
+            padding: const EdgeInsets.only(left: 30, right: 20),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: image.length,
+            itemCount: bookingOfficeViewModel.offices.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => DetailScreen()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => DetailScreen(
+                              picture: bookingOfficeViewModel
+                                  .offices[index].picture,
+                              title:
+                                  bookingOfficeViewModel.offices[index].name,
+                              price: bookingOfficeViewModel.offices[index].price
+                                  .toString(),
+                              location: bookingOfficeViewModel
+                                  .offices[index].location,
+                              description: bookingOfficeViewModel
+                                  .offices[index].desciption)));
                 },
                 //card
                 child: Container(
@@ -52,15 +75,15 @@ class _CardCaroselState extends State<CardCarosel> {
                       const SizedBox(
                         height: 5,
                       ),
-                      title(),
+                      title(index),
                       const SizedBox(
                         height: 5,
                       ),
-                      location(),
+                      location(index),
                       const SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
-                      rowDetail(),
+                      rowDetail(index),
                     ],
                   ),
                 ),
@@ -75,22 +98,26 @@ class _CardCaroselState extends State<CardCarosel> {
 
   Widget picture(int index) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 56.5, horizontal: 80),
+      width: 125,
+      height: 77,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(image[index]), fit: BoxFit.cover)),
+              image:
+                  NetworkImage(bookingOfficeViewModel.offices[index].picture),
+              fit: BoxFit.cover)),
     );
   }
 
-  Widget title() {
+  Widget title(int index) {
     return Container(
-      width: 140,
+      width: 120,
       decoration: const BoxDecoration(color: Colors.transparent),
-      child: const Text(
-        'Bandung, Jawa barat',
+      child: Text(
+        bookingOfficeViewModel.offices[index].name,
         maxLines: 2,
-        style: TextStyle(
+        style: const TextStyle(
+            fontSize: 11,
             color: Colors.black,
             fontWeight: FontWeight.bold,
             overflow: TextOverflow.ellipsis),
@@ -98,23 +125,23 @@ class _CardCaroselState extends State<CardCarosel> {
     );
   }
 
-  Widget location() {
+  Widget location(int index) {
     return Row(
       children: [
         const Icon(
           Icons.location_on,
           color: Color(0xFF4D89FF),
-          size: 15,
+          size: 10,
         ),
         Container(
-          width: 140,
+          width: 100,
           decoration: const BoxDecoration(color: Colors.transparent),
-          child: const Text(
-            'Senayan, Jakarta',
+          child: Text(
+            bookingOfficeViewModel.offices[index].location,
             maxLines: 1,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: 8,
                 overflow: TextOverflow.ellipsis),
           ),
         )
@@ -122,69 +149,72 @@ class _CardCaroselState extends State<CardCarosel> {
     );
   }
 
-  Widget rowDetail() {
+  Widget rowDetail(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 60,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.groups_rounded,
                 color: Colors.black,
                 size: 15,
               ),
               Text(
-                '200',
-                style: TextStyle(fontSize: 10),
+                bookingOfficeViewModel.offices[index].capacity.toString(),
+                style: const TextStyle(fontSize: 8),
               )
             ],
           ),
         ),
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 40,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.man,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('10', style: TextStyle(fontSize: 10))
+              Text(bookingOfficeViewModel.offices[index].toilet.toString(),
+                  style: const TextStyle(
+                      fontSize: 8, overflow: TextOverflow.ellipsis))
             ],
           ),
         ),
         Container(
-          width: 50,
-          height: 25,
+          width: 38,
+          height: 20,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.stairs,
                 color: Colors.black,
                 size: 15,
               ),
-              Text('8', style: TextStyle(fontSize: 10))
+              Text(bookingOfficeViewModel.offices[index].stairs.toString(),
+                  style: const TextStyle(fontSize: 8))
             ],
           ),
         ),
@@ -197,8 +227,10 @@ class _CardCaroselState extends State<CardCarosel> {
         onPressed: () {},
         child: const Text(
           'View More',
-          style:
-              TextStyle(color: Color(0xFF4D89FF), fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Color(0xFF4D89FF),
+              fontWeight: FontWeight.bold,
+              fontSize: 12),
         ));
   }
 }

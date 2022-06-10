@@ -246,14 +246,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (!formKey.currentState!.validate()) return;
             formKey.currentState!.save();
             //ini untuk menjalankan fungsi register dan mengirimkan data kepada model yang telah dibuat pada folder model
-            authProvider.register(Auth(
-                firstName: firstNameController.text,
-                lastName: lastNameNameController.text,
-                phone: phoneController.text,
-                email: emailController.text,
-                password: passwordController.text));
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const SuccesfulScreen()));
+            authProvider.register(
+                Auth(
+                    firstName: firstNameController.text,
+                    lastName: lastNameNameController.text,
+                    phone: phoneController.text,
+                    email: emailController.text,
+                    password: passwordController.text),
+                context);
           },
           child: const Text('Sign up')),
     );

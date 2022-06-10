@@ -1,3 +1,55 @@
+class BuildingOffice {
+  String picture;
+  String name;
+  String location;
+  int capacity;
+  int toilet;
+  int stairs;
+  int rating;
+  String price;
+  String desciption;
+
+  BuildingOffice({
+    required this.picture,
+    required this.name,
+    required this.price,
+    required this.location,
+    required this.capacity,
+    required this.toilet,
+    required this.stairs,
+    required this.rating,
+    required this.desciption,
+  });
+
+  //  BuildingOffice.fromJson(Map<String, dynamic> json) {
+  //   picture = json['picture'];
+  //   name = json['name'];
+  //   location = json['location'];
+  //   capacity = json['capacity'];
+  //   toilet = json['toilet'];
+  //   stairs = json['Stairs'];
+  //   rating = json['rating'];
+  //   price = json['price'];
+  //   desciption = json['desciption'];
+  //   id = json['id'];
+  // }
+
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+  //   data['picture'] = picture;
+  //   data['name'] = name;
+  //   data['price'] = price;
+  //   data['location'] = location;
+  //   data['capacity'] = capacity;
+  //   data['toilet'] = toilet;
+  //   data['Stairs'] = stairs;
+  //   data['rating'] = rating;
+  //   data['desciption'] = desciption;
+  //   data['id'] = id;
+  // return data;
+  // }
+}
+
 List<String> image = [
   'https://www.ceosuite.com/wp-content/uploads/2013/04/CEO_SSC_Room_Office_IMG_1611-1024x683.jpg',
   'https://www.officeevolution.com/hubfs/PrivateOfficeHomeUpdated.jpg',

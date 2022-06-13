@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
-import 'package:app_booking_office/property/login_failed_dialog.dart';
-import 'package:app_booking_office/property/login_succesfull_dialog.dart';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/api/auth_api.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';

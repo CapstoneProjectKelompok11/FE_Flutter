@@ -11,14 +11,15 @@ class LoginSuccesfullDialog extends StatefulWidget {
 class _LoginSuccesfullDialogState extends State<LoginSuccesfullDialog> {
   @override
   Widget build(BuildContext context) {
-    return const AlertDialog(
-      title: Center(
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      title: const Center(
         child: Text(
           'Login SuccesFull',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
-      content: Icon(
+      content: const Icon(
         Icons.check_circle,
         size: 100,
         color: Color(0xFF4D89FF),

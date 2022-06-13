@@ -137,6 +137,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
             ),
+            validator: (firstName) {
+              if (firstName == null) {
+                return "this field cannot be empty";
+              } else {
+                return null;
+              }
+            },
           ),
         ),
       ],
@@ -167,6 +174,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
             ),
+            validator: (lastName) {
+              if (lastName == null) {
+                return "this field cannot be empty";
+              } else {
+                return null;
+              }
+            },
           ),
         )
       ],
@@ -197,6 +211,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
             ),
+            validator: (phone) {
+              if (phone == null) {
+                return "this field cannot be empty";
+              } else {
+                return null;
+              }
+            },
           ),
         )
       ],
@@ -230,6 +251,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             validator: (email) {
               if (email != null && !EmailValidator.validate(email)) {
                 return "Enter valid email!";
+              }
+              if (email == null) {
+                return "This field cannot be empty";
               } else {
                 return null;
               }
@@ -279,6 +303,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               validator: (password) {
                 if (password != null && password.length < 8) {
                   return "Enter at least 8 characters";
+                }
+                if (password == null) {
+                  return "this field cannot be empty";
                 } else {
                   return null;
                 }

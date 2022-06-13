@@ -22,7 +22,7 @@ class _CardCaroselState extends State<CardCarosel> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -36,7 +36,7 @@ class _CardCaroselState extends State<CardCarosel> {
           height: 160,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
-            padding: const EdgeInsets.only(left: 30, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 10),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: bookingOfficeViewModel.offices.length,
@@ -47,10 +47,9 @@ class _CardCaroselState extends State<CardCarosel> {
                       context,
                       MaterialPageRoute(
                           builder: (_) => DetailScreen(
-                              picture: bookingOfficeViewModel
-                                  .offices[index].picture,
-                              title:
-                                  bookingOfficeViewModel.offices[index].name,
+                              picture:
+                                  bookingOfficeViewModel.offices[index].picture,
+                              title: bookingOfficeViewModel.offices[index].name,
                               price: bookingOfficeViewModel.offices[index].price
                                   .toString(),
                               location: bookingOfficeViewModel

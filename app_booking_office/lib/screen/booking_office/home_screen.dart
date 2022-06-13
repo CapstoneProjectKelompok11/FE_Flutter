@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (_) => const SearchScreen()));
                   },
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Icon(
                       Icons.settings_outlined,
                       color: Colors.black,
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 18,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
-import 'package:app_booking_office/property/login_error_screen.dart';
+import 'package:app_booking_office/property/login_failed_dialog.dart';
+import 'package:app_booking_office/property/login_succesfull_dialog.dart';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/api/auth_api.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
@@ -29,8 +30,8 @@ class AuthViewModel extends ChangeNotifier {
     changeState(AuthViewState.loading);
     try {
       AuthAPI().register(auth);
-  Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const SuccesfulScreen()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const SuccesfulScreen()));
       changeState(AuthViewState.none);
     } catch (e) {
       changeState(AuthViewState.error);
@@ -96,14 +97,10 @@ class AuthViewModel extends ChangeNotifier {
       String email, String password, BuildContext context) async {
     changeState(AuthViewState.loading);
     try {
-      AuthAPI().login(email, password, isChecked);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const BottomNavBar()));
+      AuthAPI().login(email, password, isChecked, context);
+    
       changeState(AuthViewState.none);
     } catch (e) {
-      debugPrint(e.toString());
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const LoginErrorScreen()));
       changeState(AuthViewState.error);
     }
     notifyListeners();

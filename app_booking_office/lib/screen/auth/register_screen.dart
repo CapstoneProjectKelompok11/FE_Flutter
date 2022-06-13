@@ -57,13 +57,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(
                       'Getting started',
                       style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Center(child: Text('Create account to continue')),
+                  const Center(
+                      child: Text('Create account to continue',
+                          style: TextStyle(fontSize: 12))),
                   const SizedBox(
                     height: 20,
                   ),
@@ -115,14 +117,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Firstname'),
+        const Text(
+          'Firstname',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          controller: firstNameController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            controller: firstNameController,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+            ),
           ),
         ),
       ],
@@ -133,14 +147,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Lastname'),
+        const Text(
+          'Lastname',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          controller: lastNameNameController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            controller: lastNameNameController,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+            ),
           ),
         )
       ],
@@ -151,14 +177,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Phone'),
+        const Text(
+          'Phone',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          controller: phoneController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            controller: phoneController,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+            ),
           ),
         )
       ],
@@ -169,22 +207,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Email'),
+        const Text(
+          'Email',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          controller: emailController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            controller: emailController,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+            ),
+            validator: (email) {
+              if (email != null && !EmailValidator.validate(email)) {
+                return "Enter valid email!";
+              } else {
+                return null;
+              }
+            },
           ),
-          validator: (email) {
-            if (email != null && !EmailValidator.validate(email)) {
-              return "Enter valid email!";
-            } else {
-              return null;
-            }
-          },
         )
       ],
     );
@@ -194,35 +244,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Password'),
+        const Text(
+          'Password',
+          style: TextStyle(fontSize: 12),
+        ),
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-            controller: passwordController,
-            obscureText: _isVisible,
-            autocorrect: false,
-            enableSuggestions: false,
-            decoration: InputDecoration(
-              suffixIcon: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _isVisible = !_isVisible;
-                    });
-                  },
-                  child: _isVisible
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility)),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            validator: (password) {
-              if (password != null && password.length < 8) {
-                return "Enter at least 8 characters";
-              } else {
-                return null;
-              }
-            })
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+              controller: passwordController,
+              obscureText: _isVisible,
+              autocorrect: false,
+              enableSuggestions: false,
+              decoration: InputDecoration(
+                suffixIcon: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _isVisible = !_isVisible;
+                      });
+                    },
+                    child: _isVisible
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility)),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.circular(8)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              validator: (password) {
+                if (password != null && password.length < 8) {
+                  return "Enter at least 8 characters";
+                } else {
+                  return null;
+                }
+              }),
+        )
       ],
     );
   }
@@ -289,11 +350,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget buttonGoogleSignIn() {
     return Container(
+      height: 50,
       width: MediaQuery.of(context).size.width,
       decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-              side: const BorderSide(color: Colors.black)),
+              borderRadius: BorderRadius.circular(8),
+              side: const BorderSide(color: Colors.black, width: 2)),
           color: Colors.white),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(

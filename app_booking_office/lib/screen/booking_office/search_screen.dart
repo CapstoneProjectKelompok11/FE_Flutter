@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       body: Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: SafeArea(
           child: SingleChildScrollView(
             clipBehavior: Clip.antiAlias,

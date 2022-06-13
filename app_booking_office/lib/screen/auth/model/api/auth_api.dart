@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:app_booking_office/property/bottom_navigation_bar.dart';
+import 'package:app_booking_office/property/login_failed_dialog.dart';
+import 'package:app_booking_office/property/login_succesfull_dialog.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:dio/dio.dart';
@@ -7,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class AuthAPI {
   bool isChecked = false;
-   Future<void> register(Auth auth) async {
+  Future<void> register(Auth auth) async {
     try {
       var dataUser = {
         'firstName': auth.firstName,
@@ -35,7 +39,8 @@ class AuthAPI {
     }
   }
 
-  Future<void> login(String email, String password, bool isChecked) async {
+  Future<void> login(String email, String password, bool isChecked,
+      BuildContext context) async {
     try {
       var dataLogin = {'email': email, 'password': password};
       var dataMap = jsonEncode(dataLogin);
@@ -52,7 +57,17 @@ class AuthAPI {
             ? AuthViewModel().userPreferences(email, password, token)
             : null;
       }
+      showDialog(
+          context: context,
+          builder: (context) => const LoginSuccesfullDialog());
+      Timer(
+          const Duration(seconds: 2),
+          () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => const BottomNavBar())));
     } catch (e) {
+      debugPrint(e.toString());
+      showDialog(
+          context: context, builder: (context) => const LoginFailedDialog());
       debugPrint(e.toString());
     }
   }

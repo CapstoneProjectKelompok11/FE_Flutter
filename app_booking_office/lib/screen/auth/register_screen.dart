@@ -124,27 +124,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-            controller: firstNameController,
-            decoration: InputDecoration(
+        TextFormField(
+          controller: firstNameController,
+          decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-            ),
-            validator: (firstName) {
-              if (firstName == null) {
-                return "this field cannot be empty";
-              } else {
-                return null;
-              }
-            },
-          ),
+              errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8))),
+          validator: (firstName) {
+            if (firstName != null && firstName.isEmpty) {
+              return "This field cannot be empty";
+            } else {
+              return null;
+            }
+          },
         ),
       ],
     );
@@ -161,27 +164,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-            controller: lastNameNameController,
-            decoration: InputDecoration(
+        TextFormField(
+          controller: lastNameNameController,
+          decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-            ),
-            validator: (lastName) {
-              if (lastName == null) {
-                return "this field cannot be empty";
-              } else {
-                return null;
-              }
-            },
-          ),
+              errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8))),
+          validator: (lastName) {
+            if (lastName != null && lastName.isEmpty) {
+              return "This field cannot be empty";
+            } else {
+              return null;
+            }
+          },
         )
       ],
     );
@@ -198,27 +204,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-            controller: phoneController,
-            decoration: InputDecoration(
+        TextFormField(
+          controller: phoneController,
+          decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-            ),
-            validator: (phone) {
-              if (phone == null) {
-                return "this field cannot be empty";
-              } else {
-                return null;
-              }
-            },
-          ),
+              errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8))),
+          validator: (phone) {
+            if (phone != null && phone.isEmpty) {
+              return "This field cannot be empty";
+            } else {
+              return null;
+            }
+          },
         )
       ],
     );
@@ -235,30 +244,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-            controller: emailController,
-            decoration: InputDecoration(
+        TextFormField(
+          controller: emailController,
+          decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-            ),
-            validator: (email) {
-              if (email != null && !EmailValidator.validate(email)) {
-                return "Enter valid email!";
-              }
-              if (email == null) {
-                return "This field cannot be empty";
-              } else {
-                return null;
-              }
-            },
-          ),
+              errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8))),
+          validator: (email) {
+            if (email != null && !EmailValidator.validate(email)) {
+              return "Enter valid email!";
+            }
+            if (email != null && email.isEmpty) {
+              return "This field cannot be empty";
+            } else {
+              return null;
+            }
+          },
         )
       ],
     );
@@ -275,15 +287,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-              controller: passwordController,
-              obscureText: _isVisible,
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: InputDecoration(
+        TextFormField(
+            controller: passwordController,
+            obscureText: _isVisible,
+            autocorrect: false,
+            enableSuggestions: false,
+            decoration: InputDecoration(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 suffixIcon: InkWell(
                     onTap: () {
                       setState(() {
@@ -299,18 +310,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(8)),
-              ),
-              validator: (password) {
-                if (password != null && password.length < 8) {
-                  return "Enter at least 8 characters";
-                }
-                if (password == null) {
-                  return "this field cannot be empty";
-                } else {
-                  return null;
-                }
-              }),
-        )
+                errorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
+                    borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                    borderRadius: BorderRadius.circular(8))),
+            validator: (password) {
+              if (password != null && password.length < 8) {
+                return "Enter at least 8 characters";
+              }
+              if (password != null && password.isEmpty) {
+                return "This field cannot be empty";
+              } else {
+                return null;
+              }
+            })
       ],
     );
   }

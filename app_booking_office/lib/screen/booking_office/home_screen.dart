@@ -2,6 +2,7 @@ import 'package:app_booking_office/property/home_screen/card_carosel.dart';
 import 'package:app_booking_office/property/home_screen/drop_down_button.dart';
 import 'package:app_booking_office/property/home_screen/form_search.dart';
 import 'package:app_booking_office/property/home_screen/list_card_recommend.dart';
+import 'package:app_booking_office/property/loading_screen.dart';
 import 'package:app_booking_office/screen/booking_office/search_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    final isLoading =
+        bookingOfficeViewModel.states == BookOfficeViewState.loading;
+    final isError = bookingOfficeViewModel.states == BookOfficeViewState.error;
+    if (isLoading) {
+      return const LoadingScreen();
+    }
+    if (isError) {
+      return const Center(
+        child: Text('Something wrong :('),
+      );
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       body: SafeArea(

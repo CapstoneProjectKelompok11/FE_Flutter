@@ -100,22 +100,33 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-            controller: emailController,
-            decoration: InputDecoration(
+        TextFormField(
+          controller: emailController,
+          decoration: InputDecoration(
               hintStyle: const TextStyle(fontSize: 12),
-              suffixIcon: const Icon(Icons.alternate_email),
+              suffixIcon: const Icon(
+                Icons.alternate_email,
+                color: Colors.black,
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-            ),
-          ),
+              errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8))),
+          validator: (email) {
+            if (email != null && email.isEmpty) {
+              return 'This field cannot be empty';
+            }
+          },
         ),
       ],
     );
@@ -130,15 +141,12 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 10),
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: TextFormField(
-            controller: passwordController,
-            obscureText: _isVisible,
-            autocorrect: false,
-            enableSuggestions: false,
-            decoration: InputDecoration(
+        TextFormField(
+          controller: passwordController,
+          obscureText: _isVisible,
+          autocorrect: false,
+          enableSuggestions: false,
+          decoration: InputDecoration(
               hintStyle: const TextStyle(fontSize: 12),
               suffixIcon: InkWell(
                   onTap: () {
@@ -147,16 +155,33 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                   },
                   child: _isVisible
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility)),
+                      ? const Icon(
+                          Icons.visibility_off,
+                          color: Colors.grey,
+                        )
+                      : const Icon(
+                          Icons.visibility,
+                          color: Colors.black,
+                        )),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(8)),
               focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-            ),
-          ),
+              errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8))),
+          validator: (password) {
+            if (password != null && password.isEmpty) {
+              return 'This field cannot be empty';
+            }
+          },
         ),
       ],
     );

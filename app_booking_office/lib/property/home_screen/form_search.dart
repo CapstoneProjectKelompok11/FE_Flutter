@@ -43,6 +43,6 @@ class _SearchFieldState extends State<SearchField> {
         ),
       ),
     );
-    ;
+    
   }
 }

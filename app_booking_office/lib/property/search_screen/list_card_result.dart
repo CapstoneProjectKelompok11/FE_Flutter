@@ -16,73 +16,70 @@ class _ListCardResultState extends State<ListCardResult> {
   @override
   Widget build(BuildContext context) {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: image.length,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 15),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        picture(index),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                title(index),
-                                rowDetail(index),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Colors.blue,
-                                  size: 10,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                location(index),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            rating(index),
-                          ],
-                        ),
-                      ],
-                    ),
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: bookingOfficeViewModel.offices.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      picture(index),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              title(index),
+                              rowDetail(index),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: Colors.blue,
+                                size: 10,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              location(index),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          rating(index),
+                        ],
+                      ),
+                    ],
                   ),
-                  Positioned(top: 15, right: 15, child: ButtonFavorite())
-                ],
-              ),
-            );
-          }),
-    );
+                ),
+                Positioned(top: 15, right: 15, child: ButtonFavorite())
+              ],
+            ),
+          );
+        });
   }
 
   Widget categorize() {

@@ -60,10 +60,7 @@ class AuthAPI {
       showDialog(
           context: context,
           builder: (context) => const LoginSuccesfullDialog());
-      Timer(
-          const Duration(seconds: 2),
-          () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => const BottomNavBar())));
+     
     } catch (e) {
       debugPrint(e.toString());
       showDialog(

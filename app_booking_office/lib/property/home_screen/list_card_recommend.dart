@@ -21,7 +21,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: bookingOfficeViewModel.offices.length,
+          itemCount: bookingOfficeViewModel.building.length,
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
@@ -29,15 +29,16 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => DetailScreen(
-                            picture:
-                                bookingOfficeViewModel.offices[index].picture,
-                            title: bookingOfficeViewModel.offices[index].name,
-                            price: bookingOfficeViewModel.offices[index].price
+                            id: bookingOfficeViewModel.building[index].id
                                 .toString(),
+                            picture:
+                                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}',
+                            title: bookingOfficeViewModel.building[index].name,
+                            price: 3444.toString(),
                             location:
-                                bookingOfficeViewModel.offices[index].location,
+                                bookingOfficeViewModel.building[index].address,
                             description: bookingOfficeViewModel
-                                .offices[index].desciption)));
+                                .building[index].description)));
               },
               child: Container(
                 margin: const EdgeInsets.only(bottom: 10),
@@ -92,17 +93,17 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image:
-                  NetworkImage(bookingOfficeViewModel.offices[index].picture),
+              image: NetworkImage(
+                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}'),
               fit: BoxFit.cover)),
     );
   }
 
   Widget price(int index) {
     return Row(
-      children: [
+      children: const [
         Text(
-          '\$' + bookingOfficeViewModel.offices[index].price,
+          '\$' + '8777',
           maxLines: 1,
           style: const TextStyle(
               fontSize: 12,
@@ -110,7 +111,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.bold),
         ),
-        const Text(
+        Text(
           '/Month',
           maxLines: 1,
           style: TextStyle(
@@ -127,7 +128,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       width: 200,
       decoration: const BoxDecoration(color: Colors.transparent),
       child: Text(
-        bookingOfficeViewModel.offices[index].name,
+        bookingOfficeViewModel.building[index].name,
         maxLines: 2,
         style: const TextStyle(
             fontSize: 11,
@@ -149,7 +150,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
           width: 180,
           decoration: const BoxDecoration(color: Colors.transparent),
           child: Text(
-            bookingOfficeViewModel.offices[index].location,
+            bookingOfficeViewModel.building[index].address,
             maxLines: 2,
             style: const TextStyle(
                 color: Colors.black,
@@ -233,7 +234,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                 size: 15,
               ),
               Text(
-                bookingOfficeViewModel.offices[index].capacity.toString(),
+                bookingOfficeViewModel.building[index].capacity.toString(),
                 style: const TextStyle(fontSize: 8),
               )
             ],
@@ -255,7 +256,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                 color: Colors.black,
                 size: 15,
               ),
-              Text(bookingOfficeViewModel.offices[index].toilet.toString(),
+              Text(88.toString(),
                   style: const TextStyle(
                       fontSize: 8, overflow: TextOverflow.ellipsis))
             ],
@@ -276,8 +277,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                 color: Colors.black,
                 size: 15,
               ),
-              Text(bookingOfficeViewModel.offices[index].stairs.toString(),
-                  style: const TextStyle(fontSize: 8))
+              Text(8.toString(), style: const TextStyle(fontSize: 8))
             ],
           ),
         ),

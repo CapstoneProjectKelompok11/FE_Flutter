@@ -17,12 +17,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late BookingOfficeViewModel bookingOfficeViewModel;
+  String? image;
 
   Future<void> initDataBuilding() async {
     Future.delayed(Duration.zero, () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
-      await bookingOfficeViewModel.getOffice();
+      await bookingOfficeViewModel.getBuilding();
     });
   }
 

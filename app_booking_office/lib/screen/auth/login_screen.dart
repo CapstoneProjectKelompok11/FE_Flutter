@@ -180,6 +180,8 @@ class _LoginScreenState extends State<LoginScreen> {
           validator: (password) {
             if (password != null && password.isEmpty) {
               return 'This field cannot be empty';
+            } else {
+              return null;
             }
           },
         ),

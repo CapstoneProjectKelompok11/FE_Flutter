@@ -1,7 +1,11 @@
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
+import 'package:app_booking_office/property/loading_screen.dart';
+import 'package:app_booking_office/screen/booking_office/booking_form_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -10,9 +14,11 @@ class DetailScreen extends StatefulWidget {
   String? price;
   String? location;
   String? description;
+  String id;
   DetailScreen(
       {Key? key,
       this.picture,
+      required this.id,
       this.title,
       this.price,
       this.location,
@@ -25,9 +31,37 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool _isfavorite = true;
+  late BookingOfficeViewModel bookingOfficeViewModel;
+  Future<void> getDataFloor() async {
+    Future.delayed(const Duration(milliseconds: 1), () async {
+      bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getFloor(widget.id);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDataFloor();
+  }
+
   @override
   Widget build(BuildContext context) {
+    bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    final isLoading =
+        bookingOfficeViewModel.states == BookOfficeViewState.loading;
+    final isError = bookingOfficeViewModel.states == BookOfficeViewState.error;
+    if (isLoading) {
+      return const LoadingScreen();
+    }
+    if (isError) {
+      return const Center(
+        child: Text('Something wrong :('),
+      );
+    }
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -70,7 +104,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 height: 15,
               ),
               const Text(
-                'Amenity',
+                'Type Office',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -79,15 +113,18 @@ class _DetailScreenState extends State<DetailScreen> {
               const SizedBox(
                 height: 15,
               ),
-              rowBox(),
+              listType(),
               const SizedBox(
                 height: 30,
               ),
-              elevatedButtonBookNow()
             ],
           ),
         ),
       )),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: BottomAppBar(elevation: 0, child: elevatedButtonBookNow()),
+      ),
     );
   }
 
@@ -165,12 +202,18 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget title() {
     return widget.title != null
-        ? Text(
-            widget.title!,
-            style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.ellipsis),
+        ? Flexible(
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Text(
+                widget.title!,
+                maxLines: 2,
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis),
+              ),
+            ),
           )
         : const Text('null');
   }
@@ -202,44 +245,6 @@ class _DetailScreenState extends State<DetailScreen> {
         : const Text('null');
   }
 
-  Widget rowBox() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(28),
-          decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9),
-              borderRadius: BorderRadius.circular(8)),
-        ),
-        Container(
-          padding: const EdgeInsets.all(28),
-          decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9),
-              borderRadius: BorderRadius.circular(8)),
-        ),
-        Container(
-          padding: const EdgeInsets.all(28),
-          decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9),
-              borderRadius: BorderRadius.circular(8)),
-        ),
-        Container(
-          padding: const EdgeInsets.all(28),
-          decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9),
-              borderRadius: BorderRadius.circular(8)),
-        ),
-        Container(
-          padding: const EdgeInsets.all(28),
-          decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9),
-              borderRadius: BorderRadius.circular(8)),
-        ),
-      ],
-    );
-  }
-
   Widget elevatedButtonBookNow() {
     return Container(
       width: MediaQuery.of(context).size.height,
@@ -255,7 +260,10 @@ class _DetailScreenState extends State<DetailScreen> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => BookingFormScreen()));
+          },
           child: const Text('Book Now')),
     );
   }
@@ -286,6 +294,158 @@ class _DetailScreenState extends State<DetailScreen> {
                 size: 18,
               ),
       ),
+    );
+  }
+
+  Widget listType() {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: bookingOfficeViewModel.floor.length,
+        itemBuilder: (index, context) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+                color: const Color(0xFFF8F8F8),
+                borderRadius: BorderRadius.circular(8)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 10, top: 10, bottom: 10, right: 10),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 89,
+                        height: 89,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.floor[context].image}'),
+                                fit: BoxFit.cover)),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              bookingOfficeViewModel.floor[context].name,
+                              maxLines: 2,
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            rowDetail(context),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Rp. ${bookingOfficeViewModel.floor[context].startingPrice.toString()}/bulan',
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      gradient: const LinearGradient(colors: [
+                                        Color.fromRGBO(77, 137, 255, 18.5),
+                                        Colors.blueAccent,
+                                        Color(0xFF4D89FF)
+                                      ])),
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          primary: Colors.transparent,
+                                          shadowColor: Colors.transparent),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            index,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    BookingFormScreen()));
+                                      },
+                                      child: const Text('Book Now')),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget rowDetail(int context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey[200],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Icon(
+                Icons.photo_size_select_small_outlined,
+                color: Colors.black,
+                size: 15,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                bookingOfficeViewModel.floor[context].floorSize,
+                style: const TextStyle(fontSize: 8),
+              )
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(2),
+          margin: const EdgeInsets.only(right: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey[200],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Icon(
+                Icons.group,
+                color: Colors.black,
+                size: 15,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(bookingOfficeViewModel.floor[context].maxCapacity.toString(),
+                  style: const TextStyle(
+                      fontSize: 8, overflow: TextOverflow.ellipsis))
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

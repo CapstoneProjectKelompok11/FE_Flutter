@@ -39,7 +39,7 @@ class _CardCaroselState extends State<CardCarosel> {
             padding: const EdgeInsets.only(left: 20, right: 10),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: bookingOfficeViewModel.offices.length,
+            itemCount: bookingOfficeViewModel.building.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
@@ -47,15 +47,17 @@ class _CardCaroselState extends State<CardCarosel> {
                       context,
                       MaterialPageRoute(
                           builder: (_) => DetailScreen(
-                              picture:
-                                  bookingOfficeViewModel.offices[index].picture,
-                              title: bookingOfficeViewModel.offices[index].name,
-                              price: bookingOfficeViewModel.offices[index].price
+                              id: bookingOfficeViewModel.building[index].id
                                   .toString(),
+                              picture:
+                                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}',
+                              title:
+                                  bookingOfficeViewModel.building[index].name,
+                              price: 3444.toString(),
                               location: bookingOfficeViewModel
-                                  .offices[index].location,
+                                  .building[index].address,
                               description: bookingOfficeViewModel
-                                  .offices[index].desciption)));
+                                  .building[index].description)));
                 },
                 //card
                 child: Container(
@@ -102,8 +104,8 @@ class _CardCaroselState extends State<CardCarosel> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image:
-                  NetworkImage(bookingOfficeViewModel.offices[index].picture),
+              image: NetworkImage(
+                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}'),
               fit: BoxFit.cover)),
     );
   }
@@ -113,7 +115,7 @@ class _CardCaroselState extends State<CardCarosel> {
       width: 120,
       decoration: const BoxDecoration(color: Colors.transparent),
       child: Text(
-        bookingOfficeViewModel.offices[index].name,
+        bookingOfficeViewModel.building[index].name,
         maxLines: 2,
         style: const TextStyle(
             fontSize: 11,
@@ -136,7 +138,7 @@ class _CardCaroselState extends State<CardCarosel> {
           width: 100,
           decoration: const BoxDecoration(color: Colors.transparent),
           child: Text(
-            bookingOfficeViewModel.offices[index].location,
+            bookingOfficeViewModel.building[index].address,
             maxLines: 1,
             style: const TextStyle(
                 color: Colors.black,
@@ -169,7 +171,7 @@ class _CardCaroselState extends State<CardCarosel> {
                 size: 15,
               ),
               Text(
-                bookingOfficeViewModel.offices[index].capacity.toString(),
+                bookingOfficeViewModel.building[index].capacity.toString(),
                 style: const TextStyle(fontSize: 8),
               )
             ],
@@ -191,7 +193,7 @@ class _CardCaroselState extends State<CardCarosel> {
                 color: Colors.black,
                 size: 15,
               ),
-              Text(bookingOfficeViewModel.offices[index].toilet.toString(),
+              Text('29',
                   style: const TextStyle(
                       fontSize: 8, overflow: TextOverflow.ellipsis))
             ],
@@ -212,8 +214,7 @@ class _CardCaroselState extends State<CardCarosel> {
                 color: Colors.black,
                 size: 15,
               ),
-              Text(bookingOfficeViewModel.offices[index].stairs.toString(),
-                  style: const TextStyle(fontSize: 8))
+              Text('40', style: const TextStyle(fontSize: 8))
             ],
           ),
         ),

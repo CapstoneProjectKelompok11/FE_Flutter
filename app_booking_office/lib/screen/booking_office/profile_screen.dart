@@ -1,5 +1,6 @@
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:app_booking_office/screen/booking_office/edit_profile_screen.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
+    final bookingOfficeViewModeel =
+        Provider.of<BookingOfficeViewModel>(context);
     return Scaffold(
         backgroundColor: const Color(0xFFF4F4F4),
         appBar: AppBar(
@@ -38,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  profilePicture(),
+                  profilePicture(bookingOfficeViewModeel),
                   const SizedBox(
                     width: 15,
                   ),
@@ -57,165 +60,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(
                 height: 30,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => EditProfileScreen()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Icon(
-                          Icons.create_rounded,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Edit Profile',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              editProfileButton(),
               const SizedBox(
                 height: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Icon(
-                          CupertinoIcons.gear_alt_fill,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Settings',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              buttonSettings(),
               const SizedBox(
                 height: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Icon(
-                          CupertinoIcons.ellipsis_circle_fill,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'FAQs',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              buttonFaqs(),
               const SizedBox(
                 height: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Icon(
-                          CupertinoIcons.question_circle_fill,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Help Centere',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              helpCentreButton(),
               const SizedBox(
                 height: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      authViewModel.logout(context);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Icon(
-                          CupertinoIcons.square_arrow_right,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Sign Out',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              buttonSignOut(authViewModel),
               const SizedBox(
                 height: 20,
               ),
@@ -224,15 +85,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-  Widget profilePicture() {
+  Widget profilePicture(BookingOfficeViewModel bookingOfficeViewModel) {
     return SizedBox(
       width: 64,
       height: 64,
       child: ClipOval(
-        child: Image.network(
-          'https://6.viki.io/image/794f78782da94d6799fd3cd978e50e96/dummy.jpeg?s=900x600&e=t',
-          fit: BoxFit.cover,
-        ),
+        child: bookingOfficeViewModel.image != null
+            ? Image.file(
+                bookingOfficeViewModel.image!,
+                fit: BoxFit.cover,
+              )
+            : Image.network(
+                'https://180dc.org/wp-content/uploads/2018/05/empty.png'),
       ),
     );
   }
@@ -248,6 +112,166 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return const Text(
       'Nobody@gmail.com',
       style: TextStyle(color: Color(0xFF868686), fontSize: 12),
+    );
+  }
+
+  Widget editProfileButton() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => EditProfileScreen()));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Icon(
+                Icons.create_rounded,
+                color: Colors.black,
+                size: 25,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Edit Profile',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget helpCentreButton() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Icon(
+                CupertinoIcons.question_circle_fill,
+                color: Colors.black,
+                size: 25,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Help Centere',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buttonSignOut(AuthViewModel authViewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {
+            authViewModel.logout(context);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Icon(
+                CupertinoIcons.square_arrow_right,
+                color: Colors.black,
+                size: 25,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Sign Out',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buttonFaqs() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Icon(
+                CupertinoIcons.ellipsis_circle_fill,
+                color: Colors.black,
+                size: 25,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'FAQs',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buttonSettings() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Icon(
+                CupertinoIcons.gear_alt_fill,
+                color: Colors.black,
+                size: 25,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Settings',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

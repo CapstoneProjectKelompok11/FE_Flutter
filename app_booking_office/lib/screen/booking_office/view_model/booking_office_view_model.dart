@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:app_booking_office/model/api/booking_office_api.dart';
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum BookOfficeViewState { none, loading, error }
 
@@ -8,11 +11,10 @@ class BookingOfficeViewModel extends ChangeNotifier {
   List<BuildingOffice> _office = [];
   List<BuildingOffice> get offices => _office;
 
+  File? image;
+
   List<DataComplex> _complex = [];
   List<DataComplex> get complex => _complex;
-
-  List<ImageBuildings> _imageBuilding = [];
-  List<ImageBuildings> get imageBuildings => _imageBuilding;
 
   List<DataFloor> _floor = [];
   List<DataFloor> get floor => _floor;
@@ -22,6 +24,12 @@ class BookingOfficeViewModel extends ChangeNotifier {
 
   List<DataBuilding> _building = [];
   List<DataBuilding> get building => _building;
+
+  List<DataBuilding> _buildingById = [];
+  List<DataBuilding> get buildingById => _buildingById;
+
+  List<DataBuilding> _buildingByComplex = [];
+  List<DataBuilding> get buildingByComplex => _buildingByComplex;
 
   BookOfficeViewState _states = BookOfficeViewState.none;
   BookOfficeViewState get states => _states;
@@ -86,13 +94,46 @@ class BookingOfficeViewModel extends ChangeNotifier {
   Future<void> getBuilding() async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getBuilding('0', '5');
+      var data = await BookOfficeAPI.getBuilding('', '0', '8');
       _building = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());
       changeState(BookOfficeViewState.error);
     }
+    notifyListeners();
+  }
+
+  Future<void> getBuildingById(String complexId) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getBuilding(complexId, '0', '4');
+      _buildingById = data!;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getBuildingByComplex(String complexId) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getBuilding(complexId, '0', '1');
+      _buildingByComplex = data!;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> pickImageGallery() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final imageTemporary = File(image!.path);
+    this.image = imageTemporary;
     notifyListeners();
   }
 }

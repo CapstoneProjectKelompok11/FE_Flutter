@@ -1,20 +1,26 @@
+import 'package:app_booking_office/property/loading_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:app_booking_office/property/search_screen/button_back.dart';
 import 'package:app_booking_office/property/search_screen/button_categorise.dart';
 import 'package:app_booking_office/property/search_screen/list_card_result.dart';
 import 'package:app_booking_office/property/search_screen/search_field.dart';
 import 'package:app_booking_office/property/search_screen/text_result.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 
-import 'package:flutter/material.dart';
+class ListingScreen extends StatefulWidget {
+  String id;
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  ListingScreen({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<ListingScreen> createState() => _ListingScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _ListingScreenState extends State<ListingScreen> {
   TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +46,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const ListCardResult(),
+                ListCardResult(
+                  id: widget.id,
+                ),
               ],
             ),
           ),

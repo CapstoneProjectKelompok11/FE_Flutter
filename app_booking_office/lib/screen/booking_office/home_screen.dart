@@ -3,8 +3,9 @@ import 'package:app_booking_office/property/home_screen/drop_down_button.dart';
 import 'package:app_booking_office/property/home_screen/form_search.dart';
 import 'package:app_booking_office/property/home_screen/list_card_recommend.dart';
 import 'package:app_booking_office/property/loading_screen.dart';
-import 'package:app_booking_office/screen/booking_office/search_screen.dart';
+import 'package:app_booking_office/screen/booking_office/listing_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,10 +28,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> initDataBuildingById() async {
+    Future.delayed(Duration.zero, () async {
+      bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getBuildingById('3');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     initDataBuilding();
+    initDataBuildingById();
   }
 
   @override
@@ -54,20 +64,15 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(top: 30),
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const SearchScreen()));
-                  },
+                  onTap: () {},
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Icon(
-                      Icons.settings_outlined,
+                      CupertinoIcons.bell_fill,
                       color: Colors.black,
                       size: 25,
                     ),
@@ -81,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                CardCarosel(),
+                const CardCarosel(),
                 const SizedBox(
                   height: 18,
                 ),
@@ -99,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Komplek 1',
+                            'Tanah Abang',
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton(

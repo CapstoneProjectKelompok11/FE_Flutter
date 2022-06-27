@@ -1,3 +1,4 @@
+import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class _LoginSuccesfullDialogState extends State<LoginSuccesfullDialog> {
         content: ElevatedButton(
             onPressed: () {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const HomeScreen()));
+                  MaterialPageRoute(builder: (_) => const BottomNavBar()));
             },
             child: const Text('Continue')));
   }

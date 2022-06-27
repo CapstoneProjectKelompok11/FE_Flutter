@@ -16,74 +16,68 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
   @override
   Widget build(BuildContext context) {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: bookingOfficeViewModel.building.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => DetailScreen(
-                            id: bookingOfficeViewModel.building[index].id
-                                .toString(),
-                            picture:
-                                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}',
-                            title: bookingOfficeViewModel.building[index].name,
-                            price: 3444.toString(),
-                            location:
-                                bookingOfficeViewModel.building[index].address,
-                            description: bookingOfficeViewModel
-                                .building[index].description)));
-              },
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      picture(index),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          price(index),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          title(index),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          location(index),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          rating(),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          rowDetail(index),
-                        ],
-                      )
-                    ],
-                  ),
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: bookingOfficeViewModel.buildingById.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => DetailScreen(
+                          id: bookingOfficeViewModel.buildingById[index].id
+                              .toString(),
+                          picture:
+                              'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}',
+                          title:
+                              bookingOfficeViewModel.buildingById[index].name,
+                          price: 3444.toString(),
+                          location: bookingOfficeViewModel
+                              .buildingById[index].address,
+                          description: bookingOfficeViewModel
+                              .buildingById[index].description)));
+            },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    picture(index),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        title(index),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        location(index),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        rating(),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        rowDetail(index)
+                      ],
+                    )
+                  ],
                 ),
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 
   Widget picture(int index) {
@@ -93,8 +87,10 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(
-                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}'),
+              image: NetworkImage(bookingOfficeViewModel
+                      .buildingById[index].images[0].fileName.isNotEmpty
+                  ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'
+                  : 'https://6.viki.io/image/794f78782da94d6799fd3cd978e50e96/dummy.jpeg?s=900x600&e=t'),
               fit: BoxFit.cover)),
     );
   }
@@ -128,7 +124,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       width: 200,
       decoration: const BoxDecoration(color: Colors.transparent),
       child: Text(
-        bookingOfficeViewModel.building[index].name,
+        bookingOfficeViewModel.buildingById[index].name,
         maxLines: 2,
         style: const TextStyle(
             fontSize: 11,
@@ -150,7 +146,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
           width: 180,
           decoration: const BoxDecoration(color: Colors.transparent),
           child: Text(
-            bookingOfficeViewModel.building[index].address,
+            bookingOfficeViewModel.buildingById[index].address,
             maxLines: 2,
             style: const TextStyle(
                 color: Colors.black,
@@ -219,8 +215,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       children: [
         Container(
           margin: const EdgeInsets.only(right: 5),
-          width: 38,
-          height: 20,
+          padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
@@ -233,38 +228,18 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                 color: Colors.black,
                 size: 15,
               ),
+              const SizedBox(
+                width: 5,
+              ),
               Text(
-                bookingOfficeViewModel.building[index].capacity.toString(),
+                bookingOfficeViewModel.buildingById[index].capacity.toString(),
                 style: const TextStyle(fontSize: 8),
               )
             ],
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(right: 5),
-          width: 38,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.grey[200],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Icon(
-                Icons.man,
-                color: Colors.black,
-                size: 15,
-              ),
-              Text(88.toString(),
-                  style: const TextStyle(
-                      fontSize: 8, overflow: TextOverflow.ellipsis))
-            ],
-          ),
-        ),
-        Container(
-          width: 38,
-          height: 20,
+          padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey[200],
@@ -277,7 +252,13 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                 color: Colors.black,
                 size: 15,
               ),
-              Text(8.toString(), style: const TextStyle(fontSize: 8))
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                  bookingOfficeViewModel.buildingById[index].floorCount
+                      .toString(),
+                  style: const TextStyle(fontSize: 8))
             ],
           ),
         ),

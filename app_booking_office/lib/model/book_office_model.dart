@@ -345,7 +345,7 @@ class DataBuilding {
   final int floorCount;
   final int capacity;
   final List<ImageBuildings> images;
-  final Complex complex;
+  final ComplexBuilding complex;
 
   factory DataBuilding.fromJson(Map<String, dynamic> json) => DataBuilding(
         id: json["id"],
@@ -359,7 +359,7 @@ class DataBuilding {
         capacity: json["capacity"],
         images: List<ImageBuildings>.from(
             json["images"].map((x) => ImageBuildings.fromJson(x))),
-        complex: Complex.fromJson(json["complex"]),
+        complex: ComplexBuilding.fromJson(json["complex"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -476,3 +476,72 @@ class ImageBuilding {
     this.imageBuilding,
   });
 }
+
+class CaroselComplex {
+  String id;
+  String image;
+  String title;
+
+  CaroselComplex({
+    required this.id,
+    required this.image,
+    required this.title,
+  });
+}
+
+List<CaroselComplex> complexCarosel = [
+  CaroselComplex(
+      id: '3',
+      image:
+          'https://lampungpro.co/laravel-filemanager/photos/17/BARU3/IMG_20200406_080722.jpg',
+      title: 'Tanah Abang'),
+  CaroselComplex(
+      id: '4',
+      image:
+          'https://pict.sindonews.net/dyn/620/content/2017/09/25/179/1242880/manajemen-bantah-mal-senayan-city-dijual-rp5-5-triliun-HBT-thumb.jpg',
+      title: 'Senayan City'),
+  CaroselComplex(
+      id: '5',
+      image:
+          'http://assets.kompasiana.com/items/album/2022/01/03/3764246768-61d256db4b660d3a3b61ccc2.jpg?t=o&v=770',
+      title: 'SCBD'),
+  CaroselComplex(
+      id: '10',
+      image:
+          'https://cdn.antaranews.com/cache/800x533/2020/06/03/20200603_172512.jpg',
+      title: 'Sudirman'),
+  CaroselComplex(
+      id: '11',
+      image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjxDGdqLTtAgbfXqN5x53gzp0ham9OlmYpz0dBUF2Nyn71nDCamCTOAS3SNrRlhmgFOqQ&usqp=CAU',
+      title: 'Kuningan'),
+  CaroselComplex(
+      id: '2',
+      image:
+          'https://cdn1-production-images-kly.akamaized.net/E1Bzjr7fnxJiXjUEaMoGvnrUNDg=/640x360/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/2726919/original/065948600_1549973574-20190212-Aplikasi-MOS-Pelabuhan-Tekan-Biaya-Lebih-Hemat-Johan4.jpg',
+      title: 'Tanjung Priok'),
+  CaroselComplex(
+      id: '1',
+      image:
+          'https://media-cdn.tripadvisor.com/media/photo-s/23/d5/08/c8/holiday-inn-express-jakarta.jpg',
+      title: 'Pluit'),
+  CaroselComplex(
+      id: '9',
+      image:
+          'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/t_htl-dskt/tix-hotel/images-web/2020/10/31/0078c537-9ec0-4643-a002-3d57cb2057fe-1604162939502-8e090269f6534acf3fe0946593ac8c45.jpg',
+      title: 'Cengkareang'),
+  CaroselComplex(
+      id: '8',
+      image:
+          'https://ik.imagekit.io/tvlk/apr-asset/dgXfoyh24ryQLRcGq00cIdKHRmotrWLNlvG-TxlcLxGkiDwaUSggleJNPRgIHCX6/hotel/asset/20023265-de9931e266080ac88064ed37af8cd877.jpeg?_src=imagekit&tr=c-at_max,h-488,q-40,w-768',
+      title: 'Kebon Jeruk'),
+  CaroselComplex(
+      id: '7',
+      image: 'https://kfmap.asia/thumbs/photos/ID.JKT.HT.I6/ID.JKT.HT.I6_1.jpg',
+      title: 'Cawang'),
+  CaroselComplex(
+      id: '6',
+      image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2V85ra9SKW_S6OuBIaF8622vqnN5b2RGo9gJ-OIoe_rWPRRJiVef_FPb5v8S1Okgnq8M&usqp=CAU',
+      title: 'Rawamangun')
+];

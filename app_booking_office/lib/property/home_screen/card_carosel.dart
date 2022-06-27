@@ -1,5 +1,6 @@
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
+import 'package:app_booking_office/screen/booking_office/listing_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,18 +47,8 @@ class _CardCaroselState extends State<CardCarosel> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => DetailScreen(
-                              id: bookingOfficeViewModel.building[index].id
-                                  .toString(),
-                              picture:
-                                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}',
-                              title:
-                                  bookingOfficeViewModel.building[index].name,
-                              price: 3444.toString(),
-                              location: bookingOfficeViewModel
-                                  .building[index].address,
-                              description: bookingOfficeViewModel
-                                  .building[index].description)));
+                          builder: (_) =>
+                              ListingScreen(id: complexCarosel[index].id)));
                 },
                 //card
                 child: Container(
@@ -69,8 +60,8 @@ class _CardCaroselState extends State<CardCarosel> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       picture(index),
                       const SizedBox(
@@ -80,11 +71,6 @@ class _CardCaroselState extends State<CardCarosel> {
                       const SizedBox(
                         height: 5,
                       ),
-                      location(index),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      rowDetail(index),
                     ],
                   ),
                 ),
@@ -98,31 +84,28 @@ class _CardCaroselState extends State<CardCarosel> {
   }
 
   Widget picture(int index) {
-    return Container(
-      width: 125,
-      height: 77,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          image: DecorationImage(
-              image: NetworkImage(
-                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.building[index].images[0].fileName}'),
-              fit: BoxFit.cover)),
+    return Expanded(
+      child: Container(
+        width: 125,
+        height: 77,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            image: DecorationImage(
+                image: NetworkImage(complexCarosel[index].image),
+                fit: BoxFit.cover)),
+      ),
     );
   }
 
   Widget title(int index) {
-    return Container(
-      width: 120,
-      decoration: const BoxDecoration(color: Colors.transparent),
-      child: Text(
-        bookingOfficeViewModel.building[index].name,
-        maxLines: 2,
-        style: const TextStyle(
-            fontSize: 11,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            overflow: TextOverflow.ellipsis),
-      ),
+    return Text(
+      complexCarosel[index].title,
+      maxLines: 1,
+      style: const TextStyle(
+          fontSize: 11,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          overflow: TextOverflow.ellipsis),
     );
   }
 

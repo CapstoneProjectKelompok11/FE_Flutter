@@ -115,8 +115,29 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
               listType(),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
+              const Text(
+                'Reviews',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  writeReview(),
+                  const SizedBox(width: 10),
+                  buttonSendReview(),
+                ],
+              ),
+              Row(
+                children: [],
+              )
             ],
           ),
         ),
@@ -307,7 +328,7 @@ class _DetailScreenState extends State<DetailScreen> {
             margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
                 color: const Color(0xFFF8F8F8),
-                borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 10, top: 10, bottom: 10, right: 10),
@@ -319,7 +340,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         width: 89,
                         height: 89,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                                 image: NetworkImage(
                                     'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.floor[context].image}'),
@@ -354,10 +375,12 @@ class _DetailScreenState extends State<DetailScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 1),
                                   decoration: ShapeDecoration(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(5)),
+                                              BorderRadius.circular(10)),
                                       gradient: const LinearGradient(colors: [
                                         Color.fromRGBO(77, 137, 255, 18.5),
                                         Colors.blueAccent,
@@ -376,7 +399,10 @@ class _DetailScreenState extends State<DetailScreen> {
                                                 builder: (_) =>
                                                     BookingFormScreen()));
                                       },
-                                      child: const Text('Book Now')),
+                                      child: const Text(
+                                        'Book Now',
+                                        style: TextStyle(fontSize: 10),
+                                      )),
                                 )
                               ],
                             )
@@ -446,6 +472,42 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget writeReview() {
+    return Flexible(
+      child: SizedBox(
+        height: 40,
+        child: TextFormField(
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(fontSize: 12),
+            focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.black, width: 2),
+                borderRadius: BorderRadius.circular(10)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.circular(10)),
+            hintText: 'Write review..',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buttonSendReview() {
+    return InkWell(
+      onTap: (){},
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: const Color(0xFF4D89FF),
+            borderRadius: BorderRadius.circular(10)),
+        child: const Icon(
+          Icons.send,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

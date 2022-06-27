@@ -1,5 +1,7 @@
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen({Key? key}) : super(key: key);
@@ -27,6 +29,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
@@ -58,32 +61,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               Stack(
                 children: [
-                  SizedBox(
-                    width: 76,
-                    height: 76,
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://6.viki.io/image/794f78782da94d6799fd3cd978e50e96/dummy.jpeg?s=900x600&e=t',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF4D89FF),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: const Icon(
-                        CupertinoIcons.photo_camera_solid,
-                        color: Colors.white,
-                        size: 10,
-                      ),
-                    ),
-                  )
+                  previewProfileImage(bookingOfficeViewModel),
+                  buttonPickImage(bookingOfficeViewModel),
                 ],
               ),
               const SizedBox(
@@ -348,6 +327,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             //ini untuk menjalankan fungsi register dan mengirimkan data kepada model yang telah dibuat pada folder model
           },
           child: const Text('Save')),
+    );
+  }
+
+  Widget previewProfileImage(BookingOfficeViewModel bookingOfficeViewModel) {
+    return SizedBox(
+      width: 76,
+      height: 76,
+      child: ClipOval(
+        child: bookingOfficeViewModel.image != null
+            ? Image.file(
+                bookingOfficeViewModel.image!,
+                fit: BoxFit.cover,
+              )
+            : Image.network(
+                'https://180dc.org/wp-content/uploads/2018/05/empty.png'),
+      ),
+    );
+  }
+
+  Widget buttonPickImage(BookingOfficeViewModel bookingOfficeViewModel) {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      child: InkWell(
+        onTap: () {
+          bookingOfficeViewModel.pickImageGallery();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: const Color(0xFF4D89FF),
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: const Icon(
+            CupertinoIcons.photo_camera_solid,
+            color: Colors.white,
+            size: 10,
+          ),
+        ),
+      ),
     );
   }
 }

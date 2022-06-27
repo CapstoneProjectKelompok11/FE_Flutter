@@ -106,12 +106,15 @@ class BookOfficeAPI {
   }
 
   static Future<List<DataBuilding>?> getBuilding(
+    String complexId,
     String page,
     String limit,
   ) async {
     try {
-      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
-          '/api/buildings/', {'page': '0', 'limit': '5'});
+      var uri = Uri.http(
+          'ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/buildings/',
+          {'complexId': complexId, 'page': page, 'limit': limit});
       final response = await Dio().getUri(uri,
           options: Options(headers: {"Content-Type": "application/json"}));
       var jsonString = jsonEncode(response.data);

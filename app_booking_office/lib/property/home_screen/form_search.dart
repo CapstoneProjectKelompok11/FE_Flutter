@@ -1,4 +1,4 @@
-import 'package:app_booking_office/screen/booking_office/search_screen.dart';
+import 'package:app_booking_office/screen/booking_office/listing_screen.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatefulWidget {
@@ -19,19 +19,16 @@ class _SearchFieldState extends State<SearchField> {
           width: MediaQuery.of(context).size.width,
           height: 40,
           child: TextFormField(
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const SearchScreen()));
-            },
             readOnly: true,
+            onTap: () {},
             controller: searchController,
             decoration: InputDecoration(
                 hintStyle: const TextStyle(fontSize: 12),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.grey, width: 2),
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(8)),
                 enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                    borderSide: const BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.circular(8)),
                 hintText: 'Find location, or name a place',
                 suffixIcon: const Icon(
@@ -43,6 +40,5 @@ class _SearchFieldState extends State<SearchField> {
         ),
       ),
     );
-    
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/property/loading_screen.dart';
 import 'package:app_booking_office/screen/booking_office/booking_form_screen.dart';
@@ -14,11 +16,11 @@ class DetailScreen extends StatefulWidget {
   String? price;
   String? location;
   String? description;
-  String id;
+  String? id;
   DetailScreen(
       {Key? key,
       this.picture,
-      required this.id,
+      this.id,
       this.title,
       this.price,
       this.location,
@@ -36,7 +38,7 @@ class _DetailScreenState extends State<DetailScreen> {
     Future.delayed(const Duration(milliseconds: 1), () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
-      await bookingOfficeViewModel.getFloor(widget.id);
+      await bookingOfficeViewModel.getFloor(widget.id!);
     });
   }
 
@@ -135,9 +137,49 @@ class _DetailScreenState extends State<DetailScreen> {
                   buttonSendReview(),
                 ],
               ),
-              Row(
-                children: [],
-              )
+              const SizedBox(
+                height: 15,
+              ),
+              ListView.builder(
+                  itemCount: 3,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          profilePicture(),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                nameUserReview(),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                starRating(),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  'Fasilitas motor disini kurang karena satu company hanya diberikan jatah 2 akses motor, lift barang hanya diberikan jatah 2 access motor, lift barang di equity tower hanya provide 2 lift',
+                                  maxLines: 10,
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      overflow: TextOverflow.ellipsis),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  })
             ],
           ),
         ),
@@ -227,7 +269,7 @@ class _DetailScreenState extends State<DetailScreen> {
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: Text(
-                widget.title!,
+                widget.title != null ? widget.title! : 'null',
                 maxLines: 2,
                 style: const TextStyle(
                     fontSize: 16,
@@ -242,7 +284,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget price() {
     return widget.price != null
         ? Text(
-            '\$${widget.price}/month',
+            widget.price != null ? '\$${widget.price}/month' : 'null',
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           )
         : const Text('null');
@@ -441,7 +483,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 width: 5,
               ),
               Text(
-                bookingOfficeViewModel.floor[context].floorSize,
+                bookingOfficeViewModel.floor[context].floorSize.isNotEmpty
+                    ? bookingOfficeViewModel.floor[context].floorSize
+                    : 'null',
                 style: const TextStyle(fontSize: 8),
               )
             ],
@@ -465,7 +509,13 @@ class _DetailScreenState extends State<DetailScreen> {
               const SizedBox(
                 width: 5,
               ),
-              Text(bookingOfficeViewModel.floor[context].maxCapacity.toString(),
+              Text(
+                  bookingOfficeViewModel.floor[context].maxCapacity
+                          .toString()
+                          .isNotEmpty
+                      ? bookingOfficeViewModel.floor[context].maxCapacity
+                          .toString()
+                      : 'null',
                   style: const TextStyle(
                       fontSize: 8, overflow: TextOverflow.ellipsis))
             ],
@@ -497,7 +547,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget buttonSendReview() {
     return InkWell(
-      onTap: (){},
+      onTap: () {},
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -508,6 +558,74 @@ class _DetailScreenState extends State<DetailScreen> {
           color: Colors.white,
         ),
       ),
+    );
+  }
+
+  Widget profilePicture() {
+    return SizedBox(
+      width: 36,
+      height: 36,
+      child: ClipOval(
+        child: Image.network(
+          'https://images.ctfassets.net/hrltx12pl8hq/3AnnkVqrlhrqb9hjlMBzKX/693a8e5d40b4b6c55a7673ca4c807eef/Girl-Stock?fit=fill&w=480&h=270',
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget nameUserReview() {
+    return const Text(
+      'Nobody',
+      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget starRating() {
+    return Row(
+      children: const [
+        Icon(
+          Icons.star,
+          color: Color(0xFFFBCD0A),
+          size: 15,
+        ),
+        SizedBox(
+          width: 2,
+        ),
+        Icon(
+          Icons.star,
+          color: Color(0xFFFBCD0A),
+          size: 15,
+        ),
+        SizedBox(
+          width: 2,
+        ),
+        Icon(
+          Icons.star,
+          color: Color(0xFFFBCD0A),
+          size: 15,
+        ),
+        SizedBox(
+          width: 2,
+        ),
+        Icon(
+          Icons.star,
+          color: Color(0xFFFBCD0A),
+          size: 15,
+        ),
+        SizedBox(
+          width: 2,
+        ),
+        Icon(
+          Icons.star,
+          color: Color(0xFFFBCD0A),
+          size: 15,
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Text('4.2', style: TextStyle(color: Colors.grey, fontSize: 12))
+      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:app_booking_office/screen/auth/register_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
+import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -309,7 +310,10 @@ class _LoginScreenState extends State<LoginScreen> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => DetailScreen()));
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

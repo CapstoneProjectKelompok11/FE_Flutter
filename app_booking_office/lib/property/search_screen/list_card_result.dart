@@ -282,8 +282,10 @@ class _ListCardResultState extends State<ListCardResult> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(
-                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'),
+              image: NetworkImage(bookingOfficeViewModel
+                      .buildingById[index].images[0].fileName.isNotEmpty
+                  ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'
+                  : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg'),
               fit: BoxFit.cover)),
     );
   }

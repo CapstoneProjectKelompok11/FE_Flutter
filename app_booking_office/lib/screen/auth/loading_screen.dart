@@ -18,7 +18,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void checkLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var checkLogin = Provider.of<AuthViewModel>(context, listen: false);
       await checkLogin.checkLogin(context);
     });

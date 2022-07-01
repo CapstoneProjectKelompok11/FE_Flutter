@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/property/loading_screen.dart';
 import 'package:app_booking_office/screen/booking_office/booking_form_screen.dart';
@@ -16,11 +17,11 @@ class DetailScreen extends StatefulWidget {
   String? price;
   String? location;
   String? description;
-  String? id;
+  String id;
   DetailScreen(
       {Key? key,
       this.picture,
-      this.id,
+      required this.id,
       this.title,
       this.price,
       this.location,
@@ -34,11 +35,12 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   bool _isfavorite = true;
   late BookingOfficeViewModel bookingOfficeViewModel;
+  TextEditingController reviewController = TextEditingController();
   Future<void> getDataFloor() async {
     Future.delayed(const Duration(milliseconds: 1), () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
-      await bookingOfficeViewModel.getFloor(widget.id!);
+      await bookingOfficeViewModel.getFloor(widget.id);
     });
   }
 
@@ -46,6 +48,13 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     super.initState();
     getDataFloor();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    reviewController.dispose();
   }
 
   @override
@@ -134,7 +143,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 children: [
                   writeReview(),
                   const SizedBox(width: 10),
-                  buttonSendReview(),
+                  buttonSendReview(context),
                 ],
               ),
               const SizedBox(
@@ -530,6 +539,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: SizedBox(
         height: 40,
         child: TextFormField(
+          controller: reviewController,
           decoration: InputDecoration(
             hintStyle: const TextStyle(fontSize: 12),
             focusedBorder: OutlineInputBorder(
@@ -545,9 +555,16 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget buttonSendReview() {
+  Widget buttonSendReview(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        bookingOfficeViewModel.sendReview(
+            PostReview(
+                buildingId: widget.id,
+                review: reviewController.text,
+                rating: 5),
+            context);
+      },
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(

@@ -60,7 +60,6 @@ class AuthAPI {
       showDialog(
           context: context,
           builder: (context) => const LoginSuccesfullDialog());
-     
     } catch (e) {
       debugPrint(e.toString());
       showDialog(

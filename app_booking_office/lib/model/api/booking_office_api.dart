@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:app_booking_office/model/book_office_model.dart';
+import 'package:app_booking_office/property/token_expired.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetBuilding {
   static Future<List<BuildingOffice>> getBuilding() async {
@@ -105,7 +107,7 @@ class BookOfficeAPI {
     return [];
   }
 
-  static Future<List<DataBuilding>?> getBuilding(
+  static Future<List<DataBulding>?> getBuilding(
     String complexId,
     String page,
     String limit,
@@ -124,7 +126,7 @@ class BookOfficeAPI {
           response.statusCode == 202 ||
           response.statusCode == 203) {
         debugPrint('Succes Fetching data Building');
-        return Buildings.fromJson(data).data;
+        return Building.fromJson(data).data;
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -132,24 +134,39 @@ class BookOfficeAPI {
     return [];
   }
 
-  static Future<List<ImageFloor>> getImageFloor(String fileName) async {
+  static Future<void> postReview(
+      PostReview postReview, BuildContext context) async {
     try {
-      var uri = Uri.https('ec2-18-206-213-94.compute-1.amazonaws.com',
-          '/api/floor/image/$fileName');
-      final response = await Dio().getUri(uri,
-          options: Options(headers: {"Content-Type": "application/json"}));
-      var jsonString = jsonEncode(response.data);
-      var data = jsonDecode(jsonString);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      debugPrint(token);
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/review/', {'buildingId': postReview.buildingId});
+      var dataReview = {
+        'review': postReview.review,
+        'rating': postReview.rating
+      };
+      var dataMap = jsonEncode(dataReview);
+      Response response = await Dio().postUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }),
+          data: dataMap);
+      if (response.statusCode == 403) {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) => const TokenExpired());
+      }
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202 ||
           response.statusCode == 203) {
-        debugPrint('Succes Fetching data Building');
-        return data;
+        debugPrint('Succes Sending Review');
       }
     } catch (e) {
       debugPrint(e.toString());
     }
-    return [];
   }
 }

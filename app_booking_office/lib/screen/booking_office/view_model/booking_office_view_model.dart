@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_booking_office/model/api/booking_office_api.dart';
@@ -22,14 +23,14 @@ class BookingOfficeViewModel extends ChangeNotifier {
   List<DataCity> _city = [];
   List<DataCity> get city => _city;
 
-  List<DataBuilding> _building = [];
-  List<DataBuilding> get building => _building;
+  List<DataBulding> _building = [];
+  List<DataBulding> get building => _building;
 
-  List<DataBuilding> _buildingById = [];
-  List<DataBuilding> get buildingById => _buildingById;
+  List<DataBulding> _buildingById = [];
+  List<DataBulding> get buildingById => _buildingById;
 
-  List<DataBuilding> _buildingByComplex = [];
-  List<DataBuilding> get buildingByComplex => _buildingByComplex;
+  List<DataBulding> _buildingByComplex = [];
+  List<DataBulding> get buildingByComplex => _buildingByComplex;
 
   BookOfficeViewState _states = BookOfficeViewState.none;
   BookOfficeViewState get states => _states;
@@ -134,6 +135,15 @@ class BookingOfficeViewModel extends ChangeNotifier {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     final imageTemporary = File(image!.path);
     this.image = imageTemporary;
+    notifyListeners();
+  }
+
+  Future<void> sendReview(PostReview postReview) async {
+    try {
+      BookOfficeAPI.postReview(postReview);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
     notifyListeners();
   }
 }

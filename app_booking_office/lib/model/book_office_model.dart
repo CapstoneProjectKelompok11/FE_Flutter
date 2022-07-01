@@ -123,9 +123,9 @@ class CityComplex {
 //---------------------------------------------------------
 //----------------------------------------------------------
 
-Floor floorFromJson(String str) => Floor.fromJson(json.decode(str));
+Building floorFromJson(String str) => Building.fromJson(json.decode(str));
 
-String floorToJson(Floor data) => json.encode(data.toJson());
+String floorToJson(Building data) => json.encode(data.toJson());
 
 class Floor {
   Floor({
@@ -135,12 +135,12 @@ class Floor {
   });
 
   String timestamp;
-  Status status;
+  StatusFloor status;
   List<DataFloor> data;
 
   factory Floor.fromJson(Map<String, dynamic> json) => Floor(
         timestamp: json["timestamp"],
-        status: Status.fromJson(json["status"]),
+        status: StatusFloor.fromJson(json["status"]),
         data: List<DataFloor>.from(
             json["data"].map((x) => DataFloor.fromJson(x))),
       );
@@ -161,7 +161,6 @@ class DataFloor {
     required this.maxCapacity,
     required this.startingPrice,
     required this.image,
-    required this.facilities,
   });
 
   int id;
@@ -171,7 +170,6 @@ class DataFloor {
   int maxCapacity;
   int startingPrice;
   String image;
-  List<dynamic> facilities;
 
   factory DataFloor.fromJson(Map<String, dynamic> json) => DataFloor(
         id: json["id"],
@@ -181,7 +179,6 @@ class DataFloor {
         maxCapacity: json["max_capacity"],
         startingPrice: json["starting_price"],
         image: json["image"],
-        facilities: List<dynamic>.from(json["facilities"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -192,7 +189,6 @@ class DataFloor {
         "max_capacity": maxCapacity,
         "starting_price": startingPrice,
         "image": image,
-        "facilities": List<dynamic>.from(facilities.map((x) => x)),
       };
 }
 
@@ -291,26 +287,26 @@ class DataCity {
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 
-Buildings buildingsFromJson(String str) => Buildings.fromJson(json.decode(str));
+Building buildingFromJson(String str) => Building.fromJson(json.decode(str));
 
-String buildingsToJson(Buildings data) => json.encode(data.toJson());
+String buildingToJson(Building data) => json.encode(data.toJson());
 
-class Buildings {
-  Buildings({
+class Building {
+  Building({
     required this.timestamp,
     required this.status,
     required this.data,
   });
 
-  final String timestamp;
-  final Status status;
-  final List<DataBuilding> data;
+  String timestamp;
+  StatusBuilding status;
+  List<DataBulding> data;
 
-  factory Buildings.fromJson(Map<String, dynamic> json) => Buildings(
+  factory Building.fromJson(Map<String, dynamic> json) => Building(
         timestamp: json["timestamp"],
-        status: Status.fromJson(json["status"]),
-        data: List<DataBuilding>.from(
-            json["data"].map((x) => DataBuilding.fromJson(x))),
+        status: StatusBuilding.fromJson(json["status"]),
+        data: List<DataBulding>.from(
+            json["data"].map((x) => DataBulding.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -320,8 +316,8 @@ class Buildings {
       };
 }
 
-class DataBuilding {
-  DataBuilding({
+class DataBulding {
+  DataBulding({
     required this.id,
     required this.name,
     required this.address,
@@ -333,21 +329,23 @@ class DataBuilding {
     required this.capacity,
     required this.images,
     required this.complex,
+    required this.facilities,
   });
 
-  final int id;
-  final String name;
-  final String address;
-  final String description;
-  final double rating;
-  final List<String> officeType;
-  final String buildingSize;
-  final int floorCount;
-  final int capacity;
-  final List<ImageBuildings> images;
-  final ComplexBuilding complex;
+  int id;
+  String name;
+  String address;
+  String description;
+  double rating;
+  List<String> officeType;
+  String buildingSize;
+  int floorCount;
+  int capacity;
+  List<ImageBuilding> images;
+  ComplexBuilding complex;
+  List<dynamic> facilities;
 
-  factory DataBuilding.fromJson(Map<String, dynamic> json) => DataBuilding(
+  factory DataBulding.fromJson(Map<String, dynamic> json) => DataBulding(
         id: json["id"],
         name: json["name"],
         address: json["address"],
@@ -357,9 +355,10 @@ class DataBuilding {
         buildingSize: json["building_size"],
         floorCount: json["floor_count"],
         capacity: json["capacity"],
-        images: List<ImageBuildings>.from(
-            json["images"].map((x) => ImageBuildings.fromJson(x))),
+        images: List<ImageBuilding>.from(
+            json["images"].map((x) => ImageBuilding.fromJson(x))),
         complex: ComplexBuilding.fromJson(json["complex"]),
+        facilities: List<dynamic>.from(json["facilities"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -374,6 +373,7 @@ class DataBuilding {
         "capacity": capacity,
         "images": List<dynamic>.from(images.map((x) => x.toJson())),
         "complex": complex.toJson(),
+        "facilities": List<dynamic>.from(facilities.map((x) => x)),
       };
 }
 
@@ -384,9 +384,9 @@ class ComplexBuilding {
     required this.city,
   });
 
-  final int id;
-  final String complexName;
-  final City city;
+  int id;
+  String complexName;
+  City city;
 
   factory ComplexBuilding.fromJson(Map<String, dynamic> json) =>
       ComplexBuilding(
@@ -408,8 +408,8 @@ class CityBuilding {
     required this.cityName,
   });
 
-  final int id;
-  final String cityName;
+  int id;
+  String cityName;
 
   factory CityBuilding.fromJson(Map<String, dynamic> json) => CityBuilding(
         id: json["id"],
@@ -422,14 +422,14 @@ class CityBuilding {
       };
 }
 
-class ImageBuildings {
-  ImageBuildings({
+class ImageBuilding {
+  ImageBuilding({
     required this.fileName,
   });
 
-  final String fileName;
+  String fileName;
 
-  factory ImageBuildings.fromJson(Map<String, dynamic> json) => ImageBuildings(
+  factory ImageBuilding.fromJson(Map<String, dynamic> json) => ImageBuilding(
         fileName: json["fileName"],
       );
 
@@ -438,16 +438,16 @@ class ImageBuildings {
       };
 }
 
-class Status {
-  Status({
+class StatusBuilding {
+  StatusBuilding({
     required this.code,
     required this.message,
   });
 
-  final String code;
-  final String message;
+  String code;
+  String message;
 
-  factory Status.fromJson(Map<String, dynamic> json) => Status(
+  factory StatusBuilding.fromJson(Map<String, dynamic> json) => StatusBuilding(
         code: json["code"],
         message: json["message"],
       );
@@ -461,21 +461,21 @@ class Status {
 //------------------------------------------------------------
 //----------------------------------------------------------
 
-class ImageFloor {
-  Image? imageFloor;
+// class ImageFloor {
+//   Image? imageFloor;
 
-  ImageFloor({
-    this.imageFloor,
-  });
-}
+//   ImageFloor({
+//     this.imageFloor,
+//   });
+// }
 
-class ImageBuilding {
-  String? imageBuilding;
+// class ImageBuilding {
+//   String? imageBuilding;
 
-  ImageBuilding({
-    this.imageBuilding,
-  });
-}
+//   ImageBuilding({
+//     this.imageBuilding,
+//   });
+// }
 
 class CaroselComplex {
   String id;
@@ -545,3 +545,15 @@ List<CaroselComplex> complexCarosel = [
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2V85ra9SKW_S6OuBIaF8622vqnN5b2RGo9gJ-OIoe_rWPRRJiVef_FPb5v8S1Okgnq8M&usqp=CAU',
       title: 'Rawamangun')
 ];
+
+class PostReview {
+  String buildingId;
+  String review;
+  int rating;
+
+  PostReview({
+    required this.buildingId,
+    required this.review,
+    required this.rating,
+  });
+}

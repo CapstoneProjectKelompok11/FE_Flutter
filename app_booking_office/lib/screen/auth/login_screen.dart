@@ -310,10 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => DetailScreen()));
-          },
+          onPressed: () {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

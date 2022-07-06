@@ -40,7 +40,7 @@ class _CardCaroselState extends State<CardCarosel> {
             padding: const EdgeInsets.only(left: 20, right: 10),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: bookingOfficeViewModel.building.length,
+            itemCount: 4,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {

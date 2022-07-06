@@ -78,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                const DropDownButton(),
                 const SizedBox(
                   height: 18,
                 ),

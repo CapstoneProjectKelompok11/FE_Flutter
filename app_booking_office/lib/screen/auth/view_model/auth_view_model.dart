@@ -96,7 +96,7 @@ class AuthViewModel extends ChangeNotifier {
     changeState(AuthViewState.loading);
     try {
       AuthAPI().login(email, password, isChecked, context);
-    
+
       changeState(AuthViewState.none);
     } catch (e) {
       changeState(AuthViewState.error);
@@ -109,7 +109,8 @@ class AuthViewModel extends ChangeNotifier {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       //checking in local storage is there email and password, while true it wil navigate to home screen
-      if (prefs.getString('token') != null) {
+      if (prefs.getString('email') != null &&
+          prefs.getString('password') != null) {
         Timer(
             const Duration(seconds: 2),
             () => Navigator.push(context,

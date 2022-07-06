@@ -2,6 +2,7 @@ import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class ListCardRecommend extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (_) => DetailScreen(
@@ -65,7 +66,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                         const SizedBox(
                           height: 5,
                         ),
-                        rating(),
+                        rating(index),
                         const SizedBox(
                           height: 5,
                         ),
@@ -92,30 +93,6 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                   ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'
                   : 'https://6.viki.io/image/794f78782da94d6799fd3cd978e50e96/dummy.jpeg?s=900x600&e=t'),
               fit: BoxFit.cover)),
-    );
-  }
-
-  Widget price(int index) {
-    return Row(
-      children: const [
-        Text(
-          '\$' + '8777',
-          maxLines: 1,
-          style: const TextStyle(
-              fontSize: 12,
-              color: Color(0xFF4D89FF),
-              overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.bold),
-        ),
-        Text(
-          '/Month',
-          maxLines: 1,
-          style: TextStyle(
-            fontSize: 12,
-            overflow: TextOverflow.ellipsis,
-          ),
-        )
-      ],
     );
   }
 
@@ -158,55 +135,21 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
     );
   }
 
-  Widget rating() {
-    return Row(
-      children: const [
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 10,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 10,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 10,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 10,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 10,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Text(
-          '(120) Review',
-          style: TextStyle(fontSize: 4),
-        )
-      ],
-    );
+  Widget rating(int index) {
+    return RatingBar.builder(
+        minRating: 1,
+        maxRating: 10,
+        ignoreGestures: true,
+        itemSize: 10,
+        initialRating: bookingOfficeViewModel.buildingById[index].rating,
+        itemBuilder: (context, index) {
+          return const Icon(
+            Icons.star_sharp,
+            color: Colors.yellow,
+            size: 10,
+          );
+        },
+        onRatingUpdate: (rating) {});
   }
 
   Widget rowDetail(int index) {

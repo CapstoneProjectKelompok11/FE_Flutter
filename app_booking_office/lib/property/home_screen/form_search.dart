@@ -17,7 +17,7 @@ class _SearchFieldState extends State<SearchField> {
       child: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 40,
+          height: 50,
           child: TextFormField(
             readOnly: true,
             onTap: () {},

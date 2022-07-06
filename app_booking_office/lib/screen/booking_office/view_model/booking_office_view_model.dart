@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:app_booking_office/model/api/booking_office_api.dart';
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:flutter/widgets.dart';
@@ -25,6 +23,9 @@ class BookingOfficeViewModel extends ChangeNotifier {
 
   List<DataBulding> _building = [];
   List<DataBulding> get building => _building;
+
+  List<DataGetReview> _review = [];
+  List<DataGetReview> get review => _review;
 
   List<DataBulding> _buildingById = [];
   List<DataBulding> get buildingById => _buildingById;
@@ -95,7 +96,7 @@ class BookingOfficeViewModel extends ChangeNotifier {
   Future<void> getBuilding() async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getBuilding('', '0', '8');
+      var data = await BookOfficeAPI.getBuilding('', '', '');
       _building = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
@@ -108,7 +109,7 @@ class BookingOfficeViewModel extends ChangeNotifier {
   Future<void> getBuildingById(String complexId) async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getBuilding(complexId, '0', '4');
+      var data = await BookOfficeAPI.getBuilding(complexId, '0', '');
       _buildingById = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
@@ -121,7 +122,7 @@ class BookingOfficeViewModel extends ChangeNotifier {
   Future<void> getBuildingByComplex(String complexId) async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getBuilding(complexId, '0', '1');
+      var data = await BookOfficeAPI.getBuilding(complexId, '', '');
       _buildingByComplex = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
@@ -138,11 +139,27 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendReview(PostReview postReview) async {
+  Future<void> sendReview(PostReview postReview, BuildContext context) async {
+    changeState(BookOfficeViewState.loading);
     try {
-      BookOfficeAPI.postReview(postReview);
+      BookOfficeAPI.postReview(postReview, context);
+      changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getReview(String buildingId) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getReview(buildingId, '0', '4');
+      _review = data;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
     }
     notifyListeners();
   }

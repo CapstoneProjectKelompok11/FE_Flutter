@@ -163,13 +163,13 @@ class DataFloor {
     required this.image,
   });
 
-  int id;
-  String name;
-  String type;
-  String floorSize;
-  int maxCapacity;
-  int startingPrice;
-  String image;
+  int? id;
+  String? name;
+  String? type;
+  String? floorSize;
+  int? maxCapacity;
+  int? startingPrice;
+  String? image;
 
   factory DataFloor.fromJson(Map<String, dynamic> json) => DataFloor(
         id: json["id"],
@@ -457,6 +457,118 @@ class StatusBuilding {
         "message": message,
       };
 }
+//---------------------------------------------------------
+//--------------------------------------------------------
+
+GetReview getReviewFromJson(String str) => GetReview.fromJson(json.decode(str));
+
+String getReviewToJson(GetReview data) => json.encode(data.toJson());
+
+class GetReview {
+  GetReview({
+    required this.timestamp,
+    required this.status,
+    required this.data,
+  });
+
+  String timestamp;
+  StatusGetReview status;
+  List<DataGetReview> data;
+
+  factory GetReview.fromJson(Map<String, dynamic> json) => GetReview(
+        timestamp: json["timestamp"],
+        status: StatusGetReview.fromJson(json["status"]),
+        data: List<DataGetReview>.from(
+            json["data"].map((x) => DataGetReview.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "timestamp": timestamp,
+        "status": status.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
+}
+
+class DataGetReview {
+  DataGetReview({
+    required this.user,
+    required this.review,
+    required this.rating,
+    required this.reviewDate,
+  });
+
+  UserGetReview user;
+  String review;
+  int rating;
+  String reviewDate;
+
+  factory DataGetReview.fromJson(Map<String, dynamic> json) => DataGetReview(
+        user: UserGetReview.fromJson(json["user"]),
+        review: json["review"],
+        rating: json["rating"],
+        reviewDate: json["review_date"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user": user.toJson(),
+        "review": review,
+        "rating": rating,
+        "review_date": reviewDate,
+      };
+}
+
+class UserGetReview {
+  UserGetReview({
+    required this.id,
+    this.firstName,
+    this.lastName,
+    this.phone,
+    this.email,
+  });
+
+  int id;
+  String? firstName;
+  String? lastName;
+  String? phone;
+  String? email;
+
+  factory UserGetReview.fromJson(Map<String, dynamic> json) => UserGetReview(
+        id: json["id"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        phone: json["phone"],
+        email: json["email"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "phone": phone,
+        "email": email,
+      };
+}
+
+class StatusGetReview {
+  StatusGetReview({
+    required this.code,
+    required this.message,
+  });
+
+  String code;
+  String message;
+
+  factory StatusGetReview.fromJson(Map<String, dynamic> json) =>
+      StatusGetReview(
+        code: json["code"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "message": message,
+      };
+}
 
 //------------------------------------------------------------
 //----------------------------------------------------------
@@ -469,13 +581,10 @@ class StatusBuilding {
 //   });
 // }
 
-// class ImageBuilding {
-//   String? imageBuilding;
-
-//   ImageBuilding({
-//     this.imageBuilding,
-//   });
-// }
+class RatingData {
+  double rating = 0;
+  RatingData({required this.rating});
+}
 
 class CaroselComplex {
   String id;
@@ -501,6 +610,11 @@ List<CaroselComplex> complexCarosel = [
           'https://pict.sindonews.net/dyn/620/content/2017/09/25/179/1242880/manajemen-bantah-mal-senayan-city-dijual-rp5-5-triliun-HBT-thumb.jpg',
       title: 'Senayan City'),
   CaroselComplex(
+      id: '11',
+      image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjxDGdqLTtAgbfXqN5x53gzp0ham9OlmYpz0dBUF2Nyn71nDCamCTOAS3SNrRlhmgFOqQ&usqp=CAU',
+      title: 'Kuningan'),
+  CaroselComplex(
       id: '5',
       image:
           'http://assets.kompasiana.com/items/album/2022/01/03/3764246768-61d256db4b660d3a3b61ccc2.jpg?t=o&v=770',
@@ -510,11 +624,6 @@ List<CaroselComplex> complexCarosel = [
       image:
           'https://cdn.antaranews.com/cache/800x533/2020/06/03/20200603_172512.jpg',
       title: 'Sudirman'),
-  CaroselComplex(
-      id: '11',
-      image:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjxDGdqLTtAgbfXqN5x53gzp0ham9OlmYpz0dBUF2Nyn71nDCamCTOAS3SNrRlhmgFOqQ&usqp=CAU',
-      title: 'Kuningan'),
   CaroselComplex(
       id: '2',
       image:

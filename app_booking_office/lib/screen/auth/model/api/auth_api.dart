@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
-import 'package:app_booking_office/property/login_failed_dialog.dart';
-import 'package:app_booking_office/property/login_succesfull_dialog.dart';
+import 'package:app_booking_office/property/show_dialog/login_failed_dialog.dart';
+import 'package:app_booking_office/property/show_dialog/login_succesfull_dialog.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:dio/dio.dart';
@@ -53,6 +53,7 @@ class AuthAPI {
           response.statusCode == 203) {
         debugPrint('Login Succesfull');
         String token = response.data['data']['token'].toString();
+        AuthViewModel().userPreferences('', '', token);
         isChecked
             ? AuthViewModel().userPreferences(email, password, token)
             : null;

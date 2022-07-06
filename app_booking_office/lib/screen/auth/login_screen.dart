@@ -4,6 +4,8 @@ import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../property/show_dialog/rating_dialog.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -259,7 +261,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                  context: context, builder: (context) => const RatingDialog());
+            },
             child: const Text(
               'Forgot password?',
               style: TextStyle(color: Colors.black87, fontSize: 12),

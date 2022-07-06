@@ -2,7 +2,7 @@ import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/booking_office/home_screen.dart';
+import '../../screen/booking_office/home_screen.dart';
 
 class LoginSuccesfullDialog extends StatefulWidget {
   const LoginSuccesfullDialog({Key? key}) : super(key: key);

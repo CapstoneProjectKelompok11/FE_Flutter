@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_booking_office/model/book_office_model.dart';
-import 'package:app_booking_office/property/token_expired.dart';
+import 'package:app_booking_office/property/show_dialog/token_expired.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -153,12 +153,7 @@ class BookOfficeAPI {
             'Authorization': 'Bearer $token',
           }),
           data: dataMap);
-      if (response.statusCode == 403) {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (_) => const TokenExpired());
-      }
+
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202 ||
@@ -167,6 +162,36 @@ class BookOfficeAPI {
       }
     } catch (e) {
       debugPrint(e.toString());
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => const TokenExpired());
     }
+  }
+
+  static Future<List<DataGetReview>> getReview(
+      String buildingId, String page, String limit) async {
+    try {
+      var uri = Uri.http(
+          'ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/review',
+          {'buildingId': buildingId, 'page': page, 'limit': limit});
+      final response = await Dio().getUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+          }));
+      var jsonString = jsonEncode(response.data);
+      var data = jsonDecode(jsonString);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Get Review');
+        return GetReview.fromJson(data).data;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return [];
   }
 }

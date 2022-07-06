@@ -3,11 +3,13 @@ import 'dart:ui';
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/property/loading_screen.dart';
+import 'package:app_booking_office/property/show_dialog/rating_dialog.dart';
 import 'package:app_booking_office/screen/booking_office/booking_form_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
@@ -34,13 +36,23 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool _isfavorite = true;
+  double rating = 0;
   late BookingOfficeViewModel bookingOfficeViewModel;
   TextEditingController reviewController = TextEditingController();
+
   Future<void> getDataFloor() async {
-    Future.delayed(const Duration(milliseconds: 1), () async {
+    Future.delayed(Duration.zero, () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
       await bookingOfficeViewModel.getFloor(widget.id);
+    });
+  }
+
+  Future<void> getDataReview() async {
+    Future.delayed(Duration.zero, () async {
+      bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getReview(widget.id);
     });
   }
 
@@ -48,6 +60,7 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     super.initState();
     getDataFloor();
+    getDataReview();
   }
 
   @override
@@ -91,7 +104,9 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [title(), price()],
+                children: [
+                  title(),
+                ],
               ),
               const SizedBox(
                 height: 15,
@@ -149,46 +164,7 @@ class _DetailScreenState extends State<DetailScreen> {
               const SizedBox(
                 height: 15,
               ),
-              ListView.builder(
-                  itemCount: 3,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          profilePicture(),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                nameUserReview(),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                starRating(),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                const Text(
-                                  'Fasilitas motor disini kurang karena satu company hanya diberikan jatah 2 akses motor, lift barang hanya diberikan jatah 2 access motor, lift barang di equity tower hanya provide 2 lift',
-                                  maxLines: 10,
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      overflow: TextOverflow.ellipsis),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  })
+              listReview()
             ],
           ),
         ),
@@ -206,8 +182,7 @@ class _DetailScreenState extends State<DetailScreen> {
       children: [
         InkWell(
           onTap: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const BottomNavBar()));
+            Navigator.pop(context);
           },
           child: const Icon(
             CupertinoIcons.arrow_left,
@@ -286,15 +261,6 @@ class _DetailScreenState extends State<DetailScreen> {
                     overflow: TextOverflow.ellipsis),
               ),
             ),
-          )
-        : const Text('null');
-  }
-
-  Widget price() {
-    return widget.price != null
-        ? Text(
-            widget.price != null ? '\$${widget.price}/month' : 'null',
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           )
         : const Text('null');
   }
@@ -394,7 +360,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                                 image: NetworkImage(
-                                    'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.floor[context].image}'),
+                                    'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.floor[context].image ?? ''}'),
                                 fit: BoxFit.cover)),
                       ),
                       const SizedBox(
@@ -405,7 +371,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              bookingOfficeViewModel.floor[context].name,
+                              bookingOfficeViewModel.floor[context].name ?? '',
                               maxLines: 2,
                               style: const TextStyle(
                                   fontSize: 10,
@@ -492,9 +458,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 width: 5,
               ),
               Text(
-                bookingOfficeViewModel.floor[context].floorSize.isNotEmpty
-                    ? bookingOfficeViewModel.floor[context].floorSize
-                    : 'null',
+                bookingOfficeViewModel.floor[context].floorSize ?? '',
                 style: const TextStyle(fontSize: 8),
               )
             ],
@@ -558,12 +522,16 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget buttonSendReview(BuildContext context) {
     return InkWell(
       onTap: () async {
-        bookingOfficeViewModel.sendReview(
-            PostReview(
-                buildingId: widget.id,
-                review: reviewController.text,
-                rating: 5),
-            context);
+        // showDialog(context: context, builder: (_) => alertDialogRating());
+
+        bookingOfficeViewModel
+            .sendReview(
+                PostReview(
+                    buildingId: widget.id,
+                    review: reviewController.text,
+                    rating: rating.toInt()),
+                context)
+            .then((value) => getDataReview());
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -591,58 +559,129 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget nameUserReview() {
-    return const Text(
-      'Nobody',
-      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+  Widget nameUserReview(int index) {
+    return Text(
+      bookingOfficeViewModel.review[index].user.firstName ?? 'Person',
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
     );
   }
 
-  Widget starRating() {
-    return Row(
-      children: const [
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 15,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 15,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 15,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 15,
-        ),
-        SizedBox(
-          width: 2,
-        ),
-        Icon(
-          Icons.star,
-          color: Color(0xFFFBCD0A),
-          size: 15,
-        ),
-        SizedBox(
-          width: 5,
-        ),
-        Text('4.2', style: TextStyle(color: Colors.grey, fontSize: 12))
-      ],
+  Widget starRating(int index) {
+    return RatingBar.builder(
+        ignoreGestures: true,
+        allowHalfRating: true,
+        maxRating: 10,
+        itemSize: 15,
+        initialRating: bookingOfficeViewModel.review[index].rating.toDouble(),
+        itemBuilder: (context, index) {
+          return const Icon(
+            Icons.star_sharp,
+            color: Colors.yellow,
+            size: 30,
+          );
+        },
+        onRatingUpdate: (rating) {});
+  }
+
+  Widget listReview() {
+    return ListView.builder(
+        itemCount: bookingOfficeViewModel.review.length,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                profilePicture(),
+                const SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      nameUserReview(index),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      Row(
+                        children: [
+                          starRating(index),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            bookingOfficeViewModel.review[index].rating
+                                .toString(),
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.grey),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        bookingOfficeViewModel.review[index].review,
+                        maxLines: 10,
+                        style: const TextStyle(
+                            fontSize: 10, overflow: TextOverflow.ellipsis),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget alertDialogRating() {
+    return AlertDialog(
+      contentPadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 60),
+      shape: RoundedRectangleBorder(
+          side: const BorderSide(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.circular(8)),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            'Rating',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.yellow),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            'Please rate this building +  $rating',
+            style: const TextStyle(fontSize: 17, color: Color(0xFF868686)),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      content: RatingBar.builder(
+          updateOnDrag: true,
+          allowHalfRating: true,
+          maxRating: 10,
+          itemSize: 30,
+          initialRating: rating,
+          itemBuilder: (context, index) {
+            return const Icon(
+              Icons.star_sharp,
+              color: Colors.yellow,
+              size: 30,
+            );
+          },
+          onRatingUpdate: (rating) {
+            setState(() {
+              this.rating = rating;
+            });
+          }),
     );
   }
 }

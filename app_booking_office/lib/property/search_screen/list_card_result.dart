@@ -27,7 +27,7 @@ class _ListCardResultState extends State<ListCardResult> {
     Future.delayed(const Duration(milliseconds: 2), () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
-      await bookingOfficeViewModel.getBuildingById(widget.id);
+      await bookingOfficeViewModel.getBuildingById(widget.id, '');
     });
   }
 

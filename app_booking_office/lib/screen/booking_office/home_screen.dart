@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero, () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
-      await bookingOfficeViewModel.getBuildingById('3');
+      await bookingOfficeViewModel.getBuildingById('', '');
     });
   }
 
@@ -93,31 +93,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
+                    children: const [
+                      Text(
                         'Recommendation',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 12),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Tanah Abang',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'View More',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF4D89FF),
-                                    fontWeight: FontWeight.bold),
-                              ))
-                        ],
+                      SizedBox(
+                        height: 15,
                       ),
-                      const ListCardRecommend(),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     const Text(
+                      //       'Tanah Abang',
+                      //       style: TextStyle(fontSize: 12),
+                      //     ),
+                      //     TextButton(
+                      //         onPressed: () {},
+                      //         child: const Text(
+                      //           'View More',
+                      //           style: TextStyle(
+                      //               fontSize: 12,
+                      //               color: Color(0xFF4D89FF),
+                      //               fontWeight: FontWeight.bold),
+                      //         ))
+                      //   ],
+                      // ),
+                      ListCardRecommend(),
                     ],
                   ),
                 )

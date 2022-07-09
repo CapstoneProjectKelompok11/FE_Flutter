@@ -1,25 +1,68 @@
-import 'package:app_booking_office/property/bottom_navigation_bar.dart';
-import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
+import 'package:app_booking_office/model/book_office_model.dart';
+import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class BookingFormScreen extends StatefulWidget {
-  BookingFormScreen({Key? key}) : super(key: key);
+  List? office;
+  String? buildingId;
+  String? officeId;
+  BookingFormScreen({Key? key, this.office, this.buildingId, this.officeId})
+      : super(key: key);
 
   @override
   State<BookingFormScreen> createState() => _BookingFormScreenState();
 }
 
 class _BookingFormScreenState extends State<BookingFormScreen> {
-  List<String> items = ['item1', 'item2', 'item3', 'item4'];
-  String selectedItem = 'item1';
-  List<String> itemParticipant = ['0', '1', '2', '4', '5'];
-  DateTime date = DateTime.now();
-  final formKey = GlobalKey<FormState>();
+  List<dynamic> itemParticipant = Iterable.generate(100).toList();
 
-  String selectedParticipant = '0';
+  void generateParticipant() {
+    for (var i = 0; i < 100; i++) {
+      itemParticipant = [
+        {i}
+      ];
+    }
+  }
+
+  void indexFloor() {
+    for (var i = 0; i < bookingOfficeViewModel.floor.length; i++) {
+      index = i;
+    }
+  }
+
+  DateTime date = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
+  final formKey = GlobalKey<FormState>();
+  int index = 0;
+  String? selectedFloor;
+  String? selectedParticipant;
+  TextEditingController companyNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy kk:MM:ss');
+  late BookingOfficeViewModel bookingOfficeViewModel;
+
+  Future<void> initListNameFloor() async {
+    Future.delayed(Duration.zero, () async {
+      final bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getDataFloor(widget.buildingId!);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initListNameFloor();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
@@ -54,7 +97,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                dropDownTypeOffice(),
+                dropDownTypeOffice(bookingOfficeViewModel),
                 const SizedBox(
                   height: 10,
                 ),
@@ -86,7 +129,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                buttonRequestBooking(),
+                buttonRequestBooking(bookingOfficeViewModel)
               ],
             ),
           ),
@@ -95,7 +138,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
     );
   }
 
-  Widget dropDownTypeOffice() {
+  Widget dropDownTypeOffice(BookingOfficeViewModel bookingOfficeViewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -107,6 +150,10 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
           height: 10,
         ),
         DropdownButtonFormField(
+          hint: const Text(
+            'Select type',
+            style: TextStyle(fontSize: 12),
+          ),
           decoration: InputDecoration(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -116,17 +163,17 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.black, width: 2))),
-          value: selectedItem,
-          items: items
-              .map((item) => DropdownMenuItem(
-                  value: item,
+          value: selectedFloor,
+          items: bookingOfficeViewModel.nameFloor
+              .map((value) => DropdownMenuItem(
+                  value: value['name'],
                   child: Text(
-                    item,
+                    value['name'],
                     style: const TextStyle(fontSize: 12, color: Colors.black),
                   )))
               .toList(),
           onChanged: (item) {
-            selectedItem = item.toString();
+            selectedFloor = item.toString();
           },
         )
       ],
@@ -153,8 +200,10 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
                 initialDate: DateTime.now(),
                 firstDate: DateTime(1900),
                 lastDate: DateTime(2100));
+            if (pickedDate == null) return;
+
             setState(() {
-              date = pickedDate!;
+              date = pickedDate;
             });
           },
           decoration: InputDecoration(
@@ -172,7 +221,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
               border: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(8)),
-              hintText: '${date.day}/${date.month}/${date.year}',
+              hintText: dateFormat.format(date),
               hintStyle: const TextStyle(
                 fontSize: 12,
               ),
@@ -198,6 +247,10 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
             height: 10,
           ),
           DropdownButtonFormField(
+              hint: const Text(
+                'Select Participant',
+                style: TextStyle(fontSize: 12),
+              ),
               decoration: InputDecoration(
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -209,7 +262,6 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
                       borderRadius: BorderRadius.circular(8),
                       borderSide:
                           const BorderSide(color: Colors.grey, width: 2))),
-              value: selectedParticipant,
               items: itemParticipant
                   .map((item) => DropdownMenuItem(
                       value: item,
@@ -239,6 +291,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
           height: 10,
         ),
         TextFormField(
+          controller: companyNameController,
           decoration: InputDecoration(
               hintText: 'Your compeny name here',
               hintStyle: const TextStyle(fontSize: 12),
@@ -280,6 +333,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
           height: 10,
         ),
         TextFormField(
+          controller: phoneNumberController,
           decoration: InputDecoration(
               hintText: '08xx xxx xxx',
               hintStyle: const TextStyle(fontSize: 12),
@@ -325,6 +379,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
           height: 10,
         ),
         TextFormField(
+          controller: notesController,
           maxLines: 8,
           decoration: InputDecoration(
               contentPadding:
@@ -353,7 +408,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
     );
   }
 
-  Widget buttonRequestBooking() {
+  Widget buttonRequestBooking(BookingOfficeViewModel bookingOfficeViewModel) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: ShapeDecoration(
@@ -369,9 +424,18 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
           onPressed: () {
+            debugPrint(dateFormat.format(date));
             if (!formKey.currentState!.validate()) return;
             formKey.currentState!.save();
-            //ini untuk menjalankan fungsi register dan mengirimkan data kepada model yang telah dibuat pada folder model
+            bookingOfficeViewModel.postReservation(
+                Reservation(
+                    startReservation: dateFormat.format(date),
+                    company: companyNameController.text,
+                    phone: phoneNumberController.text,
+                    participant: selectedParticipant.toString(),
+                    note: notesController.text),
+                bookingOfficeViewModel.floor[index].id.toString(),
+                context);
           },
           child: const Text('Request Booking')),
     );

@@ -45,6 +45,8 @@ dependencies:
   loading_animation_widget: ^1.2.0+2
   image_picker: ^0.8.5+3
   flutter_rating_bar: ^4.0.1
+  intl: ^0.17.0
+  date_time_picker: ^2.1.0
 
 dev_dependencies:
   flutter_test:

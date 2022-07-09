@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:app_booking_office/model/api/booking_office_api.dart';
 import 'package:app_booking_office/model/book_office_model.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -9,6 +13,11 @@ enum BookOfficeViewState { none, loading, error }
 class BookingOfficeViewModel extends ChangeNotifier {
   List<BuildingOffice> _office = [];
   List<BuildingOffice> get offices => _office;
+
+  List<dynamic> nameFloor = [];
+  int index = 0;
+
+  DateTime dateTime = DateTime.now();
 
   File? image;
 
@@ -106,10 +115,10 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getBuildingById(String complexId) async {
+  Future<void> getBuildingById(String complexId, String limit) async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getBuilding(complexId, '0', '');
+      var data = await BookOfficeAPI.getBuilding(complexId, '', limit);
       _buildingById = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
@@ -156,6 +165,33 @@ class BookingOfficeViewModel extends ChangeNotifier {
     try {
       var data = await BookOfficeAPI.getReview(buildingId, '0', '4');
       _review = data;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getDataFloor(String buildingId) async {
+    var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+        '/api/floor/', {"buildingId": buildingId});
+    final response = await Dio().getUri(uri,
+        options: Options(headers: {
+          "Content-Type": "application/json",
+        }));
+    var jsonString = jsonEncode(response.data);
+    var data = jsonDecode(jsonString);
+    nameFloor = data['data'];
+
+    notifyListeners();
+  }
+
+  Future<void> postReservation(
+      Reservation reservation, String floorId, BuildContext context) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.reservation(reservation, floorId, context);
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());

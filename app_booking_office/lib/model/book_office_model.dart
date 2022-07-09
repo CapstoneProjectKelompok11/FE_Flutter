@@ -666,3 +666,19 @@ class PostReview {
     required this.rating,
   });
 }
+
+class Reservation {
+  String? startReservation;
+  String? company;
+
+  String? phone;
+  String? participant;
+  String? note;
+
+  Reservation(
+      {required this.startReservation,
+      required this.company,
+      required this.phone,
+      required this.participant,
+      required this.note});
+}

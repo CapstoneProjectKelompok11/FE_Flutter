@@ -39,6 +39,13 @@ class _DetailScreenState extends State<DetailScreen> {
   double rating = 0;
   late BookingOfficeViewModel bookingOfficeViewModel;
   TextEditingController reviewController = TextEditingController();
+  int index = 0;
+
+  void indexOffice() {
+    for (var i = 0; i < bookingOfficeViewModel.floor.length; i++) {
+      index = i;
+    }
+  }
 
   Future<void> getDataFloor() async {
     Future.delayed(Duration.zero, () async {
@@ -169,10 +176,10 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
       )),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: BottomAppBar(elevation: 0, child: elevatedButtonBookNow()),
-      ),
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      //   child: BottomAppBar(elevation: 0, child: elevatedButtonBookNow(index)),
+      // ),
     );
   }
 
@@ -283,7 +290,7 @@ class _DetailScreenState extends State<DetailScreen> {
         : const Text('null');
   }
 
-  Widget elevatedButtonBookNow() {
+  Widget elevatedButtonBookNow(int index) {
     return Container(
       width: MediaQuery.of(context).size.height,
       decoration: ShapeDecoration(
@@ -299,8 +306,15 @@ class _DetailScreenState extends State<DetailScreen> {
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => BookingFormScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => BookingFormScreen(
+                          officeId:
+                              bookingOfficeViewModel.floor[index].id.toString(),
+                          buildingId: widget.id,
+                          office: bookingOfficeViewModel.floor,
+                        )));
           },
           child: const Text('Book Now')),
     );
@@ -414,7 +428,16 @@ class _DetailScreenState extends State<DetailScreen> {
                                             index,
                                             MaterialPageRoute(
                                                 builder: (_) =>
-                                                    BookingFormScreen()));
+                                                    BookingFormScreen(
+                                                      officeId:
+                                                          bookingOfficeViewModel
+                                                              .floor[context].id
+                                                              .toString(),
+                                                      buildingId: widget.id,
+                                                      office:
+                                                          bookingOfficeViewModel
+                                                              .floor,
+                                                    )));
                                       },
                                       child: const Text(
                                         'Book Now',
@@ -522,7 +545,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget buttonSendReview(BuildContext context) {
     return InkWell(
       onTap: () async {
-        // showDialog(context: context, builder: (_) => alertDialogRating());
+        showDialog(context: context, builder: (_) => alertDialogRating());
 
         bookingOfficeViewModel
             .sendReview(

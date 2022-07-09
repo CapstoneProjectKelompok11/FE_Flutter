@@ -53,6 +53,7 @@ class AuthAPI {
           response.statusCode == 203) {
         debugPrint('Login Succesfull');
         String token = response.data['data']['token'].toString();
+        debugPrint(token);
         AuthViewModel().userPreferences('', '', token);
         isChecked
             ? AuthViewModel().userPreferences(email, password, token)

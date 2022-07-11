@@ -2,7 +2,6 @@ import 'package:app_booking_office/screen/booking_office/favorite_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:app_booking_office/screen/booking_office/inbox_screen.dart';
 import 'package:app_booking_office/screen/booking_office/profile_screen.dart';
-import 'package:app_booking_office/screen/booking_office/saved_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

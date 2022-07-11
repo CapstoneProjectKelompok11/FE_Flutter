@@ -323,6 +323,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget buttonFavorite() {
     return InkWell(
       onTap: () {
+        bookingOfficeViewModel.addFavorite(widget.id, context);
         setState(() {
           _isfavorite = !_isfavorite;
         });

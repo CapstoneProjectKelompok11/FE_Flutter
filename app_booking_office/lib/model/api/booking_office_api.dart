@@ -259,4 +259,89 @@ class BookOfficeAPI {
     }
     return [];
   }
+
+  static Future<void> postFavorite(
+      String buildingId, BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/building/favorite', {'buildingId': buildingId});
+      final response = await Dio().postUri(
+        uri,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        }),
+      );
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Adding to Favorite');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => const TokenExpired());
+    }
+  }
+
+  static Future<List<DataFavorite>> getFavorite(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/building/favorite/');
+      final response = await Dio().getUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
+      var jsonString = jsonEncode(response.data);
+      var data = jsonDecode(jsonString);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        return GetFavorite.fromJson(data).data;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => const TokenExpired());
+    }
+    return [];
+  }
+
+  static Future<void> deleteFavorite(
+      String buildingId, BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/building/unfavorite/', {'buildingId': buildingId});
+      final response = await Dio().deleteUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes UnFavorite the Building');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => const TokenExpired());
+    }
+  }
 }

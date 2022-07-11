@@ -677,3 +677,192 @@ class Reservation {
 
 //--------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
+
+GetFavorite getFavoriteFromJson(String str) =>
+    GetFavorite.fromJson(json.decode(str));
+
+String getFavoriteToJson(GetFavorite data) => json.encode(data.toJson());
+
+class GetFavorite {
+  GetFavorite({
+    required this.timestamp,
+    required this.status,
+    required this.data,
+  });
+
+  String timestamp;
+  StatusFavorite status;
+  List<DataFavorite> data;
+
+  factory GetFavorite.fromJson(Map<String, dynamic> json) => GetFavorite(
+        timestamp: json["timestamp"],
+        status: StatusFavorite.fromJson(json["status"]),
+        data: List<DataFavorite>.from(
+            json["data"].map((x) => DataFavorite.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "timestamp": timestamp,
+        "status": status.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
+}
+
+class DataFavorite {
+  DataFavorite({
+    required this.building,
+  });
+
+  BuildingFavorite building;
+
+  factory DataFavorite.fromJson(Map<String, dynamic> json) => DataFavorite(
+        building: BuildingFavorite.fromJson(json["building"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "building": building.toJson(),
+      };
+}
+
+class BuildingFavorite {
+  BuildingFavorite({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.description,
+    required this.rating,
+    required this.officeType,
+    required this.buildingSize,
+    required this.floorCount,
+    required this.capacity,
+    required this.images,
+    required this.complex,
+    required this.facilities,
+  });
+
+  int id;
+  String name;
+  String address;
+  String description;
+  double rating;
+  List<String> officeType;
+  String buildingSize;
+  int floorCount;
+  int capacity;
+  List<ImageFavorite> images;
+  Complex complex;
+  List<String> facilities;
+
+  factory BuildingFavorite.fromJson(Map<String, dynamic> json) =>
+      BuildingFavorite(
+        id: json["id"],
+        name: json["name"],
+        address: json["address"],
+        description: json["description"],
+        rating: json["rating"],
+        officeType: List<String>.from(json["office_type"].map((x) => x)),
+        buildingSize: json["building_size"],
+        floorCount: json["floor_count"],
+        capacity: json["capacity"],
+        images: List<ImageFavorite>.from(
+            json["images"].map((x) => ImageFavorite.fromJson(x))),
+        complex: Complex.fromJson(json["complex"]),
+        facilities: List<String>.from(json["facilities"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "address": address,
+        "description": description,
+        "rating": rating,
+        "office_type": List<dynamic>.from(officeType.map((x) => x)),
+        "building_size": buildingSize,
+        "floor_count": floorCount,
+        "capacity": capacity,
+        "images": List<dynamic>.from(images.map((x) => x.toJson())),
+        "complex": complex.toJson(),
+        "facilities": List<dynamic>.from(facilities.map((x) => x)),
+      };
+}
+
+class ComplexFavorite {
+  ComplexFavorite({
+    required this.id,
+    required this.complexName,
+    required this.city,
+  });
+
+  int id;
+  String complexName;
+  City city;
+
+  factory ComplexFavorite.fromJson(Map<String, dynamic> json) =>
+      ComplexFavorite(
+        id: json["id"],
+        complexName: json["complex_name"],
+        city: City.fromJson(json["city"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "complex_name": complexName,
+        "city": city.toJson(),
+      };
+}
+
+class CityFavorite {
+  CityFavorite({
+    required this.id,
+    required this.cityName,
+  });
+
+  int id;
+  String cityName;
+
+  factory CityFavorite.fromJson(Map<String, dynamic> json) => CityFavorite(
+        id: json["id"],
+        cityName: json["city_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "city_name": cityName,
+      };
+}
+
+class ImageFavorite {
+  ImageFavorite({
+    required this.fileName,
+  });
+
+  String fileName;
+
+  factory ImageFavorite.fromJson(Map<String, dynamic> json) => ImageFavorite(
+        fileName: json["fileName"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fileName": fileName,
+      };
+}
+
+class StatusFavorite {
+  StatusFavorite({
+    required this.code,
+    required this.message,
+  });
+
+  String code;
+  String message;
+
+  factory StatusFavorite.fromJson(Map<String, dynamic> json) => StatusFavorite(
+        code: json["code"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "message": message,
+      };
+}

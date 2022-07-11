@@ -13,6 +13,7 @@ enum BookOfficeViewState { none, loading, error }
 class BookingOfficeViewModel extends ChangeNotifier {
   List<BuildingOffice> _office = [];
   List<BuildingOffice> get offices => _office;
+  BuildContext? context;
 
   List<dynamic> nameFloor = [];
   int index = 0;
@@ -26,6 +27,9 @@ class BookingOfficeViewModel extends ChangeNotifier {
 
   List<DataFloor> _floor = [];
   List<DataFloor> get floor => _floor;
+
+  List<DataFavorite> _dataFavorite = [];
+  List<DataFavorite> get dataFavorite => _dataFavorite;
 
   List<DataCity> _city = [];
   List<DataCity> get city => _city;
@@ -208,6 +212,43 @@ class BookingOfficeViewModel extends ChangeNotifier {
     try {
       var data = await BookOfficeAPI.searchBuilding(nameBuilding);
       _resultSearch = data;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> addFavorite(String buildingId, BuildContext context) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.postFavorite(buildingId, context);
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      changeState(BookOfficeViewState.error);
+      debugPrint(e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future<void> getFavorite(BuildContext context) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getFavorite(context);
+      _dataFavorite = data;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> unFavorite(String buildingId, BuildContext context) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.deleteFavorite(buildingId, context);
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());

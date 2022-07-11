@@ -13,9 +13,26 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late BookingOfficeViewModel bookingOfficeViewModel;
+  Future<void> getDataUser() async {
+    Future.delayed(const Duration(seconds: 1), () async {
+      bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getUserData();
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDataUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
+    bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     final bookingOfficeViewModeel =
         Provider.of<BookingOfficeViewModel>(context);
     return Scaffold(

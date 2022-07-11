@@ -21,17 +21,24 @@ class _CardCaroselState extends State<CardCarosel> {
   Widget build(BuildContext context) {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(
+          height: 20,
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Text('Top Places',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+        ),
         const SizedBox(
           height: 10,
         ),
-        const Text('Top Places',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
         SizedBox(
           height: 160,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
-            padding: const EdgeInsets.only(left: 20, right: 10),
+            padding: const EdgeInsets.only(left: 10, right: 5),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: 4,

@@ -34,6 +34,10 @@ class BookingOfficeViewModel extends ChangeNotifier {
   List<DataCity> _city = [];
   List<DataCity> get city => _city;
 
+  GetUserData _userData =
+      GetUserData(id: 0, firstName: '', lastName: '', phone: '', email: '');
+  GetUserData get userData => _userData;
+
   List<DataBuilding> _building = [];
   List<DataBuilding> get building => _building;
 
@@ -249,6 +253,19 @@ class BookingOfficeViewModel extends ChangeNotifier {
     changeState(BookOfficeViewState.loading);
     try {
       BookOfficeAPI.deleteFavorite(buildingId, context);
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getUserData() async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getDataUser();
+      _userData = data;
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());

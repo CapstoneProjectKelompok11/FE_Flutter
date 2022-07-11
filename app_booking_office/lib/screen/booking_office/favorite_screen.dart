@@ -16,7 +16,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   late BookingOfficeViewModel bookingOfficeViewModel;
 
   Future<void> getFavorite() async {
-    Future.delayed(Duration.zero, () async {
+    Future.delayed(const Duration(seconds: 1), () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
       await bookingOfficeViewModel.getFavorite(context);
@@ -95,7 +95,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         .dataFavorite[index].building.id
                                         .toString(),
                                     context)
-                                .then((value) => getFavorite());
+                                .whenComplete(() => getFavorite());
                           },
                           child: const Icon(
                             CupertinoIcons.delete,
@@ -157,7 +157,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       width: 200,
       decoration: const BoxDecoration(color: Colors.transparent),
       child: Text(
-        bookingOfficeViewModel.dataFavorite[index].building.name,
+        bookingOfficeViewModel.dataFavorite[index].building.name ?? 'null',
         maxLines: 2,
         style: const TextStyle(
             fontSize: 11,
@@ -179,7 +179,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           width: 180,
           decoration: const BoxDecoration(color: Colors.transparent),
           child: Text(
-            bookingOfficeViewModel.dataFavorite[index].building.address,
+            bookingOfficeViewModel.dataFavorite[index].building.address ??
+                "null",
             maxLines: 2,
             style: const TextStyle(
                 color: Colors.black,
@@ -197,9 +198,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         maxRating: 10,
         ignoreGestures: true,
         itemSize: 10,
-        initialRating: bookingOfficeViewModel
-            .dataFavorite[index].building.rating
-            .toDouble(),
+        initialRating:
+            bookingOfficeViewModel.dataFavorite[index].building.rating ?? 0,
         itemBuilder: (context, index) {
           return const Icon(
             Icons.star_sharp,

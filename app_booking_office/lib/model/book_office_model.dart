@@ -725,32 +725,32 @@ class DataFavorite {
 }
 
 class BuildingFavorite {
-  BuildingFavorite({
-    required this.id,
-    required this.name,
-    required this.address,
-    required this.description,
-    required this.rating,
-    required this.officeType,
-    required this.buildingSize,
-    required this.floorCount,
-    required this.capacity,
-    required this.images,
-    required this.complex,
-    required this.facilities,
-  });
+  BuildingFavorite(
+      {required this.id,
+      required this.name,
+      required this.address,
+      required this.description,
+      required this.rating,
+      required this.officeType,
+      required this.buildingSize,
+      required this.floorCount,
+      required this.capacity,
+      required this.images,
+      required this.complex,
+      required this.facilities});
 
-  int id;
-  String name;
-  String address;
-  String description;
-  double rating;
+  int? id;
+  String? name;
+  String? address;
+  String? description;
+  double? rating;
   List<String> officeType;
-  String buildingSize;
-  int floorCount;
-  int capacity;
+  String? buildingSize;
+  int? floorCount;
+  int? capacity;
   List<ImageFavorite> images;
   Complex complex;
+  bool isFavorite = true;
   List<String> facilities;
 
   factory BuildingFavorite.fromJson(Map<String, dynamic> json) =>
@@ -857,6 +857,92 @@ class StatusFavorite {
   String message;
 
   factory StatusFavorite.fromJson(Map<String, dynamic> json) => StatusFavorite(
+        code: json["code"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "message": message,
+      };
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+GetUser getUserFromJson(String str) => GetUser.fromJson(json.decode(str));
+
+String getUserToJson(GetUser data) => json.encode(data.toJson());
+
+class GetUser {
+  GetUser({
+    required this.timestamp,
+    required this.status,
+    required this.data,
+  });
+
+  String timestamp;
+  StatusGetUser status;
+  GetUserData data;
+
+  factory GetUser.fromJson(Map<String, dynamic> json) => GetUser(
+        timestamp: json["timestamp"],
+        status: StatusGetUser.fromJson(json["status"]),
+        data: GetUserData.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "timestamp": timestamp,
+        "status": status.toJson(),
+        "data": data.toJson(),
+      };
+}
+
+class GetUserData {
+  GetUserData({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.email,
+    this.image,
+  });
+
+  int id;
+  String firstName;
+  String lastName;
+  String phone;
+  String email;
+  dynamic image;
+
+  factory GetUserData.fromJson(Map<String, dynamic> json) => GetUserData(
+        id: json["id"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        phone: json["phone"],
+        email: json["email"],
+        image: json["image"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "phone": phone,
+        "email": email,
+        "image": image,
+      };
+}
+
+class StatusGetUser {
+  StatusGetUser({
+    required this.code,
+    required this.message,
+  });
+
+  String code;
+  String message;
+
+  factory StatusGetUser.fromJson(Map<String, dynamic> json) => StatusGetUser(
         code: json["code"],
         message: json["message"],
       );

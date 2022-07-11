@@ -47,6 +47,14 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
+  Future<void> getFavorite() async {
+    Future.delayed(const Duration(seconds: 1), () async {
+      bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getFavorite(context);
+    });
+  }
+
   Future<void> getDataFloor() async {
     Future.delayed(Duration.zero, () async {
       bookingOfficeViewModel =
@@ -176,10 +184,6 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
       )),
-      // bottomNavigationBar: Padding(
-      //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      //   child: BottomAppBar(elevation: 0, child: elevatedButtonBookNow(index)),
-      // ),
     );
   }
 
@@ -277,7 +281,7 @@ class _DetailScreenState extends State<DetailScreen> {
         ? ReadMoreText(
             widget.description!,
             trimLines: 5,
-            textAlign: TextAlign.left,
+            textAlign: TextAlign.justify,
             trimMode: TrimMode.Line,
             trimCollapsedText: 'Read More',
             trimExpandedText: 'Read less',
@@ -285,7 +289,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 fontWeight: FontWeight.bold, color: Colors.black),
             moreStyle: const TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.black),
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
           )
         : const Text('null');
   }
@@ -323,7 +330,9 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget buttonFavorite() {
     return InkWell(
       onTap: () {
-        bookingOfficeViewModel.addFavorite(widget.id, context);
+        bookingOfficeViewModel
+            .addFavorite(widget.id, context)
+            .then((value) => getFavorite());
         setState(() {
           _isfavorite = !_isfavorite;
         });

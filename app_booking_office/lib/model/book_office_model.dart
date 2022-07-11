@@ -300,13 +300,13 @@ class Building {
 
   String timestamp;
   StatusBuilding status;
-  List<DataBulding> data;
+  List<DataBuilding> data;
 
   factory Building.fromJson(Map<String, dynamic> json) => Building(
         timestamp: json["timestamp"],
         status: StatusBuilding.fromJson(json["status"]),
-        data: List<DataBulding>.from(
-            json["data"].map((x) => DataBulding.fromJson(x))),
+        data: List<DataBuilding>.from(
+            json["data"].map((x) => DataBuilding.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -316,8 +316,8 @@ class Building {
       };
 }
 
-class DataBulding {
-  DataBulding({
+class DataBuilding {
+  DataBuilding({
     required this.id,
     required this.name,
     required this.address,
@@ -345,7 +345,7 @@ class DataBulding {
   ComplexBuilding complex;
   List<dynamic> facilities;
 
-  factory DataBulding.fromJson(Map<String, dynamic> json) => DataBulding(
+  factory DataBuilding.fromJson(Map<String, dynamic> json) => DataBuilding(
         id: json["id"],
         name: json["name"],
         address: json["address"],
@@ -573,14 +573,6 @@ class StatusGetReview {
 //------------------------------------------------------------
 //----------------------------------------------------------
 
-// class ImageFloor {
-//   Image? imageFloor;
-
-//   ImageFloor({
-//     this.imageFloor,
-//   });
-// }
-
 class RatingData {
   double rating = 0;
   RatingData({required this.rating});
@@ -682,3 +674,6 @@ class Reservation {
       required this.participant,
       required this.note});
 }
+
+//--------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------

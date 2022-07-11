@@ -22,17 +22,11 @@ class _CardCaroselState extends State<CardCarosel> {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Top Places',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-              buttonViewMore(),
-            ],
-          ),
+        const SizedBox(
+          height: 10,
         ),
+        const Text('Top Places',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
         SizedBox(
           height: 160,
           width: MediaQuery.of(context).size.width,

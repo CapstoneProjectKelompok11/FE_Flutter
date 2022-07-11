@@ -14,8 +14,8 @@ class AuthAPI {
   Future<void> register(Auth auth) async {
     try {
       var dataUser = {
-        'firstName': auth.firstName,
-        'lastName': auth.lastName,
+        'first_name': auth.firstName,
+        'last_name': auth.lastName,
         'phone': auth.phone,
         'email': auth.email,
         'password': auth.password,

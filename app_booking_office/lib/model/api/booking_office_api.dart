@@ -112,7 +112,7 @@ class BookOfficeAPI {
     return [];
   }
 
-  static Future<List<DataBulding>?> getBuilding(
+  static Future<List<DataBuilding>?> getBuilding(
     String complexId,
     String page,
     String limit,
@@ -235,5 +235,28 @@ class BookOfficeAPI {
           context: context,
           builder: (_) => const TokenExpired());
     }
+  }
+
+  static Future<List<DataBuilding>> searchBuilding(String nameBuilding) async {
+    try {
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/building/search/', {'name': nameBuilding});
+      final response = await Dio().getUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+          }));
+      var jsonString = jsonEncode(response.data);
+      var data = jsonDecode(jsonString);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Fetching Result Search');
+        return Building.fromJson(data).data;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return [];
   }
 }

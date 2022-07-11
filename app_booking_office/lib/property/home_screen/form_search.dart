@@ -1,4 +1,4 @@
-import 'package:app_booking_office/screen/booking_office/listing_screen.dart';
+import 'package:app_booking_office/screen/booking_office/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatefulWidget {
@@ -20,7 +20,10 @@ class _SearchFieldState extends State<SearchField> {
           height: 50,
           child: TextFormField(
             readOnly: true,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (_) => SearchScreen1()));
+            },
             controller: searchController,
             decoration: InputDecoration(
                 hintStyle: const TextStyle(fontSize: 12),

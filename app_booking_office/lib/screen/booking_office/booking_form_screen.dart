@@ -34,7 +34,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
   }
 
   DateTime date = DateTime.now();
-  TimeOfDay time = TimeOfDay.now();
+  DateTime time = DateTime.now();
   final formKey = GlobalKey<FormState>();
   int index = 0;
   String? selectedFloor;
@@ -42,7 +42,8 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
   TextEditingController companyNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController notesController = TextEditingController();
-  DateFormat dateFormat = DateFormat('dd-MM-yyyy kk:MM:ss');
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+  DateFormat timeFormat = DateFormat('hh:mm:ss');
   late BookingOfficeViewModel bookingOfficeViewModel;
 
   Future<void> initListNameFloor() async {
@@ -163,7 +164,6 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.black, width: 2))),
-          value: selectedFloor,
           items: bookingOfficeViewModel.nameFloor
               .map((value) => DropdownMenuItem(
                   value: value['name'],
@@ -292,6 +292,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
         ),
         TextFormField(
           controller: companyNameController,
+          style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
               hintText: 'Your compeny name here',
               hintStyle: const TextStyle(fontSize: 12),
@@ -334,6 +335,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
         ),
         TextFormField(
           controller: phoneNumberController,
+          style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
               hintText: '08xx xxx xxx',
               hintStyle: const TextStyle(fontSize: 12),
@@ -380,6 +382,7 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
         ),
         TextFormField(
           controller: notesController,
+          style: const TextStyle(fontSize: 12),
           maxLines: 8,
           decoration: InputDecoration(
               contentPadding:
@@ -424,12 +427,13 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
           onPressed: () {
-            debugPrint(dateFormat.format(date));
+            debugPrint(dateFormat.format(date) + " " + timeFormat.format(time));
             if (!formKey.currentState!.validate()) return;
             formKey.currentState!.save();
             bookingOfficeViewModel.postReservation(
                 Reservation(
-                    startReservation: dateFormat.format(date),
+                    startReservation:
+                        dateFormat.format(date) + " " + timeFormat.format(time),
                     company: companyNameController.text,
                     phone: phoneNumberController.text,
                     participant: selectedParticipant.toString(),

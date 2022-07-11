@@ -4,6 +4,7 @@ import 'package:app_booking_office/property/home_screen/form_search.dart';
 import 'package:app_booking_office/property/home_screen/list_card_recommend.dart';
 import 'package:app_booking_office/property/loading_screen.dart';
 import 'package:app_booking_office/screen/booking_office/listing_screen.dart';
+import 'package:app_booking_office/screen/booking_office/search_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,24 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(
                         height: 15,
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     const Text(
-                      //       'Tanah Abang',
-                      //       style: TextStyle(fontSize: 12),
-                      //     ),
-                      //     TextButton(
-                      //         onPressed: () {},
-                      //         child: const Text(
-                      //           'View More',
-                      //           style: TextStyle(
-                      //               fontSize: 12,
-                      //               color: Color(0xFF4D89FF),
-                      //               fontWeight: FontWeight.bold),
-                      //         ))
-                      //   ],
-                      // ),
                       ListCardRecommend(),
                     ],
                   ),

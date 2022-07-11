@@ -1,3 +1,4 @@
+import 'package:app_booking_office/screen/booking_office/favorite_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:app_booking_office/screen/booking_office/inbox_screen.dart';
 import 'package:app_booking_office/screen/booking_office/profile_screen.dart';
@@ -16,9 +17,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   final screen = <Widget>[
     const HomeScreen(),
-    SavedScreen(),
+    FavoriteScreen(),
     InboxScreen(),
-    ProfileScreen()
+    const ProfileScreen()
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -52,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 ),
                 label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_outline), label: 'Saved'),
+                icon: Icon(Icons.favorite_outline), label: 'Favorites'),
             BottomNavigationBarItem(
                 icon: Icon(
                   CupertinoIcons.chat_bubble,

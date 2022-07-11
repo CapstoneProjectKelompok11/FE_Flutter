@@ -30,17 +30,20 @@ class BookingOfficeViewModel extends ChangeNotifier {
   List<DataCity> _city = [];
   List<DataCity> get city => _city;
 
-  List<DataBulding> _building = [];
-  List<DataBulding> get building => _building;
+  List<DataBuilding> _building = [];
+  List<DataBuilding> get building => _building;
 
   List<DataGetReview> _review = [];
   List<DataGetReview> get review => _review;
 
-  List<DataBulding> _buildingById = [];
-  List<DataBulding> get buildingById => _buildingById;
+  List<DataBuilding> _buildingById = [];
+  List<DataBuilding> get buildingById => _buildingById;
 
-  List<DataBulding> _buildingByComplex = [];
-  List<DataBulding> get buildingByComplex => _buildingByComplex;
+  List<DataBuilding> _resultSearch = [];
+  List<DataBuilding> get resultSearch => _resultSearch;
+
+  List<DataBuilding> _buildingByComplex = [];
+  List<DataBuilding> get buildingByComplex => _buildingByComplex;
 
   BookOfficeViewState _states = BookOfficeViewState.none;
   BookOfficeViewState get states => _states;
@@ -192,6 +195,19 @@ class BookingOfficeViewModel extends ChangeNotifier {
     changeState(BookOfficeViewState.loading);
     try {
       BookOfficeAPI.reservation(reservation, floorId, context);
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> searchBuilding(String nameBuilding) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.searchBuilding(nameBuilding);
+      _resultSearch = data;
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());

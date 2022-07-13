@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/property/show_dialog/token_expired.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -373,22 +375,26 @@ class BookOfficeAPI {
         id: 0, firstName: '', lastName: '', phone: '', email: '');
   }
 
-  static Future<void> postProfilePicture(String image) async {
+  static Future<void> postProfilePicture(File image) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
+      String fileName = image.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(image.path,
+            filename: fileName, contentType: MediaType('image', 'jpg')),
+        "type": "image/jpg"
+      });
       var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
           '/api/auth/profile/image');
-      var dataReservation = {
-        'image': image,
-      };
-      var dataMap = jsonEncode(dataReservation);
+
+      // var dataMap = jsonEncode(dataReservation);
       final response = await Dio().postUri(uri,
           options: Options(headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer $token',
           }),
-          data: dataMap);
+          data: formData);
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202 ||

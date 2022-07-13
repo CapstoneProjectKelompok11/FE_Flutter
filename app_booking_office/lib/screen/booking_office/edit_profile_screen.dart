@@ -130,9 +130,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             height: 10,
           ),
           TextFormField(
+            initialValue: bookingOfficeViewModel.userData.firstName,
+            style: const TextStyle(fontSize: 12),
             decoration: InputDecoration(
-                hintStyle: const TextStyle(fontSize: 12),
-                hintText: bookingOfficeViewModel.userData.firstName,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 focusedBorder: OutlineInputBorder(
@@ -174,9 +174,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             height: 10,
           ),
           TextFormField(
+            initialValue: bookingOfficeViewModel.userData.lastName,
+            style: const TextStyle(fontSize: 12),
             decoration: InputDecoration(
-                hintStyle: const TextStyle(fontSize: 12),
-                hintText: bookingOfficeViewModel.userData.lastName,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 focusedBorder: OutlineInputBorder(
@@ -217,9 +217,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 10,
         ),
         TextFormField(
+          initialValue: bookingOfficeViewModel.userData.phone,
+          style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
-              hintStyle: const TextStyle(fontSize: 12),
-              hintText: bookingOfficeViewModel.userData.phone,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               focusedBorder: OutlineInputBorder(
@@ -258,9 +258,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 10,
         ),
         TextFormField(
+          initialValue: bookingOfficeViewModel.userData.email,
+          style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
-              hintStyle: const TextStyle(fontSize: 12),
-              hintText: bookingOfficeViewModel.userData.email,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               focusedBorder: OutlineInputBorder(
@@ -299,9 +299,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 10,
         ),
         TextFormField(
+          initialValue: bookingOfficeViewModel.userData.firstName,
+          style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
-              hintStyle: const TextStyle(fontSize: 12),
-              hintText: bookingOfficeViewModel.userData.firstName,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               focusedBorder: OutlineInputBorder(
@@ -346,7 +346,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           onPressed: () {
             if (!formKey.currentState!.validate()) return;
             formKey.currentState!.save();
-            //ini untuk menjalankan fungsi register dan mengirimkan data kepada model yang telah dibuat pada folder model
+            bookingOfficeViewModel
+                .postProfilePicture(bookingOfficeViewModel.image!)
+                .then((value) => getDataUser());
+            Navigator.pop(context);
           },
           child: const Text('Save')),
     );
@@ -357,9 +360,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       width: 76,
       height: 76,
       child: ClipOval(
-        child: bookingOfficeViewModel.image != null
-            ? Image.file(
-                bookingOfficeViewModel.image!,
+        child: bookingOfficeViewModel.userData.image != null
+            ? Image.network(
+                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/profile/image/${bookingOfficeViewModel.userData.image}',
                 fit: BoxFit.cover,
               )
             : Image.network(
@@ -374,9 +377,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       right: 0,
       child: InkWell(
         onTap: () {
-          bookingOfficeViewModel.pickImageGallery().then((_) =>
-              bookingOfficeViewModel
-                  .postProfilePicture(bookingOfficeViewModel.image.toString()));
+          bookingOfficeViewModel
+              .pickImageGallery()
+              .whenComplete(() => getDataUser());
         },
         child: Container(
           padding: const EdgeInsets.all(5),

@@ -108,9 +108,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: 64,
       height: 64,
       child: ClipOval(
-        child: bookingOfficeViewModel.userData.image != null
+        child: bookingOfficeViewModel.userData.image.isNotEmpty
             ? Image.network(
-                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.userData.image}',
+                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/profile/image/${bookingOfficeViewModel.userData.image}',
                 fit: BoxFit.cover,
               )
             : Image.network(

@@ -79,7 +79,9 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     bookingDate(index),
-                                    ButtonStatus1()
+                                    ButtonStatus1(
+                                        status: bookingOfficeViewModel
+                                            .dataReservation[index].status)
                                   ],
                                 )
                               ],
@@ -101,8 +103,10 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(
-                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.dataReservation[index].building.images[0].fileName}'),
+              image: NetworkImage(bookingOfficeViewModel
+                      .dataReservation[index].floor.image.isNotEmpty
+                  ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.dataReservation[index].floor.image}'
+                  : 'https://previews.123rf.com/images/kolibrico/kolibrico2002/kolibrico200200005/139369246-vector-empty-transparent-background-vector-transparency-grid-seamless-pattern-.jpg?fj=1'),
               fit: BoxFit.cover)),
     );
   }

@@ -77,8 +77,8 @@ class BookingOfficeViewModel extends ChangeNotifier {
   List<DataCity> _city = [];
   List<DataCity> get city => _city;
 
-  GetUserData _userData =
-      GetUserData(id: 0, firstName: '', lastName: '', phone: '', email: '');
+  GetUserData _userData = GetUserData(
+      id: 0, firstName: '', lastName: '', phone: '', email: '', image: '');
   GetUserData get userData => _userData;
 
   List<DataBuilding> _building = [];
@@ -330,7 +330,7 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> postProfilePicture(String image) async {
+  Future<void> postProfilePicture(File image) async {
     changeState(BookOfficeViewState.loading);
     try {
       BookOfficeAPI.postProfilePicture(image);

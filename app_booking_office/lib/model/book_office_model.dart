@@ -1159,7 +1159,7 @@ class ImageReservation {
     required this.fileName,
   });
 
-  String fileName;
+  String? fileName;
 
   factory ImageReservation.fromJson(Map<String, dynamic> json) =>
       ImageReservation(
@@ -1269,3 +1269,5 @@ class StatusReservation {
         "message": message,
       };
 }
+
+class UploadImage {}

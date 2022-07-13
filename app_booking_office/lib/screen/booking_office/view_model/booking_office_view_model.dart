@@ -28,6 +28,49 @@ class BookingOfficeViewModel extends ChangeNotifier {
   List<DataFloor> _floor = [];
   List<DataFloor> get floor => _floor;
 
+  List<DataReservation> _dataReservation = [
+    DataReservation(
+        id: 0,
+        user: UserReservation(
+            id: 0,
+            firstName: '',
+            lastName: '',
+            phone: '',
+            email: '',
+            image: ''),
+        floor: FloorReservation(
+            id: 0,
+            name: '',
+            type: '',
+            floorSize: '',
+            maxCapacity: 0,
+            startingPrice: 0,
+            image: ''),
+        building: BuildingReservation(
+            id: 0,
+            name: '',
+            address: '',
+            description: '',
+            rating: 0,
+            buildingSize: '',
+            floorCount: 0,
+            capacity: 0,
+            images: [],
+            complex: ComplexReservation(
+                id: 0,
+                complexName: '',
+                city: CityReservation(id: 0, cityName: '')),
+            facilities: []),
+        startReservation: '',
+        company: '',
+        price: 0,
+        phone: '',
+        participant: 0,
+        note: '',
+        status: '')
+  ];
+  List<DataReservation> get dataReservation => _dataReservation;
+
   List<DataFavorite> _dataFavorite = [];
   List<DataFavorite> get dataFavorite => _dataFavorite;
 
@@ -129,7 +172,7 @@ class BookingOfficeViewModel extends ChangeNotifier {
   Future<void> getBuildingById(String complexId, String limit) async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getBuilding(complexId, '', limit);
+      var data = await BookOfficeAPI.getBuilding(complexId, '', '');
       _buildingById = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
@@ -266,6 +309,31 @@ class BookingOfficeViewModel extends ChangeNotifier {
     try {
       var data = await BookOfficeAPI.getDataUser();
       _userData = data;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getReservation() async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getReservation();
+      _dataReservation = data!;
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> postProfilePicture(String image) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.postProfilePicture(image);
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());

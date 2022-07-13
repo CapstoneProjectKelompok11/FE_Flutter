@@ -1,5 +1,6 @@
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:app_booking_office/screen/booking_office/edit_profile_screen.dart';
+import 'package:app_booking_office/screen/booking_office/my_booking_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -107,9 +108,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: 64,
       height: 64,
       child: ClipOval(
-        child: bookingOfficeViewModel.image != null
-            ? Image.file(
-                bookingOfficeViewModel.image!,
+        child: bookingOfficeViewModel.userData.image != null
+            ? Image.network(
+                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.userData.image}',
                 fit: BoxFit.cover,
               )
             : Image.network(
@@ -119,16 +120,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget nameProfile() {
-    return const Text(
-      'Nobody',
-      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+    return Text(
+      bookingOfficeViewModel.userData.firstName +
+          ' ' +
+          bookingOfficeViewModel.userData.lastName,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
     );
   }
 
   Widget emailProfile() {
-    return const Text(
-      'Nobody@gmail.com',
-      style: TextStyle(color: Color(0xFF868686), fontSize: 12),
+    return Text(
+      bookingOfficeViewModel.userData.email,
+      style: const TextStyle(color: Color(0xFF868686), fontSize: 12),
     );
   }
 
@@ -235,12 +238,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => MyBookingScreen()));
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               Icon(
-                CupertinoIcons.ellipsis_circle_fill,
+                CupertinoIcons.shopping_cart,
                 color: Colors.black,
                 size: 25,
               ),
@@ -248,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 10,
               ),
               Text(
-                'FAQs',
+                'My Booking',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 13,

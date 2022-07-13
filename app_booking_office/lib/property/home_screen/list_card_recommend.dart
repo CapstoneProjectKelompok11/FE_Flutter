@@ -88,10 +88,8 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(bookingOfficeViewModel
-                      .buildingById[index].images[0].fileName.isNotEmpty
-                  ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'
-                  : 'https://6.viki.io/image/794f78782da94d6799fd3cd978e50e96/dummy.jpeg?s=900x600&e=t'),
+              image: NetworkImage(
+                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'),
               fit: BoxFit.cover)),
     );
   }

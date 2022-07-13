@@ -169,6 +169,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 height: 15,
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   writeReview(),
@@ -533,20 +534,21 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget writeReview() {
     return Flexible(
-      child: SizedBox(
-        height: 40,
-        child: TextFormField(
-          controller: reviewController,
-          decoration: InputDecoration(
-            hintStyle: const TextStyle(fontSize: 12),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black, width: 2),
-                borderRadius: BorderRadius.circular(10)),
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey, width: 2),
-                borderRadius: BorderRadius.circular(10)),
-            hintText: 'Write review..',
-          ),
+      child: TextFormField(
+        controller: reviewController,
+        minLines: 1,
+        maxLines: 5,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          hintStyle: const TextStyle(fontSize: 12),
+          focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.black, width: 2),
+              borderRadius: BorderRadius.circular(10)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey, width: 2),
+              borderRadius: BorderRadius.circular(10)),
+          hintText: 'Write review..',
         ),
       ),
     );
@@ -567,7 +569,7 @@ class _DetailScreenState extends State<DetailScreen> {
             .then((value) => getDataReview());
       },
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
             color: const Color(0xFF4D89FF),
             borderRadius: BorderRadius.circular(10)),

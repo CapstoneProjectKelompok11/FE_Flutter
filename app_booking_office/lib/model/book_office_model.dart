@@ -427,7 +427,7 @@ class ImageBuilding {
     required this.fileName,
   });
 
-  String fileName;
+  String? fileName;
 
   factory ImageBuilding.fromJson(Map<String, dynamic> json) => ImageBuilding(
         fileName: json["fileName"],
@@ -907,12 +907,12 @@ class GetUserData {
     this.image,
   });
 
-  int id;
-  String firstName;
-  String lastName;
-  String phone;
-  String email;
-  dynamic image;
+  int id = 0;
+  String firstName = '';
+  String lastName = '';
+  String phone = '';
+  String email = '';
+  dynamic image = '';
 
   factory GetUserData.fromJson(Map<String, dynamic> json) => GetUserData(
         id: json["id"],
@@ -943,6 +943,323 @@ class StatusGetUser {
   String message;
 
   factory StatusGetUser.fromJson(Map<String, dynamic> json) => StatusGetUser(
+        code: json["code"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "message": message,
+      };
+}
+//-------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+
+GetReservation getReservationFromJson(String str) =>
+    GetReservation.fromJson(json.decode(str));
+
+String getReservationToJson(GetReservation data) => json.encode(data.toJson());
+
+class GetReservation {
+  GetReservation({
+    required this.timestamp,
+    required this.status,
+    required this.data,
+  });
+
+  String timestamp;
+  StatusReservation status;
+  List<DataReservation> data;
+
+  factory GetReservation.fromJson(Map<String, dynamic> json) => GetReservation(
+        timestamp: json["timestamp"],
+        status: StatusReservation.fromJson(json["status"]),
+        data: List<DataReservation>.from(
+            json["data"].map((x) => DataReservation.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "timestamp": timestamp,
+        "status": status.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
+}
+
+class DataReservation {
+  DataReservation({
+    required this.id,
+    required this.user,
+    required this.floor,
+    required this.building,
+    required this.startReservation,
+    required this.company,
+    required this.price,
+    required this.phone,
+    required this.participant,
+    required this.note,
+    this.image,
+    required this.status,
+  });
+
+  int id;
+  UserReservation user;
+  FloorReservation floor;
+  BuildingReservation building;
+  String startReservation;
+  String company;
+  int price;
+  String phone;
+  int participant;
+  String note;
+  dynamic image;
+  String status;
+
+  factory DataReservation.fromJson(Map<String, dynamic> json) =>
+      DataReservation(
+        id: json["id"],
+        user: UserReservation.fromJson(json["user"]),
+        floor: FloorReservation.fromJson(json["floor"]),
+        building: BuildingReservation.fromJson(json["building"]),
+        startReservation: json["start_reservation"],
+        company: json["company"],
+        price: json["price"],
+        phone: json["phone"],
+        participant: json["participant"],
+        note: json["note"],
+        image: json["image"] ?? '',
+        status: json["status"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user": user.toJson(),
+        "floor": floor.toJson(),
+        "building": building.toJson(),
+        "start_reservation": startReservation,
+        "company": company,
+        "price": price,
+        "phone": phone,
+        "participant": participant,
+        "note": note,
+        "image": image,
+        "status": status,
+      };
+}
+
+class BuildingReservation {
+  BuildingReservation({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.description,
+    required this.rating,
+    this.officeType,
+    required this.buildingSize,
+    required this.floorCount,
+    required this.capacity,
+    required this.images,
+    required this.complex,
+    required this.facilities,
+  });
+
+  int id;
+  String name;
+  String address;
+  String description;
+  double rating;
+  dynamic officeType;
+  String buildingSize;
+  int floorCount;
+  int capacity;
+  List<ImageReservation> images;
+  ComplexReservation complex;
+  List<String> facilities;
+
+  factory BuildingReservation.fromJson(Map<String, dynamic> json) =>
+      BuildingReservation(
+        id: json["id"],
+        name: json["name"],
+        address: json["address"],
+        description: json["description"],
+        rating: json["rating"],
+        officeType: json["office_type"] ?? '',
+        buildingSize: json["building_size"],
+        floorCount: json["floor_count"],
+        capacity: json["capacity"],
+        images: List<ImageReservation>.from(
+            json["images"].map((x) => ImageReservation.fromJson(x))),
+        complex: ComplexReservation.fromJson(json["complex"]),
+        facilities: List<String>.from(json["facilities"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "address": address,
+        "description": description,
+        "rating": rating,
+        "office_type": officeType,
+        "building_size": buildingSize,
+        "floor_count": floorCount,
+        "capacity": capacity,
+        "images": List<dynamic>.from(images.map((x) => x.toJson())),
+        "complex": complex.toJson(),
+        "facilities": List<dynamic>.from(facilities.map((x) => x)),
+      };
+}
+
+class ComplexReservation {
+  ComplexReservation({
+    required this.id,
+    required this.complexName,
+    required this.city,
+  });
+
+  int id;
+  String complexName;
+  CityReservation city;
+
+  factory ComplexReservation.fromJson(Map<String, dynamic> json) =>
+      ComplexReservation(
+        id: json["id"],
+        complexName: json["complex_name"],
+        city: CityReservation.fromJson(json["city"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "complex_name": complexName,
+        "city": city.toJson(),
+      };
+}
+
+class CityReservation {
+  CityReservation({
+    required this.id,
+    required this.cityName,
+  });
+
+  int id;
+  String cityName;
+
+  factory CityReservation.fromJson(Map<String, dynamic> json) =>
+      CityReservation(
+        id: json["id"],
+        cityName: json["city_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "city_name": cityName,
+      };
+}
+
+class ImageReservation {
+  ImageReservation({
+    required this.fileName,
+  });
+
+  String fileName;
+
+  factory ImageReservation.fromJson(Map<String, dynamic> json) =>
+      ImageReservation(
+        fileName: json["fileName"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fileName": fileName,
+      };
+}
+
+class FloorReservation {
+  FloorReservation({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.floorSize,
+    required this.maxCapacity,
+    required this.startingPrice,
+    required this.image,
+  });
+
+  int id;
+  String name;
+  String type;
+  String floorSize;
+  int maxCapacity;
+  int startingPrice;
+  String image;
+
+  factory FloorReservation.fromJson(Map<String, dynamic> json) =>
+      FloorReservation(
+        id: json["id"],
+        name: json["name"],
+        type: json["type"],
+        floorSize: json["floor_size"],
+        maxCapacity: json["max_capacity"],
+        startingPrice: json["starting_price"],
+        image: json["image"] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "type": type,
+        "floor_size": floorSize,
+        "max_capacity": maxCapacity,
+        "starting_price": startingPrice,
+        "image": image,
+      };
+}
+
+class UserReservation {
+  UserReservation({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.email,
+    this.image,
+  });
+
+  int id;
+  String firstName;
+  String lastName;
+  String phone;
+  String email;
+  dynamic image;
+
+  factory UserReservation.fromJson(Map<String, dynamic> json) =>
+      UserReservation(
+        id: json["id"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        phone: json["phone"],
+        email: json["email"],
+        image: json["image"] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "phone": phone,
+        "email": email,
+        "image": image,
+      };
+}
+
+class StatusReservation {
+  StatusReservation({
+    required this.code,
+    required this.message,
+  });
+
+  String code;
+  String message;
+
+  factory StatusReservation.fromJson(Map<String, dynamic> json) =>
+      StatusReservation(
         code: json["code"],
         message: json["message"],
       );

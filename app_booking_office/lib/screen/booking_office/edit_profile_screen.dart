@@ -17,6 +17,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController companyNameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  late BookingOfficeViewModel bookingOfficeViewModel;
+
+  Future<void> getDataUser() async {
+    Future.delayed(const Duration(seconds: 1), () async {
+      bookingOfficeViewModel =
+          Provider.of<BookingOfficeViewModel>(context, listen: false);
+      await bookingOfficeViewModel.getUserData();
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDataUser();
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -29,7 +46,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
@@ -85,10 +102,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 height: 10,
               ),
               email(),
-              const SizedBox(
-                height: 10,
-              ),
-              companyName(),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // companyName(),
               const SizedBox(
                 height: 40,
               ),
@@ -115,6 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextFormField(
             decoration: InputDecoration(
                 hintStyle: const TextStyle(fontSize: 12),
+                hintText: bookingOfficeViewModel.userData.firstName,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 focusedBorder: OutlineInputBorder(
@@ -158,6 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextFormField(
             decoration: InputDecoration(
                 hintStyle: const TextStyle(fontSize: 12),
+                hintText: bookingOfficeViewModel.userData.lastName,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 focusedBorder: OutlineInputBorder(
@@ -200,6 +219,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         TextFormField(
           decoration: InputDecoration(
               hintStyle: const TextStyle(fontSize: 12),
+              hintText: bookingOfficeViewModel.userData.phone,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               focusedBorder: OutlineInputBorder(
@@ -240,6 +260,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         TextFormField(
           decoration: InputDecoration(
               hintStyle: const TextStyle(fontSize: 12),
+              hintText: bookingOfficeViewModel.userData.email,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               focusedBorder: OutlineInputBorder(
@@ -280,6 +301,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         TextFormField(
           decoration: InputDecoration(
               hintStyle: const TextStyle(fontSize: 12),
+              hintText: bookingOfficeViewModel.userData.firstName,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               focusedBorder: OutlineInputBorder(
@@ -352,7 +374,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       right: 0,
       child: InkWell(
         onTap: () {
-          bookingOfficeViewModel.pickImageGallery();
+          bookingOfficeViewModel.pickImageGallery().then((_) =>
+              bookingOfficeViewModel
+                  .postProfilePicture(bookingOfficeViewModel.image.toString()));
         },
         child: Container(
           padding: const EdgeInsets.all(5),

@@ -372,4 +372,57 @@ class BookOfficeAPI {
     return GetUserData(
         id: 0, firstName: '', lastName: '', phone: '', email: '');
   }
+
+  static Future<void> postProfilePicture(String image) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/profile/image');
+      var dataReservation = {
+        'image': image,
+      };
+      var dataMap = jsonEncode(dataReservation);
+      final response = await Dio().postUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }),
+          data: dataMap);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Upload Picture');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  static Future<List<DataReservation>?> getReservation() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http(
+          'ec2-18-206-213-94.compute-1.amazonaws.com', '/api/auth/reservation');
+      final response = await Dio().getUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
+      var jsonString = jsonEncode(response.data);
+      var data = jsonDecode(jsonString);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Fetching data Reservation');
+        return GetReservation.fromJson(data).data;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return [];
+  }
 }

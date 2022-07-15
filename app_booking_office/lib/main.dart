@@ -1,4 +1,4 @@
-import 'package:app_booking_office/screen/auth/loading_screen.dart';
+import 'package:app_booking_office/screen/auth/splash_screen.dart';
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'PublicSans',
         primarySwatch: Colors.blue,
       ),
-      home: const LoadingScreen(),
+      home: const SplashScreen(),
     );
   }
 }

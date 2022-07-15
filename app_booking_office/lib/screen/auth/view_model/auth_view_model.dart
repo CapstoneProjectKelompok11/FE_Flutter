@@ -3,7 +3,7 @@ import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/api/auth_api.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
-import 'package:app_booking_office/screen/auth/splash_screen.dart';
+import 'package:app_booking_office/screen/auth/welcome_screen.dart';
 import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +121,7 @@ class AuthViewModel extends ChangeNotifier {
         Timer(
             const Duration(seconds: 2),
             () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const SplashScreen())));
+                MaterialPageRoute(builder: (_) => const WelcomeScreen())));
       }
       notifyListeners();
       changeState(AuthViewState.none);

@@ -10,6 +10,7 @@ import 'package:app_booking_office/screen/booking_office/view_model/booking_offi
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
@@ -330,10 +331,10 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget buttonFavorite() {
     return InkWell(
-      onTap: () {
-        bookingOfficeViewModel
+      onTap: () async {
+        await bookingOfficeViewModel
             .addFavorite(widget.id, context)
-            .then((value) => getFavorite());
+            .then((_) => getFavorite());
         setState(() {
           _isfavorite = !_isfavorite;
         });
@@ -411,10 +412,15 @@ class _DetailScreenState extends State<DetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Rp. ${bookingOfficeViewModel.floor[context].startingPrice.toString()}/bulan',
+                                  NumberFormat.currency(
+                                    locale: 'id',
+                                    symbol: 'Rp. ',
+                                  ).format(int.parse(bookingOfficeViewModel
+                                      .floor[context].startingPrice
+                                      .toString())),
                                   style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(

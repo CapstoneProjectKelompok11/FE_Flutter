@@ -1,8 +1,6 @@
-
-
-import 'package:app_booking_office/screen/auth/login_screen.dart';
-import 'package:app_booking_office/screen/auth/register_screen.dart';
+import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,110 +10,58 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  //when fisrt app launching it will running function check login to check is there data user login in local storage
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
+
+  void checkLogin() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      var checkLogin = Provider.of<AuthViewModel>(context, listen: false);
+      await checkLogin.checkLogin(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  logoApp(),
-                  const SizedBox(height: 28),
-                  textWelcome(),
-                ],
+        backgroundColor: const Color(0xFF4D89FF),
+        body: Stack(
+          children: [
+            Center(
+                child: Padding(
+              padding: const EdgeInsets.all(90),
+              child: ClipRect(
+                child: Image.asset("assets/image/logo.png"),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              elevatedButtonSignIn(),
-              const SizedBox(
-                height: 10,
-              ),
-              elevatedButtonSignUp()
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget logoApp() {
-    return ClipRect(
-      child: Stack(children: [
-        Positioned(
-            top: 30, left: 20, child: Image.asset('assets/image/Vector.png')),
-        Positioned(child: Image.asset('assets/image/Home.png'))
-      ]),
-    );
-  }
-
-  Widget textWelcome() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text(
-          'Welcome.',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.start,
-        ),
-        Text(
-          '''Kebutuhan ruang kerja\nadalah andalan kami.''',
-          style: TextStyle(fontWeight: FontWeight.w500),
-        )
-      ],
-    );
-  }
-
-  Widget elevatedButtonSignIn() {
-    return Container(
-        decoration: ShapeDecoration(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            gradient: const LinearGradient(colors: [
-              Color.fromRGBO(77, 137, 255, 18.5),
-              Colors.blueAccent,
-              Color(0xFF4D89FF)
-            ])),
-        width: MediaQuery.of(context).size.width,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              primary: Colors.transparent,
-              shadowColor: Colors.transparent),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()));
-          },
-          child: const Text('Sign in'),
+            )),
+            Positioned(
+                top: 0,
+                right: 0,
+                child: ClipRect(
+                  child: Image.asset('assets/image/Vector2.png'),
+                )),
+            Positioned(
+                top: 150,
+                right: 25,
+                child: ClipRect(
+                  child: Image.asset('assets/image/Ellipse 13.png'),
+                )),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                child: ClipRect(
+                  child: Image.asset('assets/image/Vector3.png'),
+                )),
+            Positioned(
+                left: 0,
+                bottom: 200,
+                child: ClipRect(
+                  child: Image.asset('assets/image/Ellipse 14.png'),
+                ))
+          ],
         ));
-  }
-
-  Widget elevatedButtonSignUp() {
-    return Container(
-        decoration: ShapeDecoration(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-                side: const BorderSide(color: Colors.black)),
-            color: Colors.white),
-        width: MediaQuery.of(context).size.width,
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                primary: Colors.transparent,
-                shadowColor: Colors.transparent),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const RegisterScreen()));
-            },
-            child: const Text(
-              'Sign up',
-              style: TextStyle(color: Colors.black),
-            )));
   }
 }

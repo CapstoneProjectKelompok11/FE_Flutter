@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../property/loading_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -34,6 +36,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    final isLoading =
+        bookingOfficeViewModel.states == BookOfficeViewState.loading;
+    final isError = bookingOfficeViewModel.states == BookOfficeViewState.error;
+    if (isLoading) {
+      return const LoadingScreen();
+    }
+    if (isError) {
+      return const Center(
+        child: Text('Something wrong :('),
+      );
+    }
     final bookingOfficeViewModeel =
         Provider.of<BookingOfficeViewModel>(context);
     return Scaffold(

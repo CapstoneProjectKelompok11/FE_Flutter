@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../property/loading_screen.dart';
+
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen({Key? key}) : super(key: key);
 
@@ -47,6 +49,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    final isLoading =
+        bookingOfficeViewModel.states == BookOfficeViewState.loading;
+    final isError = bookingOfficeViewModel.states == BookOfficeViewState.error;
+    if (isLoading) {
+      return const LoadingScreen();
+    }
+    if (isError) {
+      return const Center(
+        child: Text('Something wrong :('),
+      );
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
@@ -348,8 +361,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             formKey.currentState!.save();
             bookingOfficeViewModel
                 .postProfilePicture(bookingOfficeViewModel.image!)
-                .then((value) => getDataUser());
-            Navigator.pop(context);
+                .then((_) => getDataUser());
           },
           child: const Text('Save')),
     );
@@ -377,9 +389,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       right: 0,
       child: InkWell(
         onTap: () {
-          bookingOfficeViewModel
-              .pickImageGallery()
-              .whenComplete(() => getDataUser());
+          bookingOfficeViewModel.pickImageGallery().then((_) => getDataUser());
         },
         child: Container(
           padding: const EdgeInsets.all(5),

@@ -1,5 +1,3 @@
-import 'package:app_booking_office/property/loading_screen.dart';
-import 'package:app_booking_office/screen/auth/loading_screen.dart';
 import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

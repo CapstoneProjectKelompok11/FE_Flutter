@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_booking_office/model/book_office_model.dart';
+import 'package:app_booking_office/property/show_dialog/booking_succes.dart';
 import 'package:app_booking_office/property/show_dialog/token_expired.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:dio/dio.dart';
@@ -228,6 +229,7 @@ class BookOfficeAPI {
           response.statusCode == 202 ||
           response.statusCode == 203) {
         debugPrint('Succes Sending Request Booking');
+        showDialog(context: context, builder: (_) => const BookingSucces());
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -426,6 +428,107 @@ class BookOfficeAPI {
         debugPrint('Succes Fetching data Reservation');
         return GetReservation.fromJson(data).data;
       }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return [];
+  }
+
+  static Future<void> postPaymentReceipt(
+      String reservationId, File imageReceipt) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      String fileName = imageReceipt.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(imageReceipt.path,
+            filename: fileName, contentType: MediaType('image', 'jpg')),
+        "type": "image/jpg"
+      });
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/reservation/payment', {'reservationId': reservationId});
+      final response = await Dio().postUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          }),
+          data: formData);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Upload Receipt');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  static Future<void> sendMessage(DataMessage dataMessage) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri =
+          Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com', '/api/graphql');
+      var dataReservation = {
+        'message': dataMessage.pesan,
+        'buildingId': dataMessage.buildingId,
+      };
+      var dataMap = jsonEncode(dataReservation);
+      final response = await Dio().postUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }),
+          data: dataMap);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Sending Message');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  static Future<List<GetDataByUser>> getDataMessage(String buildingId) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri =
+          Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com', '/api/graphql');
+      final response = await Dio().getUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
+      var jsonString = jsonEncode(response.data);
+      var data = jsonDecode(jsonString);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Fetching data Message');
+        return DataChat.fromJson(data).getDataByUser;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return [];
+  }
+
+  static Future<List<DataListMessage>> getListMessage() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http(
+          'ec2-18-206-213-94.compute-1.amazonaws.com', '/api/auth/chat/list');
+      final response = await Dio().getUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
     } catch (e) {
       debugPrint(e.toString());
     }

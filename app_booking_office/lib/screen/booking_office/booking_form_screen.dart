@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../property/loading_screen.dart';
+
 class BookingFormScreen extends StatefulWidget {
   List? office;
   String? buildingId;
@@ -18,14 +20,6 @@ class BookingFormScreen extends StatefulWidget {
 
 class _BookingFormScreenState extends State<BookingFormScreen> {
   List<dynamic> itemParticipant = Iterable.generate(100).toList();
-
-  void generateParticipant() {
-    for (var i = 0; i < 100; i++) {
-      itemParticipant = [
-        {i}
-      ];
-    }
-  }
 
   void indexFloor() {
     for (var i = 0; i < bookingOfficeViewModel.floor.length; i++) {
@@ -64,6 +58,17 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
   @override
   Widget build(BuildContext context) {
     final bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    final isLoading =
+        bookingOfficeViewModel.states == BookOfficeViewState.loading;
+    final isError = bookingOfficeViewModel.states == BookOfficeViewState.error;
+    if (isLoading) {
+      return const LoadingScreen();
+    }
+    if (isError) {
+      return const Center(
+        child: Text('Something wrong :('),
+      );
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(

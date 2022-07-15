@@ -1269,5 +1269,167 @@ class StatusReservation {
         "message": message,
       };
 }
+//-------------------------------------------------------------
+//--------------------------------------------------------------
 
-class UploadImage {}
+class DataMessage {
+  String buildingId;
+  String pesan;
+
+  DataMessage({required this.buildingId, required this.pesan});
+}
+//---------------------------------------------------------
+//-------------------------------------------------------------
+
+GetMessage getMessageFromJson(String str) =>
+    GetMessage.fromJson(json.decode(str));
+
+String getMessageToJson(GetMessage data) => json.encode(data.toJson());
+
+class GetMessage {
+  GetMessage({
+    required this.data,
+  });
+
+  DataChat data;
+
+  factory GetMessage.fromJson(Map<String, dynamic> json) => GetMessage(
+        data: DataChat.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data.toJson(),
+      };
+}
+
+class DataChat {
+  DataChat({
+    required this.getDataByUser,
+  });
+
+  List<GetDataByUser> getDataByUser;
+
+  factory DataChat.fromJson(Map<String, dynamic> json) => DataChat(
+        getDataByUser: List<GetDataByUser>.from(
+            json["getDataByUser"].map((x) => GetDataByUser.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "getDataByUser":
+            List<dynamic>.from(getDataByUser.map((x) => x.toJson())),
+      };
+}
+
+class GetDataByUser {
+  GetDataByUser({
+    required this.id,
+    required this.message,
+    required this.sendByUser,
+    required this.timestamp,
+  });
+
+  String id;
+  String message;
+  bool sendByUser;
+  DateTime timestamp;
+
+  factory GetDataByUser.fromJson(Map<String, dynamic> json) => GetDataByUser(
+        id: json["id"],
+        message: json["message"],
+        sendByUser: json["sendByUser"],
+        timestamp: DateTime.parse(json["timestamp"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "message": message,
+        "sendByUser": sendByUser,
+        "timestamp": timestamp.toIso8601String(),
+      };
+}
+//------------------------------------------------------------
+//----------------------------------------------------------------
+
+GetListMessage getListMessageFromJson(String str) =>
+    GetListMessage.fromJson(json.decode(str));
+
+String getListMessageToJson(GetListMessage data) => json.encode(data.toJson());
+
+class GetListMessage {
+  GetListMessage({
+    required this.timestamp,
+    required this.status,
+    required this.data,
+  });
+
+  String timestamp;
+  StatusLIstMessage status;
+  List<DataListMessage> data;
+
+  factory GetListMessage.fromJson(Map<String, dynamic> json) => GetListMessage(
+        timestamp: json["timestamp"],
+        status: StatusLIstMessage.fromJson(json["status"]),
+        data: List<DataListMessage>.from(
+            json["data"].map((x) => DataListMessage.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "timestamp": timestamp,
+        "status": status.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
+}
+
+class DataListMessage {
+  DataListMessage({
+    required this.id,
+    required this.buildingName,
+    required this.latestMessageTimestamp,
+    required this.latestMessage,
+    required this.buildingImages,
+  });
+
+  int id;
+  String buildingName;
+  String latestMessageTimestamp;
+  String latestMessage;
+  String buildingImages;
+
+  factory DataListMessage.fromJson(Map<String, dynamic> json) =>
+      DataListMessage(
+        id: json["id"],
+        buildingName: json["building_name"],
+        latestMessageTimestamp: json["latest_message_timestamp"],
+        latestMessage: json["latest_message"],
+        buildingImages: json["building_images"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "building_name": buildingName,
+        "latest_message_timestamp": latestMessageTimestamp,
+        "latest_message": latestMessage,
+        "building_images": buildingImages,
+      };
+}
+
+class StatusLIstMessage {
+  StatusLIstMessage({
+    required this.code,
+    required this.message,
+  });
+
+  String code;
+  String message;
+
+  factory StatusLIstMessage.fromJson(Map<String, dynamic> json) =>
+      StatusLIstMessage(
+        code: json["code"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "message": message,
+      };
+}

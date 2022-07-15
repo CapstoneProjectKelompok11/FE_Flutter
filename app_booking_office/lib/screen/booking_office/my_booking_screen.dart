@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../property/loading_screen.dart';
+
 class MyBookingScreen extends StatefulWidget {
   MyBookingScreen({Key? key}) : super(key: key);
 
@@ -32,6 +34,17 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
   @override
   Widget build(BuildContext context) {
     bookingOfficeViewModel = Provider.of<BookingOfficeViewModel>(context);
+    final isLoading =
+        bookingOfficeViewModel.states == BookOfficeViewState.loading;
+    final isError = bookingOfficeViewModel.states == BookOfficeViewState.error;
+    if (isLoading) {
+      return const LoadingScreen();
+    }
+    if (isError) {
+      return const Center(
+        child: Text('Something wrong :('),
+      );
+    }
     return Scaffold(
         backgroundColor: const Color(0xFFF4F4F4),
         appBar: appBar(),
@@ -80,8 +93,45 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                                   children: [
                                     bookingDate(index),
                                     ButtonStatus1(
+                                        picture: bookingOfficeViewModel
+                                            .dataReservation[index].floor.image,
                                         status: bookingOfficeViewModel
-                                            .dataReservation[index].status)
+                                            .dataReservation[index].status,
+                                        idReservation: bookingOfficeViewModel.dataReservation[index].id
+                                            .toString(),
+                                        buildingTitle: bookingOfficeViewModel
+                                            .dataReservation[index]
+                                            .building
+                                            .name,
+                                        address: bookingOfficeViewModel
+                                            .dataReservation[index]
+                                            .building
+                                            .address,
+                                        participant: bookingOfficeViewModel
+                                            .dataReservation[index].participant
+                                            .toString(),
+                                        bookingId: bookingOfficeViewModel.dataReservation[index].id
+                                            .toString(),
+                                        buildingType: bookingOfficeViewModel
+                                                .dataReservation[index]
+                                                .building
+                                                .officeType ??
+                                            '',
+                                        floor: bookingOfficeViewModel
+                                            .dataReservation[index].floor.name,
+                                        sizeRoom: bookingOfficeViewModel
+                                            .dataReservation[index]
+                                            .building
+                                            .buildingSize,
+                                        name: bookingOfficeViewModel.dataReservation[index].user.firstName +
+                                            ' ' +
+                                            bookingOfficeViewModel.dataReservation[index].user.lastName,
+                                        email: bookingOfficeViewModel.dataReservation[index].user.email,
+                                        phone: bookingOfficeViewModel.dataReservation[index].user.phone,
+                                        companyName: bookingOfficeViewModel.dataReservation[index].company,
+                                        bookingDate: bookingOfficeViewModel.dataReservation[index].startReservation,
+                                        dealPrice: bookingOfficeViewModel.dataReservation[index].price.toString(),
+                                        totalPrice: bookingOfficeViewModel.dataReservation[index].price.toString())
                                   ],
                                 )
                               ],

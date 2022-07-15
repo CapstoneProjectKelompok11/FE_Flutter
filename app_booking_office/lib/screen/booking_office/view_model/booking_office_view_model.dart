@@ -21,9 +21,13 @@ class BookingOfficeViewModel extends ChangeNotifier {
   DateTime dateTime = DateTime.now();
 
   File? image;
+  File? imageReceipt;
 
   List<DataComplex> _complex = [];
   List<DataComplex> get complex => _complex;
+
+  List<DataListMessage> _listChat = [];
+  List<DataListMessage> get listChat => _listChat;
 
   List<DataFloor> _floor = [];
   List<DataFloor> get floor => _floor;
@@ -202,6 +206,14 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> pickImageReceiptGallery() async {
+    final imageReceipt =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final imageTemporary = File(imageReceipt!.path);
+    this.imageReceipt = imageTemporary;
+    notifyListeners();
+  }
+
   Future<void> sendReview(PostReview postReview, BuildContext context) async {
     changeState(BookOfficeViewState.loading);
     try {
@@ -337,6 +349,43 @@ class BookingOfficeViewModel extends ChangeNotifier {
       changeState(BookOfficeViewState.none);
     } catch (e) {
       debugPrint(e.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> postImageReceipt(File imageReceipt, String reservationId) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.postPaymentReceipt(reservationId, imageReceipt);
+      changeState(BookOfficeViewState.none);
+    } catch (error) {
+      debugPrint(error.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getListMessage() async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      var data = await BookOfficeAPI.getListMessage();
+      _listChat = data;
+      changeState(BookOfficeViewState.none);
+    } catch (error) {
+      debugPrint(error.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> sendMessage(DataMessage dataMessage) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.sendMessage(dataMessage);
+      changeState(BookOfficeViewState.none);
+    } catch (error) {
+      debugPrint(error.toString());
       changeState(BookOfficeViewState.error);
     }
     notifyListeners();

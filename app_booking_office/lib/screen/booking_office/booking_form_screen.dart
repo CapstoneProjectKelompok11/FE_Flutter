@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../property/loading_screen.dart';
+import '../../property/show_dialog/booking_succes.dart';
 
 class BookingFormScreen extends StatefulWidget {
   List? office;
@@ -445,6 +446,11 @@ class _BookingFormScreenState extends State<BookingFormScreen> {
                     note: notesController.text),
                 bookingOfficeViewModel.floor[index].id.toString(),
                 context);
+            showDialog(
+                context: context,
+                builder: (_) => BookingSucces(
+                      buildingId: widget.buildingId!,
+                    ));
           },
           child: const Text('Request Booking')),
     );

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../property/loading_screen.dart';
+import '../../property/show_dialog/cancel_booking_dialog.dart';
 
 class ConfirmationPaymentScreen extends StatefulWidget {
   String picture;
@@ -93,64 +94,67 @@ class _ConfirmationPaymentScreenState extends State<ConfirmationPaymentScreen> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.only(
-            top: 10,
-            left: 30,
-            right: 30,
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  floorPicture(),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      title(),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      location(),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          participant(),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          bookingId()
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              roomInformation(),
-              const SizedBox(
-                height: 20,
-              ),
-              customerInformation(),
-              const SizedBox(
-                height: 20,
-              ),
-              price(),
-              const SizedBox(
-                height: 20,
-              ),
-              uploadPicture(),
-              const SizedBox(
-                height: 20,
-              ),
-              buttonConfirmation()
-            ],
+          padding:
+              const EdgeInsets.only(top: 10, left: 30, right: 30, bottom: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    floorPicture(),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        title(),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        location(),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            participant(),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            bookingId()
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                roomInformation(),
+                const SizedBox(
+                  height: 20,
+                ),
+                customerInformation(),
+                const SizedBox(
+                  height: 20,
+                ),
+                price(),
+                const SizedBox(
+                  height: 20,
+                ),
+                uploadPicture(),
+                const SizedBox(
+                  height: 20,
+                ),
+                buttonConfirmation(),
+                const SizedBox(
+                  height: 15,
+                ),
+                buttonCancel(),
+              ],
+            ),
           ),
         ));
   }
@@ -518,5 +522,31 @@ class _ConfirmationPaymentScreenState extends State<ConfirmationPaymentScreen> {
             style: TextStyle(color: Colors.white),
           )),
     );
+  }
+
+  Widget buttonCancel() {
+    return Container(
+        decoration: ShapeDecoration(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+                side: const BorderSide(color: Colors.black)),
+            color: Colors.white),
+        width: MediaQuery.of(context).size.width,
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                primary: Colors.transparent,
+                shadowColor: Colors.transparent),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => CancelBookingDialog(
+                        reservationId: widget.reservationId!,
+                      ));
+            },
+            child: const Text(
+              'Cancel order',
+              style: TextStyle(color: Colors.black),
+            )));
   }
 }

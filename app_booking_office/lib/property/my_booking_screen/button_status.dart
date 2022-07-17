@@ -51,7 +51,7 @@ class _ButtonStatus1State extends State<ButtonStatus1> {
   }
 
   Widget statusButton() {
-    if (widget.status == "WAITING" || widget.status == "PENDING") {
+    if (widget.status == "WAITING") {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
         decoration: ShapeDecoration(
@@ -134,6 +134,29 @@ class _ButtonStatus1State extends State<ButtonStatus1> {
             onPressed: () {},
             child: const Text(
               'Cancelled',
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black),
+            )),
+      );
+    }
+    if (widget.status == "PENDING") {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+        decoration: ShapeDecoration(
+          color: Colors.blue,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                primary: Colors.transparent,
+                shadowColor: Colors.transparent),
+            onPressed: () {},
+            child: const Text(
+              'Pending',
               style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,

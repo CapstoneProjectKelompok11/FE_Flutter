@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/property/bottom_navigation_bar.dart';
 import 'package:app_booking_office/property/loading_screen.dart';
-import 'package:app_booking_office/property/show_dialog/rating_dialog.dart';
+import 'package:app_booking_office/property/show_dialog/cancel_booking_dialog.dart';
 import 'package:app_booking_office/screen/booking_office/booking_form_screen.dart';
 import 'package:app_booking_office/screen/booking_office/home_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
@@ -385,8 +385,11 @@ class _DetailScreenState extends State<DetailScreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.floor[context].image ?? ''}'),
+                                image: NetworkImage(bookingOfficeViewModel
+                                            .floor[context].image !=
+                                        null
+                                    ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/floor/image/${bookingOfficeViewModel.floor[context].image}'
+                                    : 'https://previews.123rf.com/images/latkun/latkun1712/latkun171200130/92172856-empty-transparent-background-seamless-pattern.jpg'),
                                 fit: BoxFit.cover)),
                       ),
                       const SizedBox(
@@ -564,15 +567,6 @@ class _DetailScreenState extends State<DetailScreen> {
     return InkWell(
       onTap: () async {
         showDialog(context: context, builder: (_) => alertDialogRating());
-
-        bookingOfficeViewModel
-            .sendReview(
-                PostReview(
-                    buildingId: widget.id,
-                    review: reviewController.text,
-                    rating: rating.toInt()),
-                context)
-            .then((value) => getDataReview());
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -681,48 +675,94 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget alertDialogRating() {
     return AlertDialog(
-      contentPadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 60),
-      shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Colors.black, width: 2),
-          borderRadius: BorderRadius.circular(8)),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Text(
-            'Rating',
-            style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.yellow),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Please rate this building +  $rating',
-            style: const TextStyle(fontSize: 17, color: Color(0xFF868686)),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-      content: RatingBar.builder(
-          updateOnDrag: true,
-          allowHalfRating: true,
-          maxRating: 10,
-          itemSize: 30,
-          initialRating: rating,
-          itemBuilder: (context, index) {
-            return const Icon(
-              Icons.star_sharp,
-              color: Colors.yellow,
-              size: 30,
-            );
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 30, horizontal: 60),
+        shape: RoundedRectangleBorder(
+            side: const BorderSide(color: Colors.black, width: 2),
+            borderRadius: BorderRadius.circular(8)),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Rating',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.yellow),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Please rate this building',
+              style: const TextStyle(fontSize: 17, color: Color(0xFF868686)),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ratingBuilder(),
+            const SizedBox(
+              height: 20,
+            ),
+            buttonOk()
+          ],
+        ));
+  }
+
+  Widget ratingBuilder() {
+    return RatingBar.builder(
+        updateOnDrag: true,
+        allowHalfRating: true,
+        maxRating: 10,
+        itemSize: 30,
+        initialRating: rating,
+        itemBuilder: (context, index) {
+          return const Icon(
+            Icons.star_sharp,
+            color: Colors.yellow,
+            size: 30,
+          );
+        },
+        onRatingUpdate: (rating) {
+          setState(() {
+            this.rating = rating;
+          });
+        });
+  }
+
+  Widget buttonOk() {
+    return Container(
+      width: MediaQuery.of(context).size.height,
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          gradient: const LinearGradient(colors: [
+            Color.fromRGBO(77, 137, 255, 18.5),
+            Colors.blueAccent,
+            Color(0xFF4D89FF)
+          ])),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              primary: Colors.transparent,
+              shadowColor: Colors.transparent),
+          onPressed: () async {
+            bookingOfficeViewModel
+                .sendReview(
+                    PostReview(
+                        buildingId: widget.id,
+                        review: reviewController.text,
+                        rating: rating.toInt()),
+                    context)
+                .then((value) => getDataReview());
+            Navigator.pop(context);
           },
-          onRatingUpdate: (rating) {
-            setState(() {
-              this.rating = rating;
-            });
-          }),
+          child: const Text(
+            'OK',
+            style: TextStyle(color: Colors.white),
+          )),
     );
   }
 }

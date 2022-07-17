@@ -390,4 +390,16 @@ class BookingOfficeViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> cancelRequestBooking(String reservationId) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.cancelRequestBooking(reservationId);
+      changeState(BookOfficeViewState.none);
+    } catch (error) {
+      debugPrint(error.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
 }

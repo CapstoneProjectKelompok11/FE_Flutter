@@ -82,52 +82,47 @@ class _ListCardResultState extends State<ListCardResult> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    picture(index),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        picture(index),
-                        const SizedBox(
-                          height: 10,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [title(index), rowDetail(index)],
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [title(index), rowDetail(index)],
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.blue,
+                              size: 10,
                             ),
                             const SizedBox(
-                              height: 5,
+                              width: 5,
                             ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Colors.blue,
-                                  size: 10,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                location(index),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            rating(index),
+                            location(index),
                           ],
                         ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        rating(index),
                       ],
                     ),
-                  ),
-                  Positioned(top: 15, right: 15, child: ButtonFavorite())
-                ],
+                  ],
+                ),
               ),
             ),
           );

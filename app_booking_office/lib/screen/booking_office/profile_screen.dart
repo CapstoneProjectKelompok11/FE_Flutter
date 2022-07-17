@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../property/loading_screen.dart';
+import '../../property/show_dialog/cancel_booking_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -187,7 +188,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (context) => CancelBookingDialog(
+                      reservationId: '',
+                    ));
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [

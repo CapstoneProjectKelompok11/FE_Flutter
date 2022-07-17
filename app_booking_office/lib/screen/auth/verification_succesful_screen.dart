@@ -14,7 +14,7 @@ class SuccesfulScreen extends StatelessWidget {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text(
-                'Verification\nSuccesful!',
+                'Registration\nSuccesful!',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),

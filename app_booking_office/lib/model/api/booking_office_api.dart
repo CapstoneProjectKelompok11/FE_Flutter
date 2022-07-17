@@ -229,7 +229,6 @@ class BookOfficeAPI {
           response.statusCode == 202 ||
           response.statusCode == 203) {
         debugPrint('Succes Sending Request Booking');
-        showDialog(context: context, builder: (_) => const BookingSucces());
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -529,9 +528,40 @@ class BookOfficeAPI {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           }));
+      var jsonString = jsonEncode(response.data);
+      var data = jsonDecode(jsonString);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Fetching data List Message');
+        return GetListMessage.fromJson(data).data;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
     return [];
+  }
+
+  static Future<void> cancelRequestBooking(String reservationId) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/reservation/cancel', {'reservationId': reservationId});
+      final response = await Dio().putUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes Cancel Request Booking');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

@@ -1,8 +1,10 @@
+import 'package:app_booking_office/screen/booking_office/chat_screen.dart';
 import 'package:app_booking_office/screen/booking_office/my_booking_screen.dart';
 import 'package:flutter/material.dart';
 
 class BookingSucces extends StatelessWidget {
-  const BookingSucces({Key? key}) : super(key: key);
+  String buildingId;
+  BookingSucces({Key? key, required this.buildingId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,14 @@ class BookingSucces extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          const Text(
+            'Please send Message to admin to confirm booking',
+            style: TextStyle(fontSize: 12, color: Color(0xFF868686)),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           const Icon(
             Icons.check_circle,
             size: 100,
@@ -31,17 +41,34 @@ class BookingSucces extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ))
+          Container(
+            width: MediaQuery.of(context).size.height,
+            decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+                gradient: const LinearGradient(colors: [
+                  Color.fromRGBO(77, 137, 255, 18.5),
+                  Colors.blueAccent,
+                  Color(0xFF4D89FF)
+                ])),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    primary: Colors.transparent,
+                    shadowColor: Colors.transparent),
+                onPressed: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ChatScreen(
+                                buildingId: buildingId,
+                              )));
+                },
+                child: const Text(
+                  'Message to Admin',
+                  style: TextStyle(color: Colors.white),
+                )),
+          )
         ],
       ),
     );

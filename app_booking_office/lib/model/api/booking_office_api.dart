@@ -378,7 +378,8 @@ class BookOfficeAPI {
     }
   }
 
-  static Future<List<DataReservation>?> getReservation() async {
+  static Future<List<DataReservation>?> getReservation(
+      BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
@@ -400,6 +401,10 @@ class BookOfficeAPI {
       }
     } catch (e) {
       debugPrint(e.toString());
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => const TokenExpired());
     }
     return [];
   }
@@ -536,7 +541,8 @@ class BookOfficeAPI {
     }
   }
 
-  static Future<void> editProfile(EditProfile editProfile) async {
+  static Future<void> editProfile(
+      EditProfile editProfile, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
@@ -547,8 +553,8 @@ class BookOfficeAPI {
         'email': editProfile.email,
       };
       var dataMap = jsonEncode(dataUser);
-      var uri = Uri.http(
-          'ec2-18-206-213-94.compute-1.amazonaws.com', '/api/auth/edit');
+      var uri = Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com',
+          '/api/auth/profile/edit');
       final response = await Dio().putUri(uri,
           options: Options(headers: {
             'Content-Type': 'application/json',
@@ -563,6 +569,10 @@ class BookOfficeAPI {
       }
     } catch (e) {
       debugPrint(e.toString());
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => const TokenExpired());
     }
   }
 }

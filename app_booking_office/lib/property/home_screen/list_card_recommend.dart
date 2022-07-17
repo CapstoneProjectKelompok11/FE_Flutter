@@ -89,8 +89,7 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
               image: NetworkImage(bookingOfficeViewModel
-                          .buildingById[index].images[0].fileName !=
-                      null
+                      .buildingById[index].images[0].fileName.isNotEmpty
                   ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'
                   : 'https://thumbs.dreamstime.com/b/transparent-designer-must-have-fake-background-39672616.jpg'),
               fit: BoxFit.cover)),

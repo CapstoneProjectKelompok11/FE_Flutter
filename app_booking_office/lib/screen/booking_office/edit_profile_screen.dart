@@ -1,3 +1,4 @@
+import 'package:app_booking_office/model/book_office_model.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final formKey = GlobalKey<FormState>();
   late BookingOfficeViewModel bookingOfficeViewModel;
 
+  TextStyle style = TextStyle(fontSize: 12);
+
   Future<void> getDataUser() async {
     Future.delayed(const Duration(seconds: 1), () async {
       bookingOfficeViewModel =
@@ -33,7 +36,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDataUser();
+    getDataUser().then((_) => initDataUser());
+  }
+
+  void initDataUser() {
+    firstNameController.text = bookingOfficeViewModel.userData.firstName;
+    lastNameController.text = bookingOfficeViewModel.userData.lastName;
+    emailController.text = bookingOfficeViewModel.userData.email;
+    phoneNumberController.text = bookingOfficeViewModel.userData.phone;
   }
 
   @override
@@ -143,7 +153,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             height: 10,
           ),
           TextFormField(
-            initialValue: bookingOfficeViewModel.userData.firstName,
+            controller: firstNameController,
             style: const TextStyle(fontSize: 12),
             decoration: InputDecoration(
                 contentPadding:
@@ -187,7 +197,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             height: 10,
           ),
           TextFormField(
-            initialValue: bookingOfficeViewModel.userData.lastName,
+            controller: lastNameController,
             style: const TextStyle(fontSize: 12),
             decoration: InputDecoration(
                 contentPadding:
@@ -230,7 +240,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 10,
         ),
         TextFormField(
-          initialValue: bookingOfficeViewModel.userData.phone,
+          controller: phoneNumberController,
           style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
               contentPadding:
@@ -271,8 +281,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 10,
         ),
         TextFormField(
-          initialValue: bookingOfficeViewModel.userData.email,
           style: const TextStyle(fontSize: 12),
+          controller: emailController,
           decoration: InputDecoration(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -312,7 +322,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 10,
         ),
         TextFormField(
-          initialValue: bookingOfficeViewModel.userData.firstName,
+          controller: companyNameController,
           style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
               contentPadding:
@@ -356,12 +366,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
-          onPressed: () {
+          onPressed: () async {
             if (!formKey.currentState!.validate()) return;
             formKey.currentState!.save();
             bookingOfficeViewModel
-                .postProfilePicture(bookingOfficeViewModel.image!)
-                .then((_) => getDataUser());
+                .editUserProfile(
+                    EditProfile(
+                      firstName: firstNameController.text,
+                      lastName: lastNameController.text,
+                      phone: phoneNumberController.text,
+                      email: emailController.text,
+                    ),
+                    context)
+                .then((value) => bookingOfficeViewModel
+                    .postProfilePicture(bookingOfficeViewModel.image!))
+                .whenComplete(() => getDataUser());
           },
           child: const Text('Save')),
     );

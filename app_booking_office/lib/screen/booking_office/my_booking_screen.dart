@@ -21,7 +21,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
     Future.delayed(Duration.zero, () async {
       bookingOfficeViewModel =
           Provider.of<BookingOfficeViewModel>(context, listen: false);
-      await bookingOfficeViewModel.getReservation();
+      await bookingOfficeViewModel.getReservation(context);
     });
   }
 

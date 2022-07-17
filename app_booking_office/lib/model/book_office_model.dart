@@ -435,7 +435,7 @@ class ImageBuilding {
     required this.fileName,
   });
 
-  String? fileName;
+  String fileName = '';
 
   factory ImageBuilding.fromJson(Map<String, dynamic> json) => ImageBuilding(
         fileName: json["fileName"],

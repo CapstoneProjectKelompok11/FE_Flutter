@@ -108,8 +108,6 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
- 
-
   Future<void> getComplex(String cityName) async {
     changeState(BookOfficeViewState.loading);
     try {
@@ -318,10 +316,10 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getReservation() async {
+  Future<void> getReservation(BuildContext context) async {
     changeState(BookOfficeViewState.loading);
     try {
-      var data = await BookOfficeAPI.getReservation();
+      var data = await BookOfficeAPI.getReservation(context);
       _dataReservation = data!;
       changeState(BookOfficeViewState.none);
     } catch (e) {
@@ -387,6 +385,19 @@ class BookingOfficeViewModel extends ChangeNotifier {
       changeState(BookOfficeViewState.none);
     } catch (error) {
       debugPrint(error.toString());
+      changeState(BookOfficeViewState.error);
+    }
+    notifyListeners();
+  }
+
+  Future<void> editUserProfile(
+      EditProfile editProfile, BuildContext context) async {
+    changeState(BookOfficeViewState.loading);
+    try {
+      BookOfficeAPI.editProfile(editProfile, context);
+      changeState(BookOfficeViewState.none);
+    } catch (e) {
+      debugPrint(e.toString());
       changeState(BookOfficeViewState.error);
     }
     notifyListeners();

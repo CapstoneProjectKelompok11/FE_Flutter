@@ -1,3 +1,4 @@
+import 'package:app_booking_office/property/inbox_screen/empty_inbox_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,23 +45,25 @@ class _InboxScreenState extends State<InboxScreen> {
               fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                searchField(),
-                const SizedBox(
-                  height: 20,
+      body: bookingOfficeViewModel.listChat.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      searchField(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      listChat(),
+                    ],
+                  ),
                 ),
-                listChat(),
-              ],
-            ),
-          ),
-        ),
-      ),
+              ),
+            )
+          : EmptyInboxScreen(),
     );
   }
 

@@ -88,8 +88,11 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: NetworkImage(
-                  'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'),
+              image: NetworkImage(bookingOfficeViewModel
+                          .buildingById[index].images[0].fileName !=
+                      null
+                  ? 'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/building/image/${bookingOfficeViewModel.buildingById[index].images[0].fileName}'
+                  : 'https://thumbs.dreamstime.com/b/transparent-designer-must-have-fake-background-39672616.jpg'),
               fit: BoxFit.cover)),
     );
   }
@@ -99,7 +102,9 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
       width: 200,
       decoration: const BoxDecoration(color: Colors.transparent),
       child: Text(
-        bookingOfficeViewModel.buildingById[index].name,
+        bookingOfficeViewModel.buildingById[index].name.isNotEmpty
+            ? bookingOfficeViewModel.buildingById[index].name
+            : '',
         maxLines: 2,
         style: const TextStyle(
             fontSize: 11,
@@ -121,7 +126,9 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
           width: 180,
           decoration: const BoxDecoration(color: Colors.transparent),
           child: Text(
-            bookingOfficeViewModel.buildingById[index].address,
+            bookingOfficeViewModel.buildingById[index].address.isNotEmpty
+                ? bookingOfficeViewModel.buildingById[index].address
+                : '',
             maxLines: 2,
             style: const TextStyle(
                 color: Colors.black,
@@ -173,7 +180,12 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
                 width: 5,
               ),
               Text(
-                bookingOfficeViewModel.buildingById[index].capacity.toString(),
+                bookingOfficeViewModel.buildingById[index].capacity
+                        .toString()
+                        .isNotEmpty
+                    ? bookingOfficeViewModel.buildingById[index].capacity
+                        .toString()
+                    : '',
                 style: const TextStyle(fontSize: 8),
               )
             ],
@@ -198,7 +210,11 @@ class _ListCardRecommendState extends State<ListCardRecommend> {
               ),
               Text(
                   bookingOfficeViewModel.buildingById[index].floorCount
-                      .toString(),
+                          .toString()
+                          .isNotEmpty
+                      ? bookingOfficeViewModel.buildingById[index].floorCount
+                          .toString()
+                      : '',
                   style: const TextStyle(fontSize: 8))
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:app_booking_office/property/my_booking_screen/button_status.dart';
+import 'package:app_booking_office/property/my_booking_screen/empty_booking_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,102 +49,109 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
     return Scaffold(
         backgroundColor: const Color(0xFFF4F4F4),
         appBar: appBar(),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: bookingOfficeViewModel.dataReservation.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          picture(index),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+        body: bookingOfficeViewModel.dataReservation.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: bookingOfficeViewModel.dataReservation.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
                               children: [
-                                title(index),
+                                picture(index),
                                 const SizedBox(
-                                  height: 5,
+                                  width: 10,
                                 ),
-                                location(index),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                typeFloor(index),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    bookingDate(index),
-                                    ButtonStatus1(
-                                        picture: bookingOfficeViewModel
-                                            .dataReservation[index].floor.image,
-                                        status: bookingOfficeViewModel
-                                            .dataReservation[index].status,
-                                        idReservation: bookingOfficeViewModel.dataReservation[index].id
-                                            .toString(),
-                                        buildingTitle: bookingOfficeViewModel
-                                            .dataReservation[index]
-                                            .building
-                                            .name,
-                                        address: bookingOfficeViewModel
-                                            .dataReservation[index]
-                                            .building
-                                            .address,
-                                        participant: bookingOfficeViewModel
-                                            .dataReservation[index].participant
-                                            .toString(),
-                                        bookingId: bookingOfficeViewModel.dataReservation[index].id
-                                            .toString(),
-                                        buildingType: bookingOfficeViewModel
-                                                .dataReservation[index]
-                                                .building
-                                                .officeType ??
-                                            '',
-                                        floor: bookingOfficeViewModel
-                                            .dataReservation[index].floor.name,
-                                        sizeRoom: bookingOfficeViewModel
-                                            .dataReservation[index]
-                                            .building
-                                            .buildingSize,
-                                        name: bookingOfficeViewModel.dataReservation[index].user.firstName +
-                                            ' ' +
-                                            bookingOfficeViewModel.dataReservation[index].user.lastName,
-                                        email: bookingOfficeViewModel.dataReservation[index].user.email,
-                                        phone: bookingOfficeViewModel.dataReservation[index].user.phone,
-                                        companyName: bookingOfficeViewModel.dataReservation[index].company,
-                                        bookingDate: bookingOfficeViewModel.dataReservation[index].startReservation,
-                                        dealPrice: bookingOfficeViewModel.dataReservation[index].price.toString(),
-                                        totalPrice: bookingOfficeViewModel.dataReservation[index].price.toString())
-                                  ],
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      title(index),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      location(index),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      typeFloor(index),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          bookingDate(index),
+                                          ButtonStatus1(
+                                              picture: bookingOfficeViewModel
+                                                  .dataReservation[index]
+                                                  .floor
+                                                  .image,
+                                              status: bookingOfficeViewModel
+                                                  .dataReservation[index]
+                                                  .status,
+                                              idReservation: bookingOfficeViewModel
+                                                  .dataReservation[index].id
+                                                  .toString(),
+                                              buildingTitle:
+                                                  bookingOfficeViewModel
+                                                      .dataReservation[index]
+                                                      .building
+                                                      .name,
+                                              address: bookingOfficeViewModel
+                                                  .dataReservation[index]
+                                                  .building
+                                                  .address,
+                                              participant: bookingOfficeViewModel
+                                                  .dataReservation[index]
+                                                  .participant
+                                                  .toString(),
+                                              bookingId: bookingOfficeViewModel
+                                                  .dataReservation[index].id
+                                                  .toString(),
+                                              buildingType: bookingOfficeViewModel
+                                                      .dataReservation[index]
+                                                      .building
+                                                      .officeType ??
+                                                  '',
+                                              floor: bookingOfficeViewModel
+                                                  .dataReservation[index]
+                                                  .floor
+                                                  .name,
+                                              sizeRoom: bookingOfficeViewModel.dataReservation[index].building.buildingSize,
+                                              name: bookingOfficeViewModel.dataReservation[index].user.firstName + ' ' + bookingOfficeViewModel.dataReservation[index].user.lastName,
+                                              email: bookingOfficeViewModel.dataReservation[index].user.email,
+                                              phone: bookingOfficeViewModel.dataReservation[index].user.phone,
+                                              companyName: bookingOfficeViewModel.dataReservation[index].company,
+                                              bookingDate: bookingOfficeViewModel.dataReservation[index].startReservation,
+                                              dealPrice: bookingOfficeViewModel.dataReservation[index].price.toString(),
+                                              totalPrice: bookingOfficeViewModel.dataReservation[index].price.toString())
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        ));
+                          ),
+                        ),
+                      );
+                    }),
+              )
+            : EmptyBookingScreen());
   }
 
   Widget picture(int index) {

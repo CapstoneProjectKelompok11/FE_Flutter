@@ -1441,3 +1441,19 @@ class StatusLIstMessage {
         "message": message,
       };
 }
+
+//--------------------------------------------------
+//---------------------------------------------------
+class EditProfile {
+  String firstName;
+  String lastName;
+  String phone;
+  String email;
+
+  EditProfile({
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.email,
+  });
+}

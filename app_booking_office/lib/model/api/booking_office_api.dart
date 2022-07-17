@@ -535,4 +535,34 @@ class BookOfficeAPI {
       debugPrint(e.toString());
     }
   }
+
+  static Future<void> editProfile(EditProfile editProfile) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      var dataUser = {
+        'first_name': editProfile.firstName,
+        'last_name': editProfile.lastName,
+        'phone': editProfile.phone,
+        'email': editProfile.email,
+      };
+      var dataMap = jsonEncode(dataUser);
+      var uri = Uri.http(
+          'ec2-18-206-213-94.compute-1.amazonaws.com', '/api/auth/edit');
+      final response = await Dio().putUri(uri,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          }),
+          data: dataMap);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202 ||
+          response.statusCode == 203) {
+        debugPrint('Succes edit data user');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 }

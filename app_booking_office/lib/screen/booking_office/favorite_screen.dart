@@ -1,3 +1,4 @@
+import 'package:app_booking_office/property/favorite_screen/empty_favorite_screen.dart';
 import 'package:app_booking_office/screen/booking_office/detail_screen.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,10 +58,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: listFavorite(),
-      ),
+      body: bookingOfficeViewModel.dataFavorite.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: listFavorite(),
+            )
+          : EmptyFavoriteScreen(),
     );
   }
 

@@ -48,18 +48,8 @@ class _ListingScreenState extends State<ListingScreen> {
         ),
         child: SingleChildScrollView(
           clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ListCardResult(
-                id: widget.id,
-              ),
-            ],
+          child: ListCardResult(
+            id: widget.id,
           ),
         ),
       ),

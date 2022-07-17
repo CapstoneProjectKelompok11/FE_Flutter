@@ -4,7 +4,7 @@ import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/api/auth_api.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
 import 'package:app_booking_office/screen/auth/welcome_screen.dart';
-import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
+import 'package:app_booking_office/screen/auth/register_succesfull_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,8 +28,8 @@ class AuthViewModel extends ChangeNotifier {
     changeState(AuthViewState.loading);
     try {
       AuthAPI().register(auth);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const SuccesfulScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (_) => const RegisterSuccesfulScreen()));
       changeState(AuthViewState.none);
     } catch (e) {
       changeState(AuthViewState.error);

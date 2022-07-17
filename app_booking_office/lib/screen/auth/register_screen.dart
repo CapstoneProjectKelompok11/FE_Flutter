@@ -1,6 +1,6 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:app_booking_office/screen/auth/model/auth_model.dart';
-import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
+
 import 'package:app_booking_office/screen/auth/view_model/auth_view_model.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';

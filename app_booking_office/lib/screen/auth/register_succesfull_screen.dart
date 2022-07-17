@@ -1,8 +1,8 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
-class SuccesfulScreen extends StatelessWidget {
-  const SuccesfulScreen({Key? key}) : super(key: key);
+class RegisterSuccesfulScreen extends StatelessWidget {
+  const RegisterSuccesfulScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

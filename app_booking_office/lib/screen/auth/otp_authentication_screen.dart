@@ -1,5 +1,5 @@
 import 'package:app_booking_office/screen/auth/login_screen.dart';
-import 'package:app_booking_office/screen/auth/verification_succesful_screen.dart';
+import 'package:app_booking_office/screen/auth/register_succesfull_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -102,8 +102,10 @@ class _OtpScreenState extends State<OtpScreen> {
               primary: Colors.transparent,
               shadowColor: Colors.transparent),
           onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const SuccesfulScreen()));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const RegisterSuccesfulScreen()));
           },
           child: const Text('Submit')),
     );

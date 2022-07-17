@@ -108,18 +108,7 @@ class BookingOfficeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getOffice() async {
-    changeState(BookOfficeViewState.loading);
-    try {
-      var data = await GetBuilding.getBuilding();
-      _office = data;
-
-      changeState(BookOfficeViewState.none);
-    } catch (e) {
-      changeState(BookOfficeViewState.error);
-    }
-    notifyListeners();
-  }
+ 
 
   Future<void> getComplex(String cityName) async {
     changeState(BookOfficeViewState.loading);

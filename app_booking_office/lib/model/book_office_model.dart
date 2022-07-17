@@ -912,7 +912,7 @@ class GetUserData {
     required this.lastName,
     required this.phone,
     required this.email,
-    this.image,
+    required this.image,
   });
 
   int id = 0;
@@ -920,7 +920,7 @@ class GetUserData {
   String lastName = '';
   String phone = '';
   String email = '';
-  dynamic image = '';
+  dynamic image;
 
   factory GetUserData.fromJson(Map<String, dynamic> json) => GetUserData(
         id: json["id"],

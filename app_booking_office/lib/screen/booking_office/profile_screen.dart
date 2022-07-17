@@ -121,14 +121,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SizedBox(
       width: 64,
       height: 64,
-      child: ClipOval(
-        child: bookingOfficeViewModel.userData.image.isNotEmpty
-            ? Image.network(
-                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/profile/image/${bookingOfficeViewModel.userData.image}',
-                fit: BoxFit.cover,
-              )
-            : Image.network(
-                'https://180dc.org/wp-content/uploads/2018/05/empty.png'),
+      child: CircleAvatar(
+        backgroundImage: bookingOfficeViewModel.userData.image != null
+            ? NetworkImage(
+                'http://ec2-18-206-213-94.compute-1.amazonaws.com/api/profile/image/${bookingOfficeViewModel.userData.image}')
+            : NetworkImage(
+                'https://180dc.org/wp-content/uploads/2018/05/empty.png',
+              ),
       ),
     );
   }

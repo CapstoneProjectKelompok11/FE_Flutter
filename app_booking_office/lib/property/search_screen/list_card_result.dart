@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-
-import 'package:app_booking_office/model/book_office_model.dart';
-import 'package:app_booking_office/property/search_screen/button_favorite.dart';
 import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
 
 class ListCardResult extends StatefulWidget {

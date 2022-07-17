@@ -2,48 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_booking_office/model/book_office_model.dart';
-import 'package:app_booking_office/property/show_dialog/booking_succes.dart';
+
 import 'package:app_booking_office/property/show_dialog/token_expired.dart';
-import 'package:app_booking_office/screen/booking_office/view_model/booking_office_view_model.dart';
+
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class GetBuilding {
-  static Future<List<BuildingOffice>> getBuilding() async {
-    final response = await Dio()
-        .get('https://62a2ad7721232ff9b20d92b2.mockapi.io/office_data',
-            options: Options(headers: {
-              "Content-Type": "application/json",
-            }));
-    // var jsonString = jsonEncode(response.data);
-    // var data = jsonDecode(jsonString);
-    // print(data);
-    if (response.statusCode == 200 ||
-        response.statusCode == 201 ||
-        response.statusCode == 202 ||
-        response.statusCode == 203) {
-      debugPrint('Succes Fetching data');
-      List<BuildingOffice> result = (response.data as List)
-          .map((e) => BuildingOffice(
-              picture: e['picture'],
-              name: e['name'],
-              location: e['location'],
-              capacity: e['capacity'],
-              toilet: e['toilet'],
-              stairs: e['Stairs'],
-              rating: e['rating'],
-              price: e['price'],
-              desciption: e['desciption']))
-          .toList();
-      return result;
-    }
-    debugPrint('Error Fetching data');
-    return [];
-  }
-}
 
 class BookOfficeAPI {
   Response? response;
@@ -373,7 +339,12 @@ class BookOfficeAPI {
       debugPrint(e.toString());
     }
     return GetUserData(
-        id: 0, firstName: '', lastName: '', phone: '', email: '');
+        id: 0,
+        firstName: '',
+        lastName: '',
+        phone: '',
+        email: '',
+        image: 'https://180dc.org/wp-content/uploads/2018/05/empty.png');
   }
 
   static Future<void> postProfilePicture(File image) async {

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'App Booking Office',
       theme: ThemeData(
         fontFamily: 'PublicSans',
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const SplashScreen(),
     );

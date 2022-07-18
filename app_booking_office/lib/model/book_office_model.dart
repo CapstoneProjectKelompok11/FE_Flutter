@@ -1457,3 +1457,26 @@ class EditProfile {
     required this.email,
   });
 }
+
+class Login {
+  String? email;
+  String? password;
+  BuildContext? context;
+  Login({this.email, this.password, this.context});
+}
+
+//------------------------------------------------
+class AddMessageSchema {
+  static String addMessageJson = '''
+mutation(\$message: String!, \$buildingId: String! ){
+  userSendMessage(
+    message: \$message, buildingId: \$buildingId
+  ){
+    id
+    message
+    sentByUser
+    timestamp
+  }
+}
+''';
+}

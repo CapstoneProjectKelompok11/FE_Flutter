@@ -51,6 +51,8 @@ dependencies:
   dotted_border: ^2.0.0+2
   grouped_list: ^5.1.2
   flutter_launcher_icons: ^0.9.3 
+  test: ^1.21.1
+
   
  
  

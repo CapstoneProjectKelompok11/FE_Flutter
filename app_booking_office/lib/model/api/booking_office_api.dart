@@ -1,18 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:app_booking_office/model/book_office_model.dart';
-
 import 'package:app_booking_office/property/show_dialog/token_expired.dart';
-
 import 'package:dio/dio.dart';
+
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookOfficeAPI {
-  Response? response;
   Dio? dio;
   static Future<List<DataComplex>?> getComplex(String cityName) async {
     try {
@@ -121,7 +117,7 @@ class BookOfficeAPI {
         'rating': postReview.rating
       };
       var dataMap = jsonEncode(dataReview);
-      Response response = await Dio().postUri(uri,
+      var response = await Dio().postUri(uri,
           options: Options(headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
@@ -439,33 +435,7 @@ class BookOfficeAPI {
     }
   }
 
-  static Future<void> sendMessage(DataMessage dataMessage) async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      var uri =
-          Uri.http('ec2-18-206-213-94.compute-1.amazonaws.com', '/api/graphql');
-      var dataReservation = {
-        'message': dataMessage.pesan,
-        'buildingId': dataMessage.buildingId,
-      };
-      var dataMap = jsonEncode(dataReservation);
-      final response = await Dio().postUri(uri,
-          options: Options(headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          }),
-          data: dataMap);
-      if (response.statusCode == 200 ||
-          response.statusCode == 201 ||
-          response.statusCode == 202 ||
-          response.statusCode == 203) {
-        debugPrint('Succes Sending Message');
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  static Future<void> sendMessage(DataMessage dataMessage) async {}
 
   static Future<List<GetDataByUser>> getDataMessage(String buildingId) async {
     try {
